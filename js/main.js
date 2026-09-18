@@ -199,14 +199,9 @@ document.addEventListener('DOMContentLoaded', () => {
           img.removeAttribute('loading');
         });
         
-        // Stagger video loading to prevent browser network queue congestion (the 15s stalls)
-        const lazyVideos = Array.from(document.querySelectorAll('video[preload="metadata"], video[preload="none"]'));
-        lazyVideos.forEach((vid, index) => {
-          setTimeout(() => {
-            vid.preload = 'auto';
-            if (vid.readyState === 0) vid.load();
-          }, index * 450); // Stagger each video by 450ms
-        });
+        // (Videos are excluded from eager background loading because downloading 300MB of video
+        // immediately upon opening saturates the network and causes 30-second delays. 
+        // They will load dynamically when scrolled into view via IntersectionObserver).
       }, 250);
     }, 850);
   }
@@ -221,9 +216,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Only gather Hero video + CGI section media for the preloader
     const cgiSection = document.getElementById('cgi');
-    const criticalImages = cgiSection ? Array.from(cgiSection.querySelectorAll('img[src]')) : [];
-    const criticalVideos = cgiSection ? Array.from(cgiSection.querySelectorAll('video')) : [];
-    if (heroVideo) criticalVideos.push(heroVideo);
+    // Wait ONLY for the absolute essentials: The Hero video, and the immediate top CGI slider images.
+    // Deep showcase videos (like Kaserne, BMW) are excluded so they don't block the loading screen.
+    const criticalImages = cgiSection ? Array.from(cgiSection.querySelectorAll('img.cgi-parallax-media[src]')) : [];
+    const criticalVideos = heroVideo ? [heroVideo] : [];
 
     const totalMedia = criticalImages.length + criticalVideos.length;
     let loadedMedia = 0;
@@ -261,7 +257,6 @@ document.addEventListener('DOMContentLoaded', () => {
       pendingNames.add(name);
 
       if (vid === heroVideo) {
-        // Just wait until it can play at least a little bit (readyState >= 3)
         let isHeroDone = false;
         const markHeroDone = () => {
           if (isHeroDone) return;
@@ -269,10 +264,25 @@ document.addEventListener('DOMContentLoaded', () => {
           checkMediaDone(name);
         };
         vid.addEventListener('error', markHeroDone, { once: true });
+        vid.addEventListener('canplay', () => {
+          const buffered = vid.buffered.length > 0 ? vid.buffered.end(0) : 0;
+          if (buffered >= 2 || vid.readyState >= 4) markHeroDone();
+        });
+
+        // Keep a periodic check as fallback
+        let bufferCheckInterval = setInterval(() => {
+          const buffered = vid.buffered.length > 0 ? vid.buffered.end(0) : 0;
+          if (vid.readyState >= 4 || (vid.readyState >= 3 && buffered >= 2)) {
+            clearInterval(bufferCheckInterval);
+            markHeroDone();
+          }
+        }, 500);
 
         const checkHeroBuffer = () => {
           if (isHeroDone) return;
-          if (vid.readyState >= 3) {
+          const buffered = vid.buffered.length > 0 ? vid.buffered.end(0) : 0;
+          if (vid.readyState >= 4 || (vid.readyState >= 3 && buffered >= 2)) {
+            clearInterval(bufferCheckInterval);
             markHeroDone();
           } else {
             setTimeout(checkHeroBuffer, 100);
@@ -291,8 +301,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    const minLoadDuration = 2000; // Minimum visual duration before 100% can be reached
-    const maxWaitTime = 12000;    // Absolute maximum wait time (12s) before forcing the site to open
+    const minLoadDuration = 1200; // Mandatory short 1.2s loading bar
+    const maxWaitTime = 12000;    
     const startTime = performance.now();
     let animFrame = null;
     let hasUnfolded = false;
@@ -311,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!mediaReadyTime) mediaReadyTime = now;
         const currentAsymptotic = (1 - Math.exp(-elapsed / 3000)) * 0.99;
         const fillElapsed = now - mediaReadyTime;
-        const fillDuration = minTimePassed ? 300 : Math.max(300, (minLoadDuration - elapsed));
+        const fillDuration = minTimePassed ? 50 : Math.max(50, (minLoadDuration - elapsed));
         const fillFraction = Math.min(1, fillElapsed / fillDuration);
         displayProgress = currentAsymptotic + (1.0 - currentAsymptotic) * fillFraction;
       }
@@ -321,29 +331,29 @@ document.addEventListener('DOMContentLoaded', () => {
       if (progressFill) progressFill.style.width = `${currentPercent}%`;
       if (percentText) percentText.textContent = `${currentPercent}%`;
 
+      // Live Text Updates
+      if (statusText) {
+        if (!hasUnfolded) {
+          // Leave default text during initial phase
+        } else if (!isMediaReady) {
+          statusText.textContent = 'Lade Medien...';
+        } else {
+          statusText.textContent = 'Bereit';
+        }
+      }
+
       // Phase 1: Name Unfolds gently at ~28%
       if (currentPercent >= 28 && !hasUnfolded) {
         hasUnfolded = true;
         if (loader) loader.classList.add('step-unfold');
       }
 
-      // Live Debug Text to show exactly what is holding up the loader
-      if (currentPercent >= 28 && statusText) {
-        if (!isMediaReady && pendingNames.size > 0) {
-          const waitingFor = Array.from(pendingNames)[0];
-          statusText.textContent = `Lade: ${waitingFor}...`;
-        } else if (isMediaReady) {
-          statusText.textContent = 'Bereit';
-        }
-      }
-
       if (displayProgress >= 1.0 && isMediaReady && minTimePassed) {
-        // 100% Reached & Media Loaded!
         if (progressFill) progressFill.style.width = '100%';
         if (percentText) percentText.textContent = '100%';
         if (statusText) statusText.textContent = 'Bereit';
 
-        // Serene pause before pushing
+        // Brief cinematic pause
         setTimeout(() => {
           // Phase 2: Start single hero video from frame 0 as the aperture opens!
           if (heroVideo) {
@@ -353,11 +363,11 @@ document.addEventListener('DOMContentLoaded', () => {
           if (loader) loader.classList.add('step-push');
           document.body.classList.add('step-push');
 
-          // Let the user appreciate the video playing from the beginning for 1.4s
+          // Let the user appreciate the video for 1s
           setTimeout(() => {
             finishLoader();
-          }, 1400);
-        }, 450);
+          }, 1000);
+        }, 250);
       } else {
         animFrame = requestAnimationFrame(updateProgress);
       }
@@ -3154,3 +3164,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+
