@@ -707,7 +707,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Kick off sequence
   startCinematicSequence();
-  initBouncyTabsNav();
 
   // --------------------------------------------------------------------------
   // 1. Lenis Smooth Scrolling Initialization (Called after loader completes)
