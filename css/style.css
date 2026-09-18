@@ -408,7 +408,7 @@ img, video {
   pointer-events: none;
   z-index: 20;
   animation: media-shine-sweep 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  will-change: transform;
+  transform: translateZ(0);
 }
 
 /* Base fade transition for cards with loading shine support */
@@ -433,7 +433,7 @@ img, video {
 .cgi-parallax-card video,
 .cgi-parallax-card .cgi-parallax-media {
   transition: opacity 0.5s var(--ease-smooth), filter 0.35s ease !important;
-  will-change: transform;
+  transform: translateZ(0);
 }
 
 /* While loading, keep asset transparent so shine sweeps cleanly on dark canvas */
@@ -2353,7 +2353,7 @@ body[data-ambient-theme="kontakt"] {
   height: 100%;
   overflow: hidden;
   background: #020202;
-  will-change: transform;
+  transform: translateZ(0);
 }
 
 .film-video-panel[data-panel-index="0"] { z-index: 1; }
@@ -2368,7 +2368,7 @@ body[data-ambient-theme="kontakt"] {
   width: 100%;
   width: 100vw;
   height: 124%;
-  will-change: transform;
+  transform: translateZ(0);
 }
 
 .film-video-wrap video {
@@ -3357,7 +3357,7 @@ body[data-ambient-theme="kontakt"] {
   display: flex;
   width: max-content;
   animation: kunstTickerScroll 42s linear infinite;
-  will-change: transform;
+  transform: translateZ(0);
 }
 
 .kunst-ticker-viewport:hover .kunst-ticker-track {
@@ -5185,3 +5185,4 @@ body[data-ambient-theme="kontakt"] {
 .photo-liquid-reflector { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; pointer-events: none; z-index: 3; opacity: 0; transition: opacity 0.5s ease; } .photo-liquid-reflector.is-active { opacity: 1; }
 .photo-liquid-reflector canvas { width: 100%; height: 100%; display: block; }
 body:has(#cinema-modal.open) .photo-liquid-reflector { opacity: 0 !important; visibility: hidden; transition: none; }
+
