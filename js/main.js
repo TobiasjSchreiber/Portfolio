@@ -2617,6 +2617,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Pre-cache card offsets and widths to eliminate all layout thrashing during scroll
     let cardLayout = [];
+    let barWidthPct = 8;
+    let maxOffsetPct = 92;
+
     function measureCards() {
       const trackOffset = track.offsetLeft;
       cardLayout = cards.map((card) => {
@@ -2630,6 +2633,13 @@ document.addEventListener('DOMContentLoaded', () => {
           width
         };
       });
+
+      // Update scrubber bar width once during layout calculation instead of on every scroll frame
+      if (scrubberBar) {
+        barWidthPct = Math.max(8, 100 / (cards.length || 1));
+        maxOffsetPct = 100 - barWidthPct;
+        scrubberBar.style.width = `${barWidthPct}%`;
+      }
     }
     measureCards();
 
@@ -2641,12 +2651,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const viewportCenter = scrollLeft + viewportWidth / 2;
       const maxScroll = Math.max(1, viewport.scrollWidth - viewportWidth);
 
-      // 1. Scrubber bar update
+      // 1. Scrubber bar update (only writing transform now, no layout thrashing)
       if (scrubberBar) {
         const progress = Math.min(1, Math.max(0, scrollLeft / maxScroll));
-        const barWidthPct = Math.max(8, 100 / cards.length);
-        const maxOffsetPct = 100 - barWidthPct;
-        scrubberBar.style.width = `${barWidthPct}%`;
         scrubberBar.style.transform = `translate3d(${progress * maxOffsetPct * (100 / barWidthPct)}%, 0, 0)`;
       }
 
