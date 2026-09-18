@@ -242,6 +242,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const name = url ? url.split('/').pop() : `Bild ${i}`;
       pendingNames.add(name);
 
+      // Force the browser to fetch this image immediately!
+      // (If we leave loading="lazy", Chrome will NEVER load it because it's off-screen,
+      // and our preloader would hang forever waiting for the 'load' event).
+      img.removeAttribute('loading');
+
       if (img.complete) {
         checkMediaDone(name);
       } else {
