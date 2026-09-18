@@ -36,8 +36,54 @@
   <link rel="stylesheet" href="css/style.css?v=44">
 </head>
 <body class="is-loading" data-ambient-theme="hero">
+  <!-- =========================================================================
+       MOBILE WARNING OVERLAY (GitHub Pages only)
+       ========================================================================= -->
+  <div id="mobile-warning-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #020202; z-index: 999999; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 2rem; box-sizing: border-box; color: #d8d8d8; font-family: 'Plus Jakarta Sans', sans-serif; opacity: 1; transition: opacity 0.4s ease;">
+    <h1 style="font-size: 2rem; margin-bottom: 1rem; font-weight: 600;">Hinweis</h1>
+    <p style="font-size: 1.1rem; line-height: 1.5; color: rgba(255, 255, 255, 0.7); max-width: 400px; margin: 0 auto 2rem;">
+      Diese Seite ist aktuell für PC und Tablet optimiert. Auf Smartphones kann es zu Darstellungsfehlern kommen.
+    </p>
+    <button id="mobile-warning-dismiss" style="background: rgba(255, 255, 255, 0.08); border: none; outline: none; box-shadow: none; padding: 1rem 2rem; color: #fff; font-size: 1rem; border-radius: 8px; cursor: pointer; transition: background 0.3s ease; backdrop-filter: blur(10px);">
+      Trotzdem ansehen
+    </button>
+  </div>
 
-  
+  <script>
+    (function() {
+      const isLocal = ['localhost', '127.0.0.1', '192.168.178.173'].includes(window.location.hostname);
+      const isMobile = window.innerWidth <= 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
+      
+      if (isMobile && !isLocal) {
+        document.addEventListener('DOMContentLoaded', () => {
+          const overlay = document.getElementById('mobile-warning-overlay');
+          const dismissBtn = document.getElementById('mobile-warning-dismiss');
+          
+          if (overlay && dismissBtn) {
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Hover effect for button without using scale
+            dismissBtn.addEventListener('mouseenter', () => {
+              dismissBtn.style.background = 'rgba(255, 255, 255, 0.12)';
+            });
+            dismissBtn.addEventListener('mouseleave', () => {
+              dismissBtn.style.background = 'rgba(255, 255, 255, 0.08)';
+            });
+
+            dismissBtn.addEventListener('click', () => {
+              overlay.style.opacity = '0';
+              setTimeout(() => {
+                overlay.style.display = 'none';
+                document.body.style.overflow = '';
+              }, 400);
+            });
+          }
+        });
+      }
+    })();
+  </script>
+
   <!-- =========================================================================
        CINEMATIC PRELOADER & NAME UNFOLD SEQUENCE
        ========================================================================= -->
