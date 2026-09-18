@@ -542,6 +542,9 @@ document.addEventListener('DOMContentLoaded', () => {
       targetBtn.setAttribute('aria-current', 'true');
       setIndicator(targetBtn, animate);
 
+      const contactBtn = document.querySelector('.nav-contact-btn');
+      if (contactBtn) contactBtn.classList.remove('is-active');
+
       // On mobile / narrow viewports, gently scroll active tab into view
       if (nav.scrollWidth > nav.clientWidth) {
         const navRect = nav.getBoundingClientRect();
@@ -644,8 +647,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Sync on scroll
-    syncBouncyTabsToSection = function(sectionId) {
-      if (isManualClick) return;
+    syncBouncyTabsToSection = function(sectionId, force = false) {
+      if (isManualClick && !force) return;
       let match = buttons.find((b) => b.getAttribute('href') === `#${sectionId}`);
       if (!match && (sectionId === 'hero' || sectionId === 'intro')) {
         match = buttons.find((b) => b.getAttribute('href') === '#hero' || b.getAttribute('href') === '#intro');
@@ -755,7 +758,11 @@ document.addEventListener('DOMContentLoaded', () => {
           const targetId = this.getAttribute('href');
           if (!targetId || targetId === '#') return;
           e.preventDefault();
-          performSmoothNavigation(targetId);
+          const cleanId = targetId.replace(/^#/, '');
+          if (typeof syncBouncyTabsToSection === 'function') {
+            syncBouncyTabsToSection(cleanId, true);
+          }
+          performSmoothNavigation(cleanId);
         });
       });
     } else {
@@ -3278,6 +3285,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
 
 
 
