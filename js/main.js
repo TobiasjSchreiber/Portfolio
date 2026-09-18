@@ -1278,7 +1278,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Seamless Video Upgrades (Teaser -> Full Video)
   // --------------------------------------------------------------------------
   function initSeamlessVideoUpgrades() {
-    const panels = document.querySelectorAll('.film-video-panel');
+    const panels = document.querySelectorAll('.seamless-video-wrap');
     panels.forEach(panel => {
       const proxyVid = panel.querySelector('.proxy-video');
       const fullVid = panel.querySelector('.full-video');
@@ -3251,6 +3251,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
 
 
 

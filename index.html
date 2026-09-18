@@ -232,8 +232,11 @@
                data-cinema-title="Klassische Statue — Form & Beleuchtung" 
                data-cinema-meta="3D Shading & Lichtreflexion"
                data-cinema-gallery="cgi-renders">
-            <div class="cgi-parallax-img-wrap">
-              <video preload="none" class="cgi-parallax-media" muted loop playsinline poster="assets/images/md/3D_Statue_2.webp">
+            <div class="cgi-parallax-img-wrap seamless-video-wrap">
+              <video class="cgi-parallax-media proxy-video" preload="auto" muted loop playsinline poster="assets/images/md/3D_Statue_2.webp">
+                <source src="assets/videos/3d_statue_teaser.mp4" type="video/mp4">
+              </video>
+              <video class="cgi-parallax-media full-video" preload="none" muted loop playsinline style="opacity: 0;">
                 <source src="assets/videos/3d_statue.mp4" type="video/mp4">
               </video>
             </div>
@@ -414,8 +417,11 @@
                data-cinema-title="Blender Modeling Timelapse" 
                data-cinema-meta="Making-of & Work in Progress &bull; 1080p Web"
                data-cinema-gallery="cgi-renders">
-            <div class="cgi-parallax-img-wrap">
-              <video preload="none" class="cgi-parallax-media" muted loop playsinline>
+            <div class="cgi-parallax-img-wrap seamless-video-wrap">
+              <video class="cgi-parallax-media proxy-video" preload="auto" muted loop playsinline>
+                <source src="assets/videos/Blender_Zeitraffer_teaser.mp4" type="video/mp4">
+              </video>
+              <video class="cgi-parallax-media full-video" preload="none" muted loop playsinline style="opacity: 0;">
                 <source src="assets/videos/Blender_Zeitraffer_web.mp4" type="video/mp4">
               </video>
             </div>
@@ -462,14 +468,17 @@
 
       <div class="bmw-stage">
         <!-- Big Hero Video Player for BMW 700 -->
-        <div class="cinematic-hero-player reveal-on-scroll" 
+        <div class="cinematic-hero-player reveal-on-scroll seamless-video-wrap" 
              data-cinema-trigger 
              data-cinema-type="video" 
              data-cinema-src="assets/videos/3d_bmw_700_web.mp4" 
-             data-cinema-title="BMW 700 — Cinematic Turnaround & Studio Render" 
+             data-cinema-title="BMW 700 - Cinematic Turnaround & Studio Render" 
              data-cinema-meta="3ds Max & Arnold &bull; Uni-Projekt 4. Semester &bull; Tobias Schreiber">
           
-          <video class="cinematic-video" muted loop playsinline poster="assets/images/md/3D_nachbau_Relight.webp" preload="none">
+          <video class="cinematic-video proxy-video" preload="auto" muted loop playsinline poster="assets/images/md/3D_nachbau_Relight.webp">
+            <source src="assets/videos/3d_bmw_700_teaser.mp4" type="video/mp4">
+          </video>
+          <video class="cinematic-video full-video" preload="none" muted loop playsinline style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
             <source src="assets/videos/3d_bmw_700_web.mp4" type="video/mp4">
           </video>
 
@@ -594,13 +603,16 @@
 
     <!-- Showcase 1: Historische Kaserne 3D-Rekonstruktion -->
     <div class="cgi-feature-grid reveal-on-scroll">
-      <div class="cgi-main-media"
+      <div class="cgi-main-media seamless-video-wrap"
            data-cinema-trigger 
            data-cinema-type="video" 
            data-cinema-src="assets/videos/Kaserne_web.mp4" 
-           data-cinema-title="Historische Kaserne — 3D Rekonstruktion & Kamerafahrt" 
+           data-cinema-title="Historische Kaserne - 3D Rekonstruktion & Kamerafahrt" 
            data-cinema-meta="Architekturvisualisierung & Lichtstimmung &bull; Blender Cycles">
-        <video preload="none" muted loop playsinline poster="assets/images/lg/3D_nachbau_Kaserne.webp">
+        <video class="proxy-video" preload="auto" muted loop playsinline poster="assets/images/lg/3D_nachbau_Kaserne.webp">
+          <source src="assets/videos/Kaserne_teaser.mp4" type="video/mp4">
+        </video>
+        <video class="full-video" preload="none" muted loop playsinline style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
           <source src="assets/videos/Kaserne_web.mp4" type="video/mp4">
         </video>
         <button class="video-audio-toggle is-muted cgi-audio-toggle" type="button" aria-label="Ton einschalten" title="Ton einschalten">
@@ -2149,9 +2161,13 @@
   <script src="js/three.min.js"></script>
   <script src="js/lenis.min.js"></script>
   <script src="js/photo-reflector-test.js?v=27"></script>
-  <script src="js/main.js?v=639253557649645622"></script>
+  <script src="js/main.js?v=639253563496056758"></script>
 </body>
 </html>
+
+
+
+
 
 
 
