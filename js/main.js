@@ -198,9 +198,14 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('img[loading="lazy"]').forEach(img => {
           img.removeAttribute('loading');
         });
-        document.querySelectorAll('video[preload="metadata"], video[preload="none"]').forEach(vid => {
-          vid.preload = 'auto';
-          vid.load();
+        
+        // Stagger video loading to prevent browser network queue congestion (the 15s stalls)
+        const lazyVideos = Array.from(document.querySelectorAll('video[preload="metadata"], video[preload="none"]'));
+        lazyVideos.forEach((vid, index) => {
+          setTimeout(() => {
+            vid.preload = 'auto';
+            if (vid.readyState === 0) vid.load();
+          }, index * 450); // Stagger each video by 450ms
         });
       }, 250);
     }, 850);
