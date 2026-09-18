@@ -2658,10 +2658,16 @@ document.addEventListener('DOMContentLoaded', () => {
         nextBtn.classList.toggle('is-disabled', scrollLeft >= maxScroll - 8);
       }
 
-      // 3. Instant optical counter-parallax & active card detection (pure arithmetic, 0ms latency)
+      // 3. Instant optical active card detection (pure arithmetic, 0ms latency)
       let closestCardIndex = 0;
       let minDistance = Infinity;
-      const halfViewport = viewportWidth / 2;
+      
+      // Simplified Global Parallax: All images move synchronously based on track progress
+      const trackProgress = maxScroll > 0 ? (scrollLeft / maxScroll) : 0;
+      const isMobile = window.innerWidth <= 768;
+      const amplitude = isMobile ? 8 : 14; 
+      const globalShiftPct = (0.5 - trackProgress) * (amplitude * 2); 
+      const newTransform = `translate3d(${globalShiftPct.toFixed(2)}%, 0, 0)`;
 
       for (let i = 0; i < cardLayout.length; i++) {
         const item = cardLayout[i];
@@ -2673,24 +2679,11 @@ document.addEventListener('DOMContentLoaded', () => {
           closestCardIndex = i;
         }
 
-        // Only transform cards currently in or immediately adjacent to the viewport
-        if (absDist <= halfViewport + item.width / 2 + 100) {
-          const normDist = distToCenter / halfViewport;
-          const clampedNorm = Math.max(-1.3, Math.min(1.3, normDist));
-          
-          if (item.media) {
-            // Re-enabled parallax on all devices, but highly optimized:
-            // 1. Reduced amplitude on mobile to minimize GPU rasterization distance
-            // 2. Strict DOM write caching (only update if value actually changed)
-            const isMobile = window.innerWidth <= 768;
-            const amplitude = isMobile ? 10 : 16; 
-            const shiftPct = -clampedNorm * amplitude;
-            const newTransform = `translate3d(${shiftPct.toFixed(2)}%, 0, 0)`;
-            
-            if (item.lastTransform !== newTransform) {
-              item.media.style.transform = newTransform;
-              item.lastTransform = newTransform;
-            }
+        // Apply global transform only to cards near the viewport to save DOM writes
+        if (absDist <= viewportWidth + item.width + 100) {
+          if (item.media && item.lastTransform !== newTransform) {
+            item.media.style.transform = newTransform;
+            item.lastTransform = newTransform;
           }
         }
       }
