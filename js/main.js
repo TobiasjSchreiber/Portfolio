@@ -19,14 +19,6 @@ if (window.location.hash) {
   history.replaceState(null, document.title, window.location.pathname + window.location.search);
 }
 
-window.addEventListener('beforeunload', () => {
-  window.scrollTo(0, 0);
-});
-
-window.addEventListener('pageshow', () => {
-  window.scrollTo(0, 0);
-});
-
 document.addEventListener('DOMContentLoaded', () => {
   window.scrollTo(0, 0);
   // --------------------------------------------------------------------------
@@ -315,6 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let syncBouncyTabsToSection = () => {};
   let updateActiveSection = () => {};
   let currentActiveSectionId = null;
+  let performSmoothNavigation = () => {};
 
   function initBouncyTabsNav() {
     const nav = document.querySelector('[data-bouncy-tabs-nav]');
@@ -414,6 +407,77 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     nav.addEventListener('mouseleave', () => hideGhost());
 
+    // Precise Navigation Engine: Positions content cleanly ~18px below the fixed hero bar
+    performSmoothNavigation = function(rawTargetId) {
+      const targetId = rawTargetId ? rawTargetId.replace(/^#/, '') : '';
+      if (!targetId) return;
+
+      let targetElement = document.getElementById(targetId);
+      if (!targetElement && (targetId === 'intro' || targetId === 'hero')) targetElement = document.getElementById('hero');
+      if (!targetElement && (targetId === 'work' || targetId === 'bmw' || targetId === 'cgi')) targetElement = document.getElementById('cgi');
+      if (!targetElement && (targetId === 'approach' || targetId === 'about')) targetElement = document.getElementById('about');
+      if (!targetElement) return;
+
+      isManualClick = true;
+      currentActiveSectionId = targetId;
+      clearTimeout(manualClickTimer);
+      manualClickTimer = setTimeout(() => {
+        isManualClick = false;
+      }, 1400);
+
+      const sectionTheme = (targetId === 'intro' || targetId === 'hero') ? 'hero' : (targetId === 'work' || targetId === 'bmw' || targetId === 'cgi' ? 'cgi' : (targetId === 'approach' ? 'about' : targetId));
+      setAmbientTheme(sectionTheme);
+
+      if (targetId === 'hero' || targetId === 'intro') {
+        if (typeof lenis !== 'undefined' && lenis) {
+          lenis.scrollTo(0, { duration: 1.0 });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        return;
+      }
+
+      // Height and bottom of fixed navigation bar (.nav-header is top: 1.4rem ~ 22px, height ~ 48px -> bottom ~ 72px)
+      const navHeader = document.querySelector('.nav-header');
+      let navBottom = 72;
+      if (navHeader) {
+        const rect = navHeader.getBoundingClientRect();
+        if (rect.height > 0) {
+          navBottom = Math.max(navBottom, rect.bottom);
+        }
+      }
+
+      // For sticky section #uni, target the top of the section element so slide 1 starts cleanly
+      if (targetId === 'uni' || targetElement.classList.contains('uni-sticky-section')) {
+        const currentScroll = window.scrollY || document.documentElement.scrollTop || (typeof lenis !== 'undefined' && lenis ? lenis.scroll : 0);
+        const secRect = targetElement.getBoundingClientRect();
+        const targetScroll = Math.max(0, Math.round(secRect.top + currentScroll));
+        if (typeof lenis !== 'undefined' && lenis) {
+          lenis.scrollTo(targetScroll, { duration: 1.0 });
+        } else {
+          window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+        }
+        return;
+      }
+
+      // For other sections, target the primary heading or visual anchor
+      const anchorEl = targetElement.querySelector('.section-header, .kunst-feature-hero, .about-section-inner, .contact-huge-link') || targetElement;
+      const currentScroll = window.scrollY || document.documentElement.scrollTop || (typeof lenis !== 'undefined' && lenis ? lenis.scroll : 0);
+      const anchorRect = anchorEl.getBoundingClientRect();
+      const absoluteTop = anchorRect.top + currentScroll;
+      
+      // Position heading cleanly below the herobar:
+      // In general ~18px below the herobar; for #kunst we provide extra breathing room (~46px) so the hand and text are not tucked directly under the bar
+      const offsetBelowNav = (targetId === 'kunst') ? 46 : 18;
+      const targetScroll = Math.max(0, Math.round(absoluteTop - (navBottom + offsetBelowNav)));
+
+      if (typeof lenis !== 'undefined' && lenis) {
+        lenis.scrollTo(targetScroll, { duration: 1.0 });
+      } else {
+        window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+      }
+    }
+
     // Click interactions
     buttons.forEach((btn) => {
       btn.addEventListener('click', (e) => {
@@ -422,31 +486,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         e.preventDefault();
         const targetId = href.substring(1);
-        let targetElement = document.getElementById(targetId);
-        if (!targetElement && targetId === 'intro') targetElement = document.getElementById('hero');
-        if (!targetElement && targetId === 'work') targetElement = document.getElementById('bmw');
-        if (!targetElement && targetId === 'approach') targetElement = document.getElementById('about');
-
         setActiveButton(btn, true);
         hideGhost();
-
-        if (targetElement) {
-          isManualClick = true;
-          currentActiveSectionId = targetId;
-          clearTimeout(manualClickTimer);
-          manualClickTimer = setTimeout(() => {
-            isManualClick = false;
-          }, 1400);
-
-          if (typeof lenis !== 'undefined' && lenis) {
-            lenis.scrollTo(targetElement, { offset: -30, duration: 1.0 });
-          } else {
-            targetElement.scrollIntoView({ behavior: 'smooth' });
-          }
-
-          const sectionTheme = targetId === 'intro' ? 'hero' : (targetId === 'work' || targetId === 'bmw' ? 'cgi' : (targetId === 'approach' ? 'about' : targetId));
-          setAmbientTheme(sectionTheme);
-        }
+        performSmoothNavigation(targetId);
       });
     });
 
@@ -538,14 +580,9 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('a[href^="#"]:not([data-bouncy-tabs-button])').forEach((anchor) => {
         anchor.addEventListener('click', function (e) {
           const targetId = this.getAttribute('href');
-          if (targetId === '#') return;
-          const targetElement = document.querySelector(targetId);
-          if (targetElement) {
-            e.preventDefault();
-            lenis.scrollTo(targetElement, { offset: -20, duration: 0.9 });
-            const sectionName = targetId.replace('#', '');
-            setAmbientTheme(sectionName);
-          }
+          if (!targetId || targetId === '#') return;
+          e.preventDefault();
+          performSmoothNavigation(targetId);
         });
       });
     } else {
@@ -724,25 +761,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // 2. Section Numbers Floating Multiplane Parallax
-      sectionNums.forEach((num) => {
-        const rect = num.getBoundingClientRect();
-        if (rect.bottom > -60 && rect.top < windowH + 60) {
-          const delta = (rect.top - windowH * 0.5) * -0.06;
-          num.style.transform = `translate3d(0, ${delta.toFixed(1)}px, 0)`;
-        }
-      });
+      // 2. Section Numbers Floating Multiplane Parallax (Entfernt wegen Jitter-Effekt)
+      // sectionNums.forEach((num) => { ... });
 
-      // 3. Focal Media Window Parallax (Subtle depth displacement inside overflow-hidden frames)
-      parallaxMediaItems.forEach((media) => {
-        const parent = media.parentElement;
-        if (!parent) return;
-        const rect = parent.getBoundingClientRect();
-        if (rect.bottom > -100 && rect.top < windowH + 100) {
-          const delta = Math.max(-26, Math.min(26, (rect.top - windowH * 0.5) * -0.055));
-          media.style.transform = `translate3d(0, ${delta.toFixed(1)}px, 0)`;
-        }
-      });
+      // 3. Focal Media Window Parallax (Entfernt wegen Konflikten mit CSS Transitions)
+      // parallaxMediaItems.forEach((media) => { ... });
 
       isParallaxTicking = false;
     }
@@ -1603,6 +1626,44 @@ document.addEventListener('DOMContentLoaded', () => {
     strip.addEventListener('scroll', updateControls, { passive: true });
     window.addEventListener('resize', updateControls, { passive: true });
 
+    // Interactive Scrubber Bar for Ceramic Strip
+    const scrubberTrack = progressBar ? progressBar.parentElement : null;
+    if (scrubberTrack) {
+      let isScrubbing = false;
+
+      function seekToPosition(clientX) {
+        const rect = scrubberTrack.getBoundingClientRect();
+        if (rect.width <= 0) return;
+        const clickX = clientX - rect.left;
+        const progress = Math.max(0, Math.min(1, clickX / rect.width));
+        const maxScroll = Math.max(1, strip.scrollWidth - strip.clientWidth);
+        strip.scrollLeft = progress * maxScroll;
+      }
+
+      scrubberTrack.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        isScrubbing = true;
+        scrubberTrack.classList.add('is-scrubbing');
+        try { scrubberTrack.setPointerCapture(e.pointerId); } catch (_) {}
+        seekToPosition(e.clientX);
+      });
+
+      scrubberTrack.addEventListener('pointermove', (e) => {
+        if (!isScrubbing) return;
+        seekToPosition(e.clientX);
+      });
+
+      const stopScrub = (e) => {
+        if (!isScrubbing) return;
+        isScrubbing = false;
+        scrubberTrack.classList.remove('is-scrubbing');
+        try { if (e && e.pointerId) scrubberTrack.releasePointerCapture(e.pointerId); } catch (_) {}
+      };
+
+      scrubberTrack.addEventListener('pointerup', stopScrub);
+      scrubberTrack.addEventListener('pointercancel', stopScrub);
+    }
+
     // Drag-to-scroll for mouse
     strip.addEventListener('mousedown', (e) => {
       isDown = true;
@@ -1881,8 +1942,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let longboardScrollTopStart = 0;
     let longboardHasDragged = false;
 
-    // Direct mouse wheel scrolling (prevents Lenis window hijack)
+    // Direct mouse wheel scrolling (prevents Lenis window hijack, but allows page scroll at boundaries)
     docLongboardDisplay.addEventListener('wheel', (e) => {
+      const isAtTop = docLongboardDisplay.scrollTop <= 0 && e.deltaY < 0;
+      const isAtBottom = docLongboardDisplay.scrollTop + docLongboardDisplay.clientHeight >= docLongboardDisplay.scrollHeight && e.deltaY > 0;
+      
+      // If we are scrolling out of bounds, let the event bubble to scroll the main page
+      if (isAtTop || isAtBottom) {
+        return; 
+      }
+      
+      // Otherwise, scroll the longboard and prevent page scroll
       e.stopPropagation();
       docLongboardDisplay.scrollTop += e.deltaY;
       e.preventDefault();
@@ -1959,7 +2029,19 @@ document.addEventListener('DOMContentLoaded', () => {
     item.addEventListener('click', (e) => {
       // Don't intercept clicks on download links
       if (e.target.closest('.control-dossier-link')) return;
-      setActiveDocItem(index);
+      
+      const uniSection = document.getElementById('uni');
+      if (uniSection && window.innerWidth > 1024) {
+        const top = uniSection.getBoundingClientRect().top + window.scrollY;
+        const targetScroll = top + ((index + 0.1) / controlItems.length) * (uniSection.offsetHeight - window.innerHeight);
+        if (typeof lenis !== 'undefined' && lenis) {
+           lenis.scrollTo(targetScroll, { duration: 1.0 });
+        } else {
+           window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+        }
+      } else {
+        setActiveDocItem(index);
+      }
     });
   });
 
@@ -1968,7 +2050,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.stopPropagation();
       const currentIndex = controlItems.findIndex(el => el.classList.contains('active'));
       if (currentIndex > 0) {
-        setActiveDocItem(currentIndex - 1);
+        controlItems[currentIndex - 1].click();
       }
     });
   }
@@ -1978,13 +2060,50 @@ document.addEventListener('DOMContentLoaded', () => {
       e.stopPropagation();
       const currentIndex = controlItems.findIndex(el => el.classList.contains('active'));
       if (currentIndex >= 0 && currentIndex < controlItems.length - 1) {
-        setActiveDocItem(currentIndex + 1);
+        controlItems[currentIndex + 1].click();
       }
     });
   }
 
   // Initialize with layout
   setActiveDocItem(0);
+
+  // Scroll-Driven Accordion Logic
+  const uniSection = document.getElementById('uni');
+  if (uniSection) {
+    function updateUniScroll() {
+      const rect = uniSection.getBoundingClientRect();
+      const start = 0;
+      const end = rect.height - window.innerHeight;
+      const scrolled = -rect.top;
+
+      if (window.innerWidth > 1024) {
+        if (scrolled >= 0 && scrolled <= end && end > 0) {
+          let progress = scrolled / end;
+          let numItems = controlItems.length;
+          let index = Math.floor(progress * numItems);
+          if (index >= numItems) index = numItems - 1;
+          
+          const currentIndex = controlItems.findIndex(el => el.classList.contains('active'));
+          if (currentIndex !== index) {
+            setActiveDocItem(index);
+          }
+        } else if (scrolled < 0) {
+          const currentIndex = controlItems.findIndex(el => el.classList.contains('active'));
+          if (currentIndex !== 0) setActiveDocItem(0);
+        } else if (scrolled > end && end > 0) {
+          const currentIndex = controlItems.findIndex(el => el.classList.contains('active'));
+          if (currentIndex !== controlItems.length - 1) setActiveDocItem(controlItems.length - 1);
+        }
+      }
+    }
+    
+    window.addEventListener('scroll', updateUniScroll, { passive: true });
+    if (typeof lenis !== 'undefined' && lenis) {
+      lenis.on('scroll', updateUniScroll);
+    }
+    updateUniScroll();
+  }
 
   // Background idle preloading of all document pages for instantaneous crossfading
   if ('requestIdleCallback' in window) {
@@ -2259,15 +2378,33 @@ document.addEventListener('DOMContentLoaded', () => {
     let momentumRafId = null;
     let ticking = false;
 
-    // Optical Parallax calculation & UI state update
+    // Pre-cache card offsets and widths to eliminate all layout thrashing during scroll
+    let cardLayout = [];
+    function measureCards() {
+      const trackOffset = track.offsetLeft;
+      cardLayout = cards.map((card) => {
+        const media = card.querySelector('.cgi-parallax-media');
+        const offsetLeft = card.offsetLeft - trackOffset;
+        const width = card.offsetWidth;
+        return {
+          card,
+          media,
+          center: offsetLeft + width / 2,
+          width
+        };
+      });
+    }
+    measureCards();
+
+    // High-performance, zero-latency optical parallax calculation
     function updateParallaxAndUI() {
       ticking = false;
-      const viewportRect = viewport.getBoundingClientRect();
-      const viewportCenter = viewportRect.left + viewportRect.width / 2;
       const scrollLeft = viewport.scrollLeft;
-      const maxScroll = Math.max(1, viewport.scrollWidth - viewport.clientWidth);
+      const viewportWidth = viewport.clientWidth;
+      const viewportCenter = scrollLeft + viewportWidth / 2;
+      const maxScroll = Math.max(1, viewport.scrollWidth - viewportWidth);
 
-      // 1. Scrubber update
+      // 1. Scrubber bar update
       if (scrubberBar) {
         const progress = Math.min(1, Math.max(0, scrollLeft / maxScroll));
         const barWidthPct = Math.max(8, 100 / cards.length);
@@ -2284,30 +2421,29 @@ document.addEventListener('DOMContentLoaded', () => {
         nextBtn.classList.toggle('is-disabled', scrollLeft >= maxScroll - 8);
       }
 
-      // 3. Optical Counter-Parallax Shift & Active Card Index
+      // 3. Instant optical counter-parallax & active card detection (pure arithmetic, 0ms latency)
       let closestCardIndex = 0;
       let minDistance = Infinity;
+      const halfViewport = viewportWidth / 2;
 
-      for (let i = 0; i < cards.length; i++) {
-        const card = cards[i];
-        const cardRect = card.getBoundingClientRect();
-        const cardCenter = cardRect.left + cardRect.width / 2;
-        const distanceToCenter = Math.abs(cardCenter - viewportCenter);
+      for (let i = 0; i < cardLayout.length; i++) {
+        const item = cardLayout[i];
+        const distToCenter = item.center - viewportCenter;
+        const absDist = Math.abs(distToCenter);
 
-        if (distanceToCenter < minDistance) {
-          minDistance = distanceToCenter;
+        if (absDist < minDistance) {
+          minDistance = absDist;
           closestCardIndex = i;
         }
 
-        // Only calculate parallax if card is visible or within near view
-        if (cardRect.right >= viewportRect.left - 250 && cardRect.left <= viewportRect.right + 250) {
-          const normDist = (cardCenter - viewportCenter) / (viewportRect.width / 2);
-          const clampedNorm = Math.max(-1.5, Math.min(1.5, normDist));
-          const shiftPct = -clampedNorm * 14; // Counter-shift percentage
+        // Only transform cards currently in or immediately adjacent to the viewport
+        if (absDist <= halfViewport + item.width / 2 + 100) {
+          const normDist = distToCenter / halfViewport;
+          const clampedNorm = Math.max(-1.3, Math.min(1.3, normDist));
+          const shiftPct = -clampedNorm * 16;
 
-          const media = card.querySelector('.cgi-parallax-media');
-          if (media) {
-            media.style.transform = `translate3d(${shiftPct.toFixed(2)}%, 0, 0) scale(1.06)`;
+          if (item.media) {
+            item.media.style.transform = `translate3d(${shiftPct.toFixed(2)}%, 0, 0)`;
           }
         }
       }
@@ -2336,7 +2472,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Scroll & Resize listeners
     viewport.addEventListener('scroll', requestUpdate, { passive: true });
-    window.addEventListener('resize', requestUpdate, { passive: true });
+    window.addEventListener('resize', () => {
+      measureCards();
+      requestUpdate();
+    }, { passive: true });
 
     // Buttons
     if (prevBtn) {
@@ -2368,12 +2507,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function startMomentum() {
       let currentVelocity = velocity * 14;
       function momentumStep() {
-        if (Math.abs(currentVelocity) < 0.4) {
+        if (Math.abs(currentVelocity) < 0.3) {
           momentumRafId = null;
           return;
         }
+        const prevScroll = viewport.scrollLeft;
         viewport.scrollLeft -= currentVelocity;
-        currentVelocity *= 0.92;
+        if (viewport.scrollLeft === prevScroll) {
+          momentumRafId = null;
+          return;
+        }
+        updateParallaxAndUI();
+        currentVelocity *= 0.93;
         momentumRafId = requestAnimationFrame(momentumStep);
       }
       momentumRafId = requestAnimationFrame(momentumStep);
@@ -2403,13 +2548,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const walk = x - startX;
       const dist = Math.hypot(e.pageX - downPageX, e.pageY - downPageY);
       
-      // Intentional drag threshold: > 16px
-      if (dist > 16) {
+      // Intentional drag threshold: > 12px
+      if (dist > 12) {
         hasDragged = true;
         viewport.classList.add('is-dragging');
       }
       if (hasDragged) {
         viewport.scrollLeft = scrollLeftStart - walk;
+        updateParallaxAndUI();
         const now = performance.now();
         const dt = now - lastTime;
         if (dt > 10) {
@@ -2429,9 +2575,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const currentY = e ? e.pageY : downPageY;
       const totalDist = Math.hypot(currentX - downPageX, currentY - downPageY);
 
-      if (totalDist <= 14) {
+      if (totalDist <= 12) {
         hasDragged = false;
-      } else if (hasDragged && Math.abs(velocity) > 0.15) {
+      } else if (hasDragged && Math.abs(velocity) > 0.12) {
         startMomentum();
         setTimeout(() => {
           hasDragged = false;
@@ -2475,12 +2621,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const diffX = currentTouchX - touchStartX;
       const totalTouchDist = Math.hypot(currentTouchX - touchStartX, currentTouchY - touchStartY);
 
-      if (totalTouchDist > 16) {
+      if (totalTouchDist > 12) {
         hasDragged = true;
         viewport.classList.add('is-dragging');
       }
       if (hasDragged) {
         viewport.scrollLeft = scrollLeftStart - diffX;
+        updateParallaxAndUI();
         const now = performance.now();
         const dt = now - lastTime;
         if (dt > 10) {
@@ -2496,9 +2643,9 @@ document.addEventListener('DOMContentLoaded', () => {
       isDown = false;
       viewport.classList.remove('is-dragging');
       const totalDist = Math.hypot(touchLastX - touchStartX, touchLastY - touchStartY);
-      if (totalDist <= 14) {
+      if (totalDist <= 12) {
         hasDragged = false;
-      } else if (hasDragged && Math.abs(velocity) > 0.2) {
+      } else if (hasDragged && Math.abs(velocity) > 0.15) {
         startMomentum();
         setTimeout(() => {
           hasDragged = false;
@@ -2526,10 +2673,70 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
+    // Interactive Scrubber Bar: Click or Drag to scroll through 3D & CGI images
+    const scrubberTrack = scrubberBar ? scrubberBar.parentElement : null;
+    if (scrubberTrack) {
+      let isScrubbing = false;
+
+      function seekToPosition(clientX, smooth = false) {
+        const rect = scrubberTrack.getBoundingClientRect();
+        if (rect.width <= 0) return;
+        const clickX = clientX - rect.left;
+        const progress = Math.max(0, Math.min(1, clickX / rect.width));
+        const maxScroll = Math.max(1, viewport.scrollWidth - viewport.clientWidth);
+        const targetScroll = progress * maxScroll;
+        if (smooth) {
+          viewport.scrollTo({ left: targetScroll, behavior: 'smooth' });
+        } else {
+          viewport.scrollLeft = targetScroll;
+          updateParallaxAndUI();
+        }
+      }
+
+      scrubberTrack.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        isScrubbing = true;
+        scrubberTrack.classList.add('is-scrubbing');
+        stopMomentum();
+        try {
+          scrubberTrack.setPointerCapture(e.pointerId);
+        } catch (_) {}
+        seekToPosition(e.clientX, false);
+      });
+
+      scrubberTrack.addEventListener('pointermove', (e) => {
+        if (!isScrubbing) return;
+        seekToPosition(e.clientX, false);
+      });
+
+      function stopScrub(e) {
+        if (!isScrubbing) return;
+        isScrubbing = false;
+        scrubberTrack.classList.remove('is-scrubbing');
+        try {
+          if (e && e.pointerId) {
+            scrubberTrack.releasePointerCapture(e.pointerId);
+          }
+        } catch (_) {}
+      }
+
+      scrubberTrack.addEventListener('pointerup', stopScrub);
+      scrubberTrack.addEventListener('pointercancel', stopScrub);
+    }
+
     // Initial calculations
-    updateParallaxAndUI();
-    setTimeout(updateParallaxAndUI, 300);
-    setTimeout(updateParallaxAndUI, 1200);
+    setTimeout(() => {
+      measureCards();
+      updateParallaxAndUI();
+    }, 50);
+    setTimeout(() => {
+      measureCards();
+      updateParallaxAndUI();
+    }, 300);
+    setTimeout(() => {
+      measureCards();
+      updateParallaxAndUI();
+    }, 1200);
 
     return updateParallaxAndUI;
   }
@@ -2792,4 +2999,48 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   initMediaLoadingShine();
+
+  // --------------------------------------------------------------------------
+  // Contact Form & Mailto Anchor Shield (Prevents browser jump/scroll to top)
+  // --------------------------------------------------------------------------
+  const contactForm = document.getElementById('contact-form') || document.querySelector('.contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const subject = contactForm.querySelector('input[name="subject"]')?.value || '';
+      const message = contactForm.querySelector('textarea[name="message"]')?.value || '';
+      const mailtoUrl = `mailto:tobiasjschreiber@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+      
+      const currentY = window.scrollY || document.documentElement.scrollTop || (typeof lenis !== 'undefined' && lenis ? lenis.scroll : 0);
+      
+      const tempLink = document.createElement('a');
+      tempLink.href = mailtoUrl;
+      tempLink.style.display = 'none';
+      document.body.appendChild(tempLink);
+      tempLink.click();
+      
+      setTimeout(() => {
+        tempLink.remove();
+        if (typeof lenis !== 'undefined' && lenis) {
+          lenis.scrollTo(currentY, { immediate: true });
+        } else {
+          window.scrollTo(0, currentY);
+        }
+      }, 50);
+    });
+  }
+
+  document.querySelectorAll('a[href^="mailto:"]').forEach((mailLink) => {
+    mailLink.addEventListener('click', () => {
+      const currentY = window.scrollY || document.documentElement.scrollTop || (typeof lenis !== 'undefined' && lenis ? lenis.scroll : 0);
+      setTimeout(() => {
+        if (typeof lenis !== 'undefined' && lenis) {
+          lenis.scrollTo(currentY, { immediate: true });
+        } else {
+          window.scrollTo(0, currentY);
+        }
+      }, 50);
+    });
+  });
 });

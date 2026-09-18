@@ -105,8 +105,8 @@
       void main() {
         vec2 uv = vUv; 
         float dist = 0.0;
+        float edgeAlpha = 1.0;
 
-        // Completely static, no ripples or mouse movement.
         if (uBandTop > 0.0 && uv.y > 1.0 - uBandTop) {
           float t = (uv.y - (1.0 - uBandTop)) / uBandTop;
           dist = sag(t) * uBandTop * uStrength;
@@ -117,7 +117,7 @@
           uv.y += dist;
         }
 
-        if (dist == 0.0) {
+        if (dist <= 0.0001) {
           gl_FragColor = vec4(0.0);
           return;
         }
@@ -153,7 +153,6 @@
           return;
         }
 
-        // Output pure color with 100% opacity of the canvas alpha
         gl_FragColor = vec4(finalColor, totalAlpha);
       }
     `;
@@ -177,6 +176,7 @@
       fragmentShader,
       uniforms,
       transparent: true,
+      premultipliedAlpha: true,
       depthTest: false,
       depthWrite: false
     });
@@ -243,6 +243,15 @@
           screenCtx.beginPath();
           screenCtx.rect(Math.round(parentRect.left), Math.round(parentRect.top), Math.round(parentRect.width), Math.round(parentRect.height));
           screenCtx.clip();
+
+          // 1.5. Replicate `overflow: hidden` of any scrolling carousel wrappers!
+          const wrapper = img.closest('.ceramic-strip-wrap, .ceramic-strip');
+          if (wrapper) {
+            const wrapperRect = wrapper.getBoundingClientRect();
+            screenCtx.beginPath();
+            screenCtx.rect(Math.round(wrapperRect.left), Math.round(wrapperRect.top), Math.round(wrapperRect.width), Math.round(wrapperRect.height));
+            screenCtx.clip();
+          }
 
           // 2. Replicate `object-fit: cover` math using ONLY destination coordinates!
           // Using sx, sy, sw, sh causes high-DPI srcset bugs where the browser crops the top-left!
