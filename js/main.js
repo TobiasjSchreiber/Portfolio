@@ -601,8 +601,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // For sticky section #uni, target the top of the section element so slide 1 starts cleanly
-      if (targetId === 'uni' || targetElement.classList.contains('uni-sticky-section')) {
+      // For sticky sections (#film, #uni), target the top of the section element so slide 1 starts cleanly
+      if (targetId === 'film' || targetId === 'uni' || targetElement.classList.contains('uni-sticky-section')) {
         const currentScroll = window.scrollY || document.documentElement.scrollTop || (typeof lenis !== 'undefined' && lenis ? lenis.scroll : 0);
         const secRect = targetElement.getBoundingClientRect();
         const targetScroll = Math.max(0, Math.round(secRect.top + currentScroll));
@@ -2082,12 +2082,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const doc = DOC_REGISTRY[docKey];
     if (!doc) return;
 
-    // Preload document pages for immediate zero-latency crossfading
-    if (doc.pages && doc.pages.length) {
-      doc.pages.forEach((pageUrl) => {
-        const img = new Image();
-        img.src = pageUrl;
-      });
+    // Preload document start page only
+    if (doc.pages && doc.pages.length > 0) {
+      const img = new Image();
+      img.src = doc.pages[0];
     }
 
     // Header info if still in DOM
@@ -3020,7 +3018,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --------------------------------------------------------------------------
-  // 4d. Kaserne Before / After Comparison Slider (Fotoreferenz vs. 3D-CGI)
+  // 4d. Kaserne Real / 3D Comparison Slider (Fotoreferenz vs. 3D-CGI)
   // --------------------------------------------------------------------------
   function initBeforeAfterSlider() {
     const slider = document.getElementById('kaserne-compare-slider');
@@ -3064,7 +3062,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Keyboard support
     slider.setAttribute('tabindex', '0');
     slider.setAttribute('role', 'slider');
-    slider.setAttribute('aria-label', 'Vorher-Nachher Bildvergleich Kaserne');
+    slider.setAttribute('aria-label', 'Real-3D Bildvergleich Kaserne');
     slider.setAttribute('aria-valuemin', '0');
     slider.setAttribute('aria-valuemax', '100');
     slider.setAttribute('aria-valuenow', '50');

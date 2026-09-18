@@ -710,52 +710,52 @@
       </div>
     </div>
 
-    <!-- Kaserne Interactive Before / After Comparison Slider -->
+    <!-- Kaserne Interactive Real / 3D Comparison Slider -->
     <div class="kaserne-compare-container reveal-on-scroll">
-      <div class="kaserne-compare-header">
-        <div class="kaserne-compare-title-wrap">
-          <span class="kaserne-compare-badge">FOTOREFERENZ VS. 3D-CGI REKONSTRUKTION</span>
-          <h4 class="kaserne-compare-title">Historische Kaserne — Vorher / Nachher</h4>
-          <p class="kaserne-compare-desc">
-            Interaktiver Direktvergleich: Die originale Archiv-Fotografie im Abgleich mit der fotorealistischen 3D-Rekonstruktion in Blender Cycles.
-          </p>
-        </div>
+      <div class="kaserne-compare-info cgi-content-col">
+        <span class="cgi-project-label">Fotoreferenz vs. 3D-Rekonstruktion</span>
+        <h3 class="cgi-heading kaserne-compare-title">Real / 3D</h3>
+        <p class="cgi-desc kaserne-compare-desc">
+          Interaktiver Direktvergleich: Die originale Archiv-Fotografie im Abgleich mit der fotorealistischen 3D-Rekonstruktion in Blender Cycles.
+        </p>
       </div>
 
-      <div class="kaserne-compare-slider" id="kaserne-compare-slider">
-        <!-- Frosted Blur Badges matching site aesthetic -->
-        <span class="compare-blur-tag compare-blur-before">Vorher</span>
-        <span class="compare-blur-tag compare-blur-after">Nachher</span>
+      <div class="kaserne-compare-slider-wrap">
+        <div class="kaserne-compare-slider" id="kaserne-compare-slider">
+          <!-- Frosted Blur Badges matching site aesthetic -->
+          <span class="compare-blur-tag compare-blur-real">Real</span>
+          <span class="compare-blur-tag compare-blur-3d">3D</span>
 
-        <!-- Before Layer: Original Photo -->
-        <div class="compare-layer compare-before">
-          <img decoding="async" class="compare-img" 
-               src="assets/images/lg/Kaserne_vorher.webp" srcset="assets/images/sm/Kaserne_vorher.webp 600w, assets/images/md/Kaserne_vorher.webp 1200w, assets/images/lg/Kaserne_vorher.webp 2400w" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
-               alt="Kaserne Originale Fotoreferenz (Vorher)" 
-               loading="lazy" 
-               srcset="assets/images/sm/Kaserne_vorher.webp 480w, assets/images/md/Kaserne_vorher.webp 960w, assets/images/lg/Kaserne_vorher.webp 1920w" 
-               sizes="(max-width: 1200px) 100vw, 1200px">
-        </div>
+          <!-- Base Layer (Right): 3D Reconstruction -->
+          <div class="compare-layer compare-base" id="kaserne-compare-base">
+            <img decoding="async" class="compare-img" 
+                 src="assets/images/lg/Kaserne_nacher.webp" 
+                 srcset="assets/images/sm/Kaserne_nacher.webp 480w, assets/images/md/Kaserne_nacher.webp 960w, assets/images/lg/Kaserne_nacher.webp 1920w" 
+                 sizes="(max-width: 768px) 100vw, 680px" 
+                 alt="Historische Kaserne 3D-Rekonstruktion in Blender Cycles (3D)" 
+                 loading="lazy">
+          </div>
 
-        <!-- After Layer: 3D Reconstruction -->
-        <div class="compare-layer compare-after" id="kaserne-compare-after">
-          <img decoding="async" class="compare-img" 
-               src="assets/images/lg/Kaserne_nacher.webp" srcset="assets/images/sm/Kaserne_nacher.webp 600w, assets/images/md/Kaserne_nacher.webp 1200w, assets/images/lg/Kaserne_nacher.webp 2400w" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
-               alt="Kaserne 3D-Rekonstruktion in Blender Cycles (Nachher)" 
-               loading="lazy" 
-               srcset="assets/images/sm/Kaserne_nacher.webp 480w, assets/images/md/Kaserne_nacher.webp 960w, assets/images/lg/Kaserne_nacher.webp 1920w" 
-               sizes="(max-width: 1200px) 100vw, 1200px">
-        </div>
+          <!-- Overlay Layer (Left): Real Photo -->
+          <div class="compare-layer compare-overlay compare-after" id="kaserne-compare-overlay">
+            <img decoding="async" class="compare-img" 
+                 src="assets/images/lg/Kaserne_vorher.webp" 
+                 srcset="assets/images/sm/Kaserne_vorher.webp 480w, assets/images/md/Kaserne_vorher.webp 960w, assets/images/lg/Kaserne_vorher.webp 1920w" 
+                 sizes="(max-width: 768px) 100vw, 680px" 
+                 alt="Historische Kaserne originale Fotoreferenz (Real)" 
+                 loading="lazy">
+          </div>
 
-        <!-- Drag Handle -->
-        <div class="compare-handle" id="kaserne-compare-handle">
-          <div class="compare-handle-btn" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
+          <!-- Drag Handle -->
+          <div class="compare-handle" id="kaserne-compare-handle">
+            <div class="compare-handle-btn" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </div>
           </div>
         </div>
       </div>
@@ -860,18 +860,6 @@
        SECTION 02: FILM & CINEMATOGRAPHY (Schattenwolf, Bergmann, Fiktion, Interview)
        ========================================================================= -->
   <section id="film" class="project-section">
-    <div class="section-header reveal-on-scroll">
-      <span class="section-num">02 / REGIE &amp; KAMERAARBEIT</span>
-      <div class="section-title-wrap">
-        <h2 class="section-title">Film &amp; <em>Cinematographie</em></h2>
-        <span class="section-category">Stop-Motion &bull; Dokumentarfilm &bull; Fiktion &bull; Reportage</span>
-      </div>
-      <p class="section-intro-text">
-        Vom handwerklich animierten 4K Stop-Motion-Kurzfilm über authentische Dokumentationen 
-        unter Tage bis hin zur inszenierten Dramaturgie und diskursiven Reportagen.
-      </p>
-    </div>
-
     <div class="film-parallax-stage" id="film-parallax-stage">
       <div class="film-sticky-container">
         <!-- Parallax Video Track (4 Fullscreen Panels stacked in sticky viewport) -->
@@ -1302,40 +1290,23 @@
     </div>
 
     <!-- ==================== KERAMIKRING-SERIE ==================== -->
-    <div id="photo-chapter-ceramic" class="photo-chapter">
-      <div class="photo-chapter-header">
+    <div id="photo-chapter-ceramic" class="photo-chapter ceramic-split-layout">
+      <div class="photo-chapter-header ceramic-text-col">
         <div class="photo-chapter-meta">
-          <span class="photo-chapter-tag">SERIE</span>
-          <span class="photo-chapter-specs">Dokumentarische Bilderserie (Uni-Projekt) &bull; Portrait &amp; Handwerk</span>
+          <span class="photo-chapter-specs">Portrait &bull; Handwerk</span>
         </div>
-        <div class="ceramic-header-flex">
-          <div>
-            <h3 class="photo-chapter-title">Keramikring — <em>Die Werkstatt</em></h3>
-            <p class="photo-chapter-desc">Eine Bilderserie aus dem Studium, die eine befreundete Keramikerin bei der Arbeit porträtiert. Im Zentrum steht die lebhafte, staubige Werkstatt, die durch unzählige Details ihre ganz eigenen Geschichten vom handwerklichen Schaffen erzählt.</p>
-          </div>
-          <!-- Navigation controls -->
-          <div class="cgi-parallax-nav">
-            <button id="ceramic-btn-prev" class="cgi-parallax-btn cgi-parallax-prev is-disabled" type="button" aria-label="Vorherige Keramikstudie" title="Zurück">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
-            </button>
-            <div class="cgi-parallax-counter">
-              <span id="ceramic-current-idx">01</span>
-              <span class="cgi-counter-sep">/</span>
-              <span id="ceramic-total-idx">13</span>
-            </div>
-            <button id="ceramic-btn-next" class="cgi-parallax-btn cgi-parallax-next" type="button" aria-label="Nächste Keramikstudie" title="Weiter">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </button>
-          </div>
-        </div>
+        <h3 class="photo-chapter-title">Keramikring — <em>Die Werkstatt</em></h3>
+        <p class="photo-chapter-desc">Eine Bilderserie aus dem Studium, die eine befreundete Keramikerin bei der Arbeit porträtiert. Im Zentrum steht die lebhafte, staubige Werkstatt, die durch unzählige Details ihre ganz eigenen Geschichten vom handwerklichen Schaffen erzählt.</p>
       </div>
 
       <!-- Horizontal Contact Sheet Strip -->
       <div class="ceramic-strip-wrap">
+        <button class="strip-arrow strip-arrow-prev is-disabled" id="ceramic-btn-prev" type="button" aria-label="Vorherige Keramikstudie" title="Zurück">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+
         <div class="ceramic-strip" id="ceramic-strip">
           <div class="ceramic-frame"
                data-cinema-trigger data-cinema-type="image" 
@@ -1454,6 +1425,12 @@
             <img decoding="async" class="ceramic-img" src="assets/images/md/keramik_Tobias_Schreiber_020725-00013.webp" alt="Keramikring Studie 13" loading="lazy" srcset="assets/images/sm/keramik_Tobias_Schreiber_020725-00013.webp 480w, assets/images/md/keramik_Tobias_Schreiber_020725-00013.webp 960w" sizes="(max-width: 600px) 75vw, 320px">
           </div>
         </div>
+
+        <button class="strip-arrow strip-arrow-next" id="ceramic-btn-next" type="button" aria-label="Nächste Keramikstudie" title="Weiter">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
 
         <!-- Subtle horizontal scrubber line (no dots) -->
         <div class="ceramic-progress-track">
@@ -1707,10 +1684,9 @@
         <span class="section-num">05 / HOCHSCHULARBEITEN & EDITORIAL</span>
         <div class="section-title-wrap">
           <h2 class="section-title">Akademische <em>Werke</em></h2>
-          <span class="section-category">Editorial &bull; Interaktionsdesign &bull; In-Page PDF Reader</span>
         </div>
         <p class="section-intro-text">
-          Konzeptionelle und typografische Arbeiten – direkt interaktiv im Browser durchblätterbar.
+          Konzeptionelle und typografische Arbeiten.
         </p>
       </div>
 
