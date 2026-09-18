@@ -233,32 +233,44 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    const minLoadDuration = 2400; // Minimum duration for the animation
+    const minLoadDuration = 2000; // Minimum visual duration before 100% can be reached
     const maxWaitTime = 12000;    // Absolute maximum wait time (12s) before forcing the site to open
     const startTime = performance.now();
     let animFrame = null;
     let hasUnfolded = false;
     let hasSetText = false;
+    let mediaReadyTime = null;
 
     function updateProgress(now) {
       const elapsed = now - startTime;
       const isMediaReady = (loadedMedia >= totalMedia) || (elapsed > maxWaitTime);
-      
-      let rawProgress = elapsed / minLoadDuration;
-      
-      // Stall the progress bar at 90% if media is still downloading
+      const minTimePassed = elapsed >= minLoadDuration;
+
+      // Calculate a smooth, linear progress value
+      let displayProgress;
+
       if (!isMediaReady) {
-        rawProgress = Math.min(0.90, rawProgress);
+        // Phase A: Media still loading — fill linearly based on loaded count, capped at 90%
+        const mediaFraction = totalMedia > 0 ? (loadedMedia / totalMedia) : 1;
+        const timeFraction = Math.min(1, elapsed / minLoadDuration);
+        // Use whichever is slower so the bar never jumps backwards
+        displayProgress = Math.min(0.90, Math.max(mediaFraction * 0.90, timeFraction * 0.90));
       } else {
-        rawProgress = Math.min(1.0, rawProgress);
+        // Phase B: All media ready — smoothly fill from current position to 100%
+        if (!mediaReadyTime) mediaReadyTime = now;
+
+        if (!minTimePassed) {
+          // Min time hasn't passed yet, fill linearly to ~95%
+          displayProgress = Math.min(0.95, elapsed / minLoadDuration);
+        } else {
+          // Smoothly animate last stretch to 100% over 300ms
+          const fillElapsed = now - mediaReadyTime;
+          const fillDuration = 300;
+          displayProgress = Math.min(1.0, 0.90 + 0.10 * Math.min(1, fillElapsed / fillDuration));
+        }
       }
 
-      // Smooth cubic easing for calm, steady progression
-      const easedProgress = rawProgress < 0.5 
-        ? 2 * rawProgress * rawProgress 
-        : -1 + (4 - 2 * rawProgress) * rawProgress;
-      
-      const currentPercent = Math.min(100, Math.floor(easedProgress * 100));
+      const currentPercent = Math.min(100, Math.floor(displayProgress * 100));
 
       if (progressFill) progressFill.style.width = `${currentPercent}%`;
       if (percentText) percentText.textContent = `${currentPercent}%`;
@@ -274,9 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
         statusText.textContent = 'Lade Medien...';
       }
 
-      if (rawProgress < 1) {
-        animFrame = requestAnimationFrame(updateProgress);
-      } else {
+      if (displayProgress >= 1.0 && isMediaReady && minTimePassed) {
         // 100% Reached & Media Loaded!
         if (progressFill) progressFill.style.width = '100%';
         if (percentText) percentText.textContent = '100%';
@@ -297,6 +307,8 @@ document.addEventListener('DOMContentLoaded', () => {
             finishLoader();
           }, 1400);
         }, 450);
+      } else {
+        animFrame = requestAnimationFrame(updateProgress);
       }
     }
 
