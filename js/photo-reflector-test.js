@@ -395,9 +395,29 @@
     }
   }
 
+  // Defer heavy Three.js initialization so it doesn't block LCP/DOM rendering
+  function lazyInit() {
+    const photoSection = document.getElementById('fotografie');
+    if (!photoSection) return;
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          observer.disconnect();
+          // Initialize WebGL in the next animation frame to prevent stutter
+          requestAnimationFrame(() => requestAnimationFrame(initPhotoReflector));
+        }
+      }, { rootMargin: '800px 0px 800px 0px' });
+      observer.observe(photoSection);
+    } else {
+      // Fallback
+      window.addEventListener('load', () => setTimeout(initPhotoReflector, 800));
+    }
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initPhotoReflector);
+    document.addEventListener('DOMContentLoaded', lazyInit);
   } else {
-    initPhotoReflector();
+    lazyInit();
   }
 })();
