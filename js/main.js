@@ -2677,10 +2677,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (absDist <= halfViewport + item.width / 2 + 100) {
           const normDist = distToCenter / halfViewport;
           const clampedNorm = Math.max(-1.3, Math.min(1.3, normDist));
-          const shiftPct = -clampedNorm * 16;
-
+          
           if (item.media) {
-            item.media.style.transform = `translate3d(${shiftPct.toFixed(2)}%, 0, 0)`;
+            // Re-enabled parallax on all devices, but highly optimized:
+            // 1. Reduced amplitude on mobile to minimize GPU rasterization distance
+            // 2. Strict DOM write caching (only update if value actually changed)
+            const isMobile = window.innerWidth <= 768;
+            const amplitude = isMobile ? 10 : 16; 
+            const shiftPct = -clampedNorm * amplitude;
+            const newTransform = `translate3d(${shiftPct.toFixed(2)}%, 0, 0)`;
+            
+            if (item.lastTransform !== newTransform) {
+              item.media.style.transform = newTransform;
+              item.lastTransform = newTransform;
+            }
           }
         }
       }
