@@ -223,59 +223,65 @@ document.addEventListener('DOMContentLoaded', () => {
     const cgiSection = document.getElementById('cgi');
     const criticalImages = cgiSection ? Array.from(cgiSection.querySelectorAll('img[src]')) : [];
     const criticalVideos = cgiSection ? Array.from(cgiSection.querySelectorAll('video')) : [];
-    // Always include the hero video
     if (heroVideo) criticalVideos.push(heroVideo);
 
     const totalMedia = criticalImages.length + criticalVideos.length;
     let loadedMedia = 0;
+    const pendingNames = new Set();
 
-    function checkMediaDone() {
-      loadedMedia++;
+    function checkMediaDone(name) {
+      if (pendingNames.has(name)) {
+        pendingNames.delete(name);
+        loadedMedia++;
+      }
     }
 
-    criticalImages.forEach(img => {
+    criticalImages.forEach((img, i) => {
+      // Create a readable name from the URL
+      const url = img.currentSrc || img.src || '';
+      const name = url ? url.split('/').pop() : `Bild ${i}`;
+      pendingNames.add(name);
+
       if (img.complete) {
-        checkMediaDone();
+        checkMediaDone(name);
       } else {
-        img.addEventListener('load', checkMediaDone, { once: true });
-        img.addEventListener('error', checkMediaDone, { once: true });
+        img.addEventListener('load', () => checkMediaDone(name), { once: true });
+        img.addEventListener('error', () => checkMediaDone(name), { once: true });
       }
     });
 
-    criticalVideos.forEach(vid => {
+    criticalVideos.forEach((vid, i) => {
+      const src = vid.querySelector('source') ? vid.querySelector('source').src : (vid.src || '');
+      const name = src ? src.split('/').pop() : `Video ${i}`;
+      pendingNames.add(name);
+
       if (vid === heroVideo) {
-        // For the large background video, wait until it has buffered at least 4 seconds
-        // so it plays smoothly when the aperture opens, but don't wait for the whole file.
+        // Just wait until it can play at least a little bit (readyState >= 3)
         let isHeroDone = false;
-        
         const markHeroDone = () => {
           if (isHeroDone) return;
           isHeroDone = true;
-          checkMediaDone();
+          checkMediaDone(name);
         };
-
         vid.addEventListener('error', markHeroDone, { once: true });
 
         const checkHeroBuffer = () => {
           if (isHeroDone) return;
-          
-          // readyState >= 4 (HAVE_ENOUGH_DATA) OR at least 4 seconds buffered
-          if (vid.readyState >= 4 || (vid.buffered.length > 0 && vid.buffered.end(vid.buffered.length - 1) >= 4)) {
+          if (vid.readyState >= 3) {
             markHeroDone();
           } else {
-            setTimeout(checkHeroBuffer, 150);
+            setTimeout(checkHeroBuffer, 100);
           }
         };
-        
         checkHeroBuffer();
         
       } else {
-        // For standard preview videos, first frame (readyState >= 2) is enough
+        // Standard CGI preview videos
         if (vid.readyState >= 2) {
-          checkMediaDone();
+          checkMediaDone(name);
         } else {
-          vid.addEventListener('loadeddata', checkMediaDone, { once: true });
-          vid.addEventListener('error', checkMediaDone, { once: true });
+          vid.addEventListener('loadeddata', () => checkMediaDone(name), { once: true });
+          vid.addEventListener('error', () => checkMediaDone(name), { once: true });
         }
       }
     });
@@ -285,7 +291,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const startTime = performance.now();
     let animFrame = null;
     let hasUnfolded = false;
-    let hasSetText = false;
     let mediaReadyTime = null;
 
     function updateProgress(now) {
@@ -296,11 +301,8 @@ document.addEventListener('DOMContentLoaded', () => {
       let displayProgress;
 
       if (!isMediaReady) {
-        // Asymptotic curve: always moving, never stops, approaches 99% but never reaches it
-        // At 2s → ~39%, 4s → ~63%, 8s → ~86%, 12s → ~95%
         displayProgress = (1 - Math.exp(-elapsed / 3000)) * 0.99;
       } else {
-        // Media ready — smoothly fill from current to 100%
         if (!mediaReadyTime) mediaReadyTime = now;
         const currentAsymptotic = (1 - Math.exp(-elapsed / 3000)) * 0.99;
         const fillElapsed = now - mediaReadyTime;
@@ -320,9 +322,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (loader) loader.classList.add('step-unfold');
       }
 
-      if (currentPercent >= 28 && !hasSetText && statusText) {
-        hasSetText = true;
-        statusText.textContent = 'Lade Medien...';
+      // Live Debug Text to show exactly what is holding up the loader
+      if (currentPercent >= 28 && statusText) {
+        if (!isMediaReady && pendingNames.size > 0) {
+          const waitingFor = Array.from(pendingNames)[0];
+          statusText.textContent = `Lade: ${waitingFor}...`;
+        } else if (isMediaReady) {
+          statusText.textContent = 'Bereit';
+        }
       }
 
       if (displayProgress >= 1.0 && isMediaReady && minTimePassed) {
