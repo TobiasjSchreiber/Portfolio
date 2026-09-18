@@ -82,16 +82,14 @@ body.is-loading footer {
 }
 
 /* Fast, graceful hero UI entrance as fullscreen is achieved */
-.intro-header,
-.hero-content,
-.hero-bottom-bar {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+body.is-loading .hero-content,
+body.is-loading .hero-bottom-bar {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
   transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-body.is-loading.hero-ui-reveal .intro-header,
 body.is-loading.hero-ui-reveal .hero-content,
 body.is-loading.hero-ui-reveal .hero-bottom-bar {
   opacity: 1 !important;
