@@ -176,12 +176,12 @@ body.is-loading.step-expand .hero-video-container {
 .cinematic-loader.step-unfold .loader-word-top {
   opacity: 1;
   transform: translateY(0) rotateX(0deg);
-  filter: blur(0px);
+  filter: none;
 }
 .cinematic-loader.step-unfold .loader-word-bottom {
   opacity: 1;
   transform: translateY(0) rotateX(0deg);
-  filter: blur(0px);
+  filter: none;
 }
 
 /* Step 2: Words push apart as the hero video portal opens */
@@ -803,11 +803,13 @@ body[data-ambient-theme="kontakt"] {
   white-space: nowrap;
 }
 
-.nav-contact-btn:hover {
+.nav-contact-btn:hover,
+.nav-contact-btn.is-active {
   background: rgba(255, 255, 255, 0.16);
   transform: scale(1.05);
   border: none !important;
   outline: none !important;
+  color: #ffffff;
 }
 
 .nav-contact-btn:focus,
@@ -1525,6 +1527,7 @@ body[data-ambient-theme="kontakt"] {
 
 /* Horizontal Gallery Navigation Arrows (Matches Heroheader Design: Zero Border, Zero Shadow) */
 .strip-arrow {
+  
   position: absolute;
   top: calc(50% + 0.8rem);
   transform: translateY(-50%);
@@ -1532,9 +1535,9 @@ body[data-ambient-theme="kontakt"] {
   width: 44px;
   height: 44px;
   border-radius: 999px;
-  background: rgba(20, 20, 20, 0.45);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background: rgba(35, 35, 35, 0.5);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   border: none !important;
   outline: none !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
@@ -1545,6 +1548,7 @@ body[data-ambient-theme="kontakt"] {
   cursor: pointer;
   transition: background-color 0.25s ease, opacity 0.25s ease, color 0.25s ease;
   opacity: 1;
+  will-change: transform;
 }
 
 .strip-arrow:hover {
@@ -1592,6 +1596,7 @@ body[data-ambient-theme="kontakt"] {
 
 @media (max-width: 768px) {
   .strip-arrow {
+  
     width: 38px;
     height: 38px;
   }
@@ -1669,11 +1674,12 @@ body[data-ambient-theme="kontakt"] {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: filter 0.5s ease;
 }
 
 .cgi-main-media:hover video {
-  transform: scale(1.02);
+  filter: brightness(1.15);
+  transform: none;
 }
 
 .cgi-content-col {
@@ -2169,7 +2175,7 @@ body[data-ambient-theme="kontakt"] {
   filter: brightness(0.92) contrast(1.04);
   transition: opacity 0.5s var(--ease-smooth), filter 0.35s ease !important;
   will-change: transform;
-  transform: translate3d(0, 0, 0);
+  transform: none;
 }
 
 .cgi-parallax-card:hover .cgi-parallax-media {
@@ -3369,7 +3375,7 @@ body[data-ambient-theme="kontakt"] {
     transform: translate3d(-50%, 0, 0);
   }
   to {
-    transform: translate3d(0, 0, 0);
+    transform: none;
   }
 }
 
@@ -4094,9 +4100,11 @@ body[data-ambient-theme="kontakt"] {
 /* Longboard View (MagicFlow) - Smooth mouse scrolling & drag to scroll with crossfade */
 .doc-longboard-display {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(100%, 880px);
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
@@ -4143,7 +4151,7 @@ body[data-ambient-theme="kontakt"] {
 }
 
 .doc-longboard-img {
-  width: min(100%, 880px);
+  width: 100%;
   height: auto;
   display: block;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
@@ -4927,8 +4935,9 @@ body[data-ambient-theme="kontakt"] {
 
 .reveal-on-scroll.is-visible {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
-  filter: blur(0px);
+  transform: none;
+  filter: none;
+  will-change: auto;
 }
 
 .delay-1 { transition-delay: 0.08s; }
@@ -4951,30 +4960,38 @@ body[data-ambient-theme="kontakt"] {
 
 .section-header.reveal-on-scroll.is-visible .section-num {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
-  filter: blur(0);
+  transform: none;
+  filter: none;
   transition-delay: 0.05s;
+
+  will-change: auto;
 }
 
 .section-header.reveal-on-scroll.is-visible .section-title {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
-  filter: blur(0);
+  transform: none;
+  filter: none;
   transition-delay: 0.14s;
+
+  will-change: auto;
 }
 
 .section-header.reveal-on-scroll.is-visible .section-category {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
-  filter: blur(0);
+  transform: none;
+  filter: none;
   transition-delay: 0.23s;
+
+  will-change: auto;
 }
 
 .section-header.reveal-on-scroll.is-visible .section-intro-text {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
-  filter: blur(0);
+  transform: none;
+  filter: none;
   transition-delay: 0.32s;
+
+  will-change: auto;
 }
 
 /* Staggered Blueprint Metrics */
@@ -4988,8 +5005,10 @@ body[data-ambient-theme="kontakt"] {
 
 .bmw-blueprint-metrics.reveal-on-scroll.is-visible > * {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
-  filter: blur(0);
+  transform: none;
+  filter: none;
+
+  will-change: auto;
 }
 
 .bmw-blueprint-metrics.reveal-on-scroll.is-visible > *:nth-child(1) { transition-delay: 0.08s; }
@@ -5185,4 +5204,10 @@ body[data-ambient-theme="kontakt"] {
 .photo-liquid-reflector { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; pointer-events: none; z-index: 3; opacity: 0; transition: opacity 0.5s ease; } .photo-liquid-reflector.is-active { opacity: 1; }
 .photo-liquid-reflector canvas { width: 100%; height: 100%; display: block; }
 body:has(#cinema-modal.open) .photo-liquid-reflector { opacity: 0 !important; visibility: hidden; transition: none; }
+
+
+
+
+
+
 

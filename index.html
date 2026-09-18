@@ -32,7 +32,7 @@
   </script>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css?v=37">
+  <link rel="stylesheet" href="css/style.css?v=44">
 </head>
 <body class="is-loading" data-ambient-theme="hero">
 
@@ -75,8 +75,7 @@
     <nav class="hero__nav" data-bouncy-tabs-nav="" aria-label="Sections">
       <span class="hero__nav-ghost" data-bouncy-tabs-ghost="" aria-hidden="true"></span>
       <span class="hero__nav-pill" data-bouncy-tabs-indicator="" aria-hidden="true"></span>
-      <a href="#hero" data-bouncy-tabs-button="" data-active="" aria-current="true">Intro</a>
-      <a href="#cgi" data-bouncy-tabs-button="">3D & CGI</a>
+      <a href="#cgi" data-bouncy-tabs-button="" data-active="" aria-current="true">3D & CGI</a>
       <a href="#film" data-bouncy-tabs-button="">Film</a>
       <a href="#fotografie" data-bouncy-tabs-button="">Fotografie</a>
       <a href="#kunst" data-bouncy-tabs-button="">Kunst</a>
@@ -507,8 +506,8 @@
         </div>
 
         <!-- Vorstudien & Skizzen Strip -->
-        <div class="stills-strip-wrap reveal-on-scroll delay-2">
-          <div class="stills-strip-label">
+        <div class="stills-strip-wrap">
+          <div class="stills-strip-label reveal-on-scroll delay-2">
             <span>Bauplan-Vorstudien &amp; 3D-Konstruktionsphasen</span>
             <span>Klick zum Vergrößern</span>
           </div>
@@ -519,7 +518,7 @@
             </svg>
           </button>
 
-          <div class="stills-strip">
+          <div class="stills-strip reveal-on-scroll delay-3">
             <div class="still-card" 
                  data-cinema-trigger data-cinema-type="image" 
                  data-cinema-src="assets/images/full/BMW_700_Blueprint.webp"
@@ -716,8 +715,8 @@
     </div>
 
     <!-- Kaserne Reconstruction Process Strip -->
-    <div class="stills-strip-wrap reveal-on-scroll">
-      <div class="stills-strip-label">
+    <div class="stills-strip-wrap">
+      <div class="stills-strip-label reveal-on-scroll delay-2">
         <span>Rekonstruktionsphasen &amp; Detailstudien (7 Phasen)</span>
         <span>Klick zum Vergrößern</span>
       </div>
@@ -728,7 +727,7 @@
         </svg>
       </button>
 
-      <div class="stills-strip">
+      <div class="stills-strip reveal-on-scroll delay-3">
         <div class="still-card" 
              data-cinema-trigger data-cinema-type="image" 
              data-cinema-src="assets/images/full/kasserne_in_progres_in_blender.webp" 
@@ -832,7 +831,7 @@
         <div class="film-parallax-track">
           <!-- Panel 0: Schattenwolf -->
           <section class="film-video-panel is-active" data-panel-index="0" aria-label="Schattenwolf Video-Bühne">
-            <div class="film-video-wrap">
+            <div class="film-video-wrap seamless-video-wrap">
               <video class="proxy-video" preload="auto" muted loop playsinline poster="assets/images/md/Schattenwolf_poster.webp">
                 <source src="assets/videos/Schattenwolf_teaser.mp4" type="video/mp4">
               </video>
@@ -844,7 +843,7 @@
 
           <!-- Panel 1: 1 Tag als Bergmann -->
           <section class="film-video-panel" data-panel-index="1" aria-label="1 Tag als Bergmann Video-Bühne">
-            <div class="film-video-wrap">
+            <div class="film-video-wrap seamless-video-wrap">
               <video class="proxy-video" preload="auto" muted loop playsinline poster="assets/images/md/Bergmann_poster.webp">
                 <source src="assets/videos/Bergmann_teaser.mp4" type="video/mp4">
               </video>
@@ -856,7 +855,7 @@
 
           <!-- Panel 2: Inszenierter Kurzfilm -->
           <section class="film-video-panel" data-panel-index="2" aria-label="Inszenierter Kurzfilm Video-Bühne">
-            <div class="film-video-wrap">
+            <div class="film-video-wrap seamless-video-wrap">
               <video class="proxy-video" preload="auto" muted loop playsinline poster="assets/images/md/Kurzfilm_poster.webp">
                 <source src="assets/videos/Kurzfilm_teaser.mp4" type="video/mp4">
               </video>
@@ -868,7 +867,7 @@
 
           <!-- Panel 3: Offline statt hochgeladen -->
           <section class="film-video-panel" data-panel-index="3" aria-label="Offline statt hochgeladen Video-Bühne">
-            <div class="film-video-wrap">
+            <div class="film-video-wrap seamless-video-wrap">
               <video class="proxy-video" preload="auto" muted loop playsinline poster="assets/images/md/Offline_poster.webp">
                 <source src="assets/videos/Offline_teaser.mp4" type="video/mp4">
               </video>
@@ -1670,11 +1669,11 @@
 
       <div class="uni-projects-container uni-split-layout">
       <!-- LEFT COLUMN: Apple-Inspired Controls / Project Selector -->
-      <div class="controls uni-controls-panel reveal-on-scroll" style="pointer-events: auto;">
+      <div class="controls uni-controls-panel" style="pointer-events: auto;">
         <div class="intro-element" style="display: none;"></div>
         <ul class="control-group" id="uni-control-group">
           <!-- Item 1: Selbst Layout -->
-          <li class="control-item control-item1 active" data-index="0" data-pdf-key="layout">
+          <li class="control-item control-item1 active reveal-on-scroll delay-1" data-index="0" data-pdf-key="layout">
             <div class="control-item-bg-container">
               <span class="control-item-bg"></span>
             </div>
@@ -1710,7 +1709,7 @@
           </li>
 
           <!-- Item 2: In Nomine Teufel -->
-          <li class="control-item control-item2" data-index="1" data-pdf-key="festival">
+          <li class="control-item control-item2 reveal-on-scroll delay-2" data-index="1" data-pdf-key="festival">
             <div class="control-item-bg-container">
               <span class="control-item-bg"></span>
             </div>
@@ -1746,7 +1745,7 @@
           </li>
 
           <!-- Item 3: Landschaftsstudie -->
-          <li class="control-item control-item3" data-index="2" data-pdf-key="landschaft">
+          <li class="control-item control-item3 reveal-on-scroll delay-3" data-index="2" data-pdf-key="landschaft">
             <div class="control-item-bg-container">
               <span class="control-item-bg"></span>
             </div>
@@ -1782,7 +1781,7 @@
           </li>
 
           <!-- Item 4: MagicFlow -->
-          <li class="control-item control-item4" data-index="3" data-pdf-key="magicflow">
+          <li class="control-item control-item4 reveal-on-scroll delay-4" data-index="3" data-pdf-key="magicflow">
             <div class="control-item-bg-container">
               <span class="control-item-bg"></span>
             </div>
@@ -2161,9 +2160,14 @@
   <script src="js/three.min.js"></script>
   <script src="js/lenis.min.js"></script>
   <script src="js/photo-reflector-test.js?v=27"></script>
-  <script src="js/main.js?v=639253565776927111"></script>
+  <script src="js/main.js?v=639253565776927116"></script>
 </body>
 </html>
+
+
+
+
+
 
 
 

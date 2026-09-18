@@ -653,21 +653,43 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!match && (sectionId === 'bmw' || sectionId === 'work' || sectionId === 'cgi')) {
         match = buttons.find((b) => b.getAttribute('href') === '#cgi');
       }
-      if (!match && (sectionId === 'about' || sectionId === 'approach' || sectionId === 'kontakt')) {
+      if (!match && (sectionId === 'thd-app' || sectionId === 'uni')) {
+        match = buttons.find((b) => b.getAttribute('href') === '#uni');
+      }
+      if (!match && (sectionId === 'about' || sectionId === 'approach')) {
         match = buttons.find((b) => b.getAttribute('href') === '#about' || b.getAttribute('href') === '#approach');
       }
-      if (match && !match.hasAttribute('data-active')) {
-        setActiveButton(match, true);
+      
+      const contactBtn = document.querySelector('.nav-contact-btn');
+      if (sectionId === 'kontakt') {
+        if (contactBtn) contactBtn.classList.add('is-active');
+      } else {
+        if (contactBtn) contactBtn.classList.remove('is-active');
+      }
+
+      if (match) {
+        if (!match.hasAttribute('data-active')) {
+          setActiveButton(match, true);
+        }
+      } else {
+        // No match found in bouncy tabs, clear active button
+        const activeBtn = nav.querySelector('[data-bouncy-tabs-button][data-active]');
+        if (activeBtn) activeBtn.removeAttribute('data-active');
+        indicator.style.opacity = '0';
       }
     };
-
     updateBouncyTabsIndicator = function(animate = false) {
-      const activeBtn = nav.querySelector('[data-bouncy-tabs-button][data-active]') || buttons[0];
-      if (activeBtn) setIndicator(activeBtn, animate);
+      const activeBtn = nav.querySelector('[data-bouncy-tabs-button][data-active]');
+      if (activeBtn) {
+        indicator.style.opacity = '1';
+        setIndicator(activeBtn, animate);
+      } else {
+        indicator.style.opacity = '0';
+      }
     };
 
     // Position initial indicator
-    const initialActive = nav.querySelector('[data-bouncy-tabs-button][data-active]') || buttons[0];
+    const initialActive = nav.querySelector('[data-bouncy-tabs-button][data-active]');
     if (initialActive) {
       setActiveButton(initialActive, false);
     }
@@ -1303,7 +1325,8 @@ document.addEventListener('DOMContentLoaded', () => {
           // Force play
           fullVid.play().then(() => {
             // Once it's actively playing, fade out the proxy!
-            fullVid.style.transition = 'opacity 0.8s ease';
+            // Preserve the smooth hover filter while animating opacity
+            fullVid.style.transition = 'opacity 0.8s ease, filter 0.5s ease';
             fullVid.style.opacity = '1';
             setTimeout(() => {
               proxyVid.pause();
@@ -2343,15 +2366,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const parentContainer = btn.closest('.cinematic-hero-player, .film-preview-box, .cgi-card-half, .cgi-card-full, .cgi-card-wide, .cgi-main-media, .motion-video-frame');
       if (!parentContainer) return;
 
-      const targetVideo = parentContainer.querySelector('video');
-      if (!targetVideo) return;
+      const targetVideos = parentContainer.querySelectorAll('video');
+      if (targetVideos.length === 0) return;
 
-      const isCurrentlyMuted = targetVideo.muted;
+      const isCurrentlyMuted = targetVideos[targetVideos.length - 1].muted;
 
       if (isCurrentlyMuted) {
         // Mute all other videos on the page
         document.querySelectorAll('video').forEach((v) => {
-          if (v !== targetVideo && v.id !== 'modal-video') {
+          if (!parentContainer.contains(v) && v.id !== 'modal-video') {
             v.muted = true;
           }
         });
@@ -2367,11 +2390,13 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
 
-        // Unmute target video
-        targetVideo.muted = false;
-        targetVideo.volume = 1.0;
-        const p = targetVideo.play();
-        if (p !== undefined) p.catch(() => {});
+        // Unmute target videos
+        targetVideos.forEach(targetVideo => {
+          targetVideo.muted = false;
+          targetVideo.volume = 1.0;
+          const p = targetVideo.play();
+          if (p !== undefined) p.catch(() => {});
+        });
 
         btn.classList.remove('is-muted');
         btn.setAttribute('aria-label', 'Stummschalten');
@@ -2379,8 +2404,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const lbl = btn.querySelector('.audio-label');
         if (lbl) lbl.textContent = 'Ton an';
       } else {
-        // Mute target video
-        targetVideo.muted = true;
+        // Mute target videos
+        targetVideos.forEach(targetVideo => {
+          targetVideo.muted = true;
+        });
 
         btn.classList.add('is-muted');
         btn.setAttribute('aria-label', 'Ton einschalten');
