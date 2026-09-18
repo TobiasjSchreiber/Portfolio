@@ -2197,6 +2197,8 @@ body[data-ambient-theme="kontakt"] {
   pointer-events: auto;
   cursor: pointer;
   transition: transform 0.35s ease;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .cgi-card-num {
