@@ -1275,6 +1275,58 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --------------------------------------------------------------------------
+  // Seamless Video Upgrades (Teaser -> Full Video)
+  // --------------------------------------------------------------------------
+  function initSeamlessVideoUpgrades() {
+    const panels = document.querySelectorAll('.film-video-panel');
+    panels.forEach(panel => {
+      const proxyVid = panel.querySelector('.proxy-video');
+      const fullVid = panel.querySelector('.full-video');
+      if (!proxyVid || !fullVid) return;
+
+      // Ensure both play when scrolled into view (handled by the parallax script below)
+      // but we need to monitor when the full video becomes ready!
+      const checkFullReady = () => {
+        if (fullVid.readyState >= 3) { // canplay
+          // Sync times!
+          // Since proxy is 5 seconds long, it will loop. 
+          // We set the full video to start at the exact same time as the proxy, 
+          // plus the base start time (4s or 8s for some videos)
+          const baseTime = parseFloat(fullVid.getAttribute('data-start-time') || '0');
+          const proxyCurrent = proxyVid.currentTime;
+          
+          // Only sync if the full video hasn't been played significantly yet
+          if (fullVid.currentTime < baseTime + 5.0) {
+            fullVid.currentTime = baseTime + proxyCurrent;
+          }
+
+          // Force play
+          fullVid.play().then(() => {
+            // Once it's actively playing, fade out the proxy!
+            fullVid.style.transition = 'opacity 0.8s ease';
+            fullVid.style.opacity = '1';
+            setTimeout(() => {
+              proxyVid.pause();
+              proxyVid.style.display = 'none'; // Save resources
+            }, 800);
+          }).catch(() => {});
+        } else {
+          requestAnimationFrame(checkFullReady);
+        }
+      };
+
+      // We only start checking once the full video starts downloading
+      fullVid.addEventListener('play', () => {
+        if (fullVid.style.opacity === '0' || fullVid.style.opacity === '') {
+          checkFullReady();
+        }
+      });
+    });
+  }
+
+  initSeamlessVideoUpgrades();
+
+  // --------------------------------------------------------------------------
   // 4b. Fullscreen Vertical Film Parallax Showcase Engine
   // --------------------------------------------------------------------------
   function initFilmVerticalParallax() {
@@ -1472,96 +1524,96 @@ document.addEventListener('DOMContentLoaded', () => {
       // Panel 0: Schattenwolf
       const p0 = panels[0];
       if (p0) {
-        const vid0 = p0.querySelector('video');
+        const vids0 = p0.querySelectorAll('video');
         const wrap0 = p0.querySelector('.film-video-wrap');
         if (progress < 1.0) {
           p0.style.transform = `translate3d(0, ${(-s01 * 35).toFixed(2)}%, 0)`;
           p0.style.opacity = `${(1 - s01 * 0.45).toFixed(2)}`;
           if (wrap0) wrap0.style.transform = `translate3d(0, ${(s01 * 15).toFixed(2)}%, 0)`;
-          if (vid0 && vid0.paused) vid0.play().catch(() => {});
+          vids0.forEach(v => { if (v.paused) v.play().catch(()=>{}); });
         } else {
           p0.style.transform = 'translate3d(0, -100%, 0)';
-          if (vid0 && !vid0.paused) vid0.pause();
+          vids0.forEach(v => { if (!v.paused) v.pause(); });
         }
       }
 
       // Panel 1: 1 Tag als Bergmann
       const p1 = panels[1];
       if (p1) {
-        const vid1 = p1.querySelector('video');
+        const vids1 = p1.querySelectorAll('video');
         const wrap1 = p1.querySelector('.film-video-wrap');
         if (progress < 0.15) {
           p1.style.transform = 'translate3d(0, 100%, 0)';
-          if (vid1 && !vid1.paused) vid1.pause();
+          vids1.forEach(v => { if (!v.paused) v.pause(); });
         } else if (progress <= 1.0) {
           // Pre-roll (from 0.15) & Arriving over Panel 0
           p1.style.transform = `translate3d(0, ${((1 - s01) * 100).toFixed(2)}%, 0)`;
           p1.style.opacity = '1';
           if (wrap1) wrap1.style.transform = `translate3d(0, ${((1 - s01) * -15).toFixed(2)}%, 0)`;
-          if (vid1 && vid1.paused) vid1.play().catch(() => {});
+          vids1.forEach(v => { if (v.paused) v.play().catch(()=>{}); });
         } else if (progress < 2.0) {
           // Resting then departing under Panel 2
           p1.style.transform = `translate3d(0, ${(-s12 * 35).toFixed(2)}%, 0)`;
           p1.style.opacity = `${(1 - s12 * 0.45).toFixed(2)}`;
           if (wrap1) wrap1.style.transform = `translate3d(0, ${(s12 * 15).toFixed(2)}%, 0)`;
-          if (vid1 && vid1.paused) vid1.play().catch(() => {});
+          vids1.forEach(v => { if (v.paused) v.play().catch(()=>{}); });
         } else {
           p1.style.transform = 'translate3d(0, -100%, 0)';
-          if (vid1 && !vid1.paused) vid1.pause();
+          vids1.forEach(v => { if (!v.paused) v.pause(); });
         }
       }
 
       // Panel 2: Inszenierter Kurzfilm (Spielfilm startet ab Sekunde 8)
       const p2 = panels[2];
       if (p2) {
-        const vid2 = p2.querySelector('video');
+        const vids2 = p2.querySelectorAll('video');
         const wrap2 = p2.querySelector('.film-video-wrap');
         if (progress < 1.15) {
           p2.style.transform = 'translate3d(0, 100%, 0)';
-          if (vid2 && !vid2.paused) vid2.pause();
-          if (progress < 1.0 && vid2 && vid2.currentTime < 8) {
-            vid2.currentTime = 8;
+          vids2.forEach(v => { if (!v.paused) v.pause(); });
+          if (progress < 1.0 && vids2[1] && vids2[1].currentTime < 8) {
+            vids2[1].currentTime = 8;
           }
         } else if (progress <= 2.0) {
           // Pre-roll (from 1.15) & Arriving over Panel 1
           p2.style.transform = `translate3d(0, ${((1 - s12) * 100).toFixed(2)}%, 0)`;
           p2.style.opacity = '1';
           if (wrap2) wrap2.style.transform = `translate3d(0, ${((1 - s12) * -15).toFixed(2)}%, 0)`;
-          if (vid2) {
-            if (vid2.currentTime < 8) vid2.currentTime = 8;
-            if (vid2.paused) vid2.play().catch(() => {});
+          if (vids2[1]) {
+            if (vids2[1].currentTime < 8) vids2[1].currentTime = 8;
+            vids2.forEach(v => { if (v.paused) v.play().catch(()=>{}); });
           }
         } else if (progress < 3.0) {
           // Resting then departing under Panel 3
           p2.style.transform = `translate3d(0, ${(-s23 * 35).toFixed(2)}%, 0)`;
           p2.style.opacity = `${(1 - s23 * 0.45).toFixed(2)}`;
           if (wrap2) wrap2.style.transform = `translate3d(0, ${(s23 * 15).toFixed(2)}%, 0)`;
-          if (vid2 && vid2.paused) vid2.play().catch(() => {});
+          vids2.forEach(v => { if (v.paused) v.play().catch(()=>{}); });
         } else {
           p2.style.transform = 'translate3d(0, -100%, 0)';
-          if (vid2 && !vid2.paused) vid2.pause();
+          vids2.forEach(v => { if (!v.paused) v.pause(); });
         }
       }
 
       // Panel 3: Offline statt hochgeladen (Interview startet ab Sekunde 4)
       const p3 = panels[3];
       if (p3) {
-        const vid3 = p3.querySelector('video');
+        const vids3 = p3.querySelectorAll('video');
         const wrap3 = p3.querySelector('.film-video-wrap');
         if (progress < 2.15) {
           p3.style.transform = 'translate3d(0, 100%, 0)';
-          if (vid3 && !vid3.paused) vid3.pause();
-          if (progress < 2.0 && vid3 && vid3.currentTime < 4) {
-            vid3.currentTime = 4;
+          vids3.forEach(v => { if (!v.paused) v.pause(); });
+          if (progress < 2.0 && vids3[1] && vids3[1].currentTime < 4) {
+            vids3[1].currentTime = 4;
           }
         } else {
           // Pre-roll (from 2.15) & Arriving over Panel 2 and resting
           p3.style.transform = `translate3d(0, ${((1 - s23) * 100).toFixed(2)}%, 0)`;
           p3.style.opacity = '1';
           if (wrap3) wrap3.style.transform = `translate3d(0, ${((1 - s23) * -15).toFixed(2)}%, 0)`;
-          if (vid3) {
-            if (vid3.currentTime < 4) vid3.currentTime = 4;
-            if (vid3.paused) vid3.play().catch(() => {});
+          if (vids3[1]) {
+            if (vids3[1].currentTime < 4) vids3[1].currentTime = 4;
+            vids3.forEach(v => { if (v.paused) v.play().catch(()=>{}); });
           }
         }
       }
@@ -3199,5 +3251,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+
+
 
 
