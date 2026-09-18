@@ -192,11 +192,21 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof initMediaLoadingShine === 'function') {
           initMediaLoadingShine();
         }
+
+        // Eagerly preload ALL remaining media now that the site is open
+        // (removes lazy loading so everything loads immediately in the background)
+        document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+          img.removeAttribute('loading');
+        });
+        document.querySelectorAll('video[preload="metadata"], video[preload="none"]').forEach(vid => {
+          vid.preload = 'auto';
+          vid.load();
+        });
       }, 250);
     }, 850);
   }
 
-  // Preloading & Calm Cinematic Animation Driver (Waits for all media)
+  // Preloading & Calm Cinematic Animation Driver (Hero + CGI only)
   function startCinematicSequence() {
     // Ensure single hero background video is queued at frame 0 and paused while loading
     if (heroVideo) {
@@ -204,17 +214,21 @@ document.addEventListener('DOMContentLoaded', () => {
       heroVideo.currentTime = 0;
     }
 
-    // 1. Gather all media on the page to wait for them
-    const images = Array.from(document.querySelectorAll('img[src]'));
-    const videos = Array.from(document.querySelectorAll('video'));
-    const totalMedia = images.length + videos.length;
+    // 1. Only gather Hero video + CGI section media for the preloader
+    const cgiSection = document.getElementById('cgi');
+    const criticalImages = cgiSection ? Array.from(cgiSection.querySelectorAll('img[src]')) : [];
+    const criticalVideos = cgiSection ? Array.from(cgiSection.querySelectorAll('video')) : [];
+    // Always include the hero video
+    if (heroVideo) criticalVideos.push(heroVideo);
+
+    const totalMedia = criticalImages.length + criticalVideos.length;
     let loadedMedia = 0;
 
     function checkMediaDone() {
       loadedMedia++;
     }
 
-    images.forEach(img => {
+    criticalImages.forEach(img => {
       if (img.complete) {
         checkMediaDone();
       } else {
@@ -223,8 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    videos.forEach(vid => {
-      // readyState >= 2 (HAVE_CURRENT_DATA) means the video is loaded enough to show a frame/poster
+    criticalVideos.forEach(vid => {
       if (vid.readyState >= 2) {
         checkMediaDone();
       } else {
