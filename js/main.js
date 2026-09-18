@@ -371,7 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!hasUnfolded) {
           // Leave default text during initial phase
         } else if (!isMediaReady) {
-          statusText.textContent = 'Lade Medien...';
+          statusText.textContent = 'Laden.';
         } else {
           statusText.textContent = 'Bereit';
         }
@@ -3251,6 +3251,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
 
 
 
