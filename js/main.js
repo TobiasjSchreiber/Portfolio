@@ -199,9 +199,44 @@ document.addEventListener('DOMContentLoaded', () => {
           img.removeAttribute('loading');
         });
         
-        // (Videos are excluded from eager background loading because downloading 300MB of video
-        // immediately upon opening saturates the network and causes 30-second delays. 
-        // They will load dynamically when scrolled into view via IntersectionObserver).
+        // ----------------------------------------------------------------------
+        // Intelligent Sequential Video Downloader
+        // Läd die Videos brav nacheinander vor, bis jedes ca. 2 Sekunden Puffer hat.
+        // Verhindert das 30-Sekunden-Netzwerk-Chaos, lädt aber trotzdem im Hintergrund.
+        // ----------------------------------------------------------------------
+        const backgroundVideos = Array.from(document.querySelectorAll('video[preload="none"], video[preload="metadata"]'));
+        let currentQueueIndex = 0;
+
+        function loadNextVideoInQueue() {
+          if (currentQueueIndex >= backgroundVideos.length) return; // Fertig!
+
+          const vid = backgroundVideos[currentQueueIndex];
+          currentQueueIndex++;
+
+          // Start the download
+          vid.preload = 'auto';
+
+          // Wenn das Video genug Puffer aufgebaut hat (canplay), springen wir sofort zum nächsten!
+          // So lädt jedes Video ein paar Sekunden vor, bevor das nächste an der Reihe ist.
+          let nextTriggered = false;
+          const triggerNext = () => {
+            if (nextTriggered) return;
+            nextTriggered = true;
+            loadNextVideoInQueue();
+          };
+
+          if (vid.readyState >= 3) {
+            triggerNext();
+          } else {
+            vid.addEventListener('canplay', triggerNext, { once: true });
+            vid.addEventListener('error', triggerNext, { once: true });
+            // Fallback: Max 3 Sekunden pro Video in der Warteschlange verweilen
+            setTimeout(triggerNext, 3000); 
+          }
+        }
+        
+        // Start the queue!
+        loadNextVideoInQueue();
       }, 250);
     }, 850);
   }
