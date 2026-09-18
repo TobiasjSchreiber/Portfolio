@@ -420,7 +420,11 @@ img, video {
 .bmw-visual-wrap img,
 .about-portrait-wrap img,
 .modal-stage img,
-.modal-stage video {
+.modal-stage video,
+.photo-card img,
+.ceramic-frame img,
+.kunst-feature-img-frame img,
+.kunst-ticker-card img {
   transition: opacity 0.5s var(--ease-smooth), transform 0.5s var(--ease-smooth), filter 0.4s ease;
 }
 

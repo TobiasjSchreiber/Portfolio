@@ -2945,7 +2945,11 @@ document.addEventListener('DOMContentLoaded', () => {
       '.cgi-main-media',
       '.film-preview-box',
       '.bmw-visual-wrap',
-      '.about-portrait-wrap'
+      '.about-portrait-wrap',
+      '.photo-card',
+      '.ceramic-frame',
+      '.kunst-feature-img-frame',
+      '.kunst-ticker-card'
     ];
 
     const mediaWrappers = document.querySelectorAll(selectors.join(', '));
