@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 850);
   }
 
-  // Preloading & Calm Cinematic Animation Driver
+  // Preloading & Calm Cinematic Animation Driver (Waits for all Assets)
   function startCinematicSequence() {
     // Ensure single hero background video is queued at frame 0 and paused while loading
     if (heroVideo) {
@@ -204,20 +204,63 @@ document.addEventListener('DOMContentLoaded', () => {
       heroVideo.currentTime = 0;
     }
 
-    // Minimum serene duration for the preloader (2.4 seconds for 0% -> 100%)
-    const minLoadDuration = 2400;
+    // Asset Tracking
+    const mediaElements = Array.from(document.querySelectorAll('img, video'));
+    let assetsTotal = mediaElements.length;
+    let assetsLoaded = 0;
+
+    if (assetsTotal > 0) {
+      mediaElements.forEach(el => {
+        if (el.tagName.toLowerCase() === 'img') {
+          if (el.complete && el.naturalWidth > 0) assetsLoaded++;
+          else {
+            el.addEventListener('load', () => assetsLoaded++, { once: true });
+            el.addEventListener('error', () => assetsLoaded++, { once: true });
+          }
+        } else if (el.tagName.toLowerCase() === 'video') {
+          if (el.readyState >= 3) assetsLoaded++;
+          else {
+            el.addEventListener('canplay', () => assetsLoaded++, { once: true });
+            el.addEventListener('error', () => assetsLoaded++, { once: true });
+          }
+        }
+      });
+    }
+
+    // Global fallback window load
+    window.addEventListener('load', () => {
+      assetsLoaded = assetsTotal;
+    });
+
+    const minLoadDuration = 2400; // Minimum serene duration
     const startTime = performance.now();
     let animFrame = null;
     let hasUnfolded = false;
+    let currentProgress = 0;
 
     function updateProgress(now) {
       const elapsed = now - startTime;
-      const rawProgress = Math.min(1, elapsed / minLoadDuration);
+      const timeProgress = Math.min(1, elapsed / minLoadDuration);
       
-      // Smooth cubic easing for calm, steady progression
-      const easedProgress = rawProgress < 0.5 
-        ? 2 * rawProgress * rawProgress 
-        : -1 + (4 - 2 * rawProgress) * rawProgress;
+      // Force load after 12 seconds to prevent infinite lock
+      const forceLoad = elapsed > 12000;
+      const assetProgress = (assetsTotal > 0 && !forceLoad) ? (assetsLoaded / assetsTotal) : 1;
+      
+      // Target progress is bound by both minimum time and actual loaded assets
+      const targetProgress = Math.min(timeProgress, assetProgress);
+      
+      // Smoothly chase target progress to prevent jumping when assets finish loading
+      currentProgress += (targetProgress - currentProgress) * 0.08;
+      
+      // Snap to 100% when extremely close
+      if (currentProgress > 0.99 && targetProgress === 1) {
+        currentProgress = 1;
+      }
+      
+      // Smooth cubic easing for calm aesthetic
+      const easedProgress = currentProgress < 0.5 
+        ? 2 * currentProgress * currentProgress 
+        : -1 + (4 - 2 * currentProgress) * currentProgress;
       
       const currentPercent = Math.min(100, Math.floor(easedProgress * 100));
 
@@ -231,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (statusText) statusText.textContent = 'Initialisiere';
       }
 
-      if (rawProgress < 1) {
+      if (currentProgress < 1) {
         animFrame = requestAnimationFrame(updateProgress);
       } else {
         // 100% Reached
