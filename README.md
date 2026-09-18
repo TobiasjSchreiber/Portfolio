@@ -1,58 +1,41 @@
 # Tobias Schreiber — Portfolio (Medientechnik)
 
-Ein minimalistisches, tiefschwarzes Web-Portfolio für **Tobias Schreiber** (Student der Medientechnik). 
-Reine statische Webseite (**HTML5, CSS3, ES-JavaScript**) – vollständig kompatibel mit **GitHub Pages**, Vercel, Netlify oder jedem anderen statischen Webhoster.
+Willkommen im Quellcode meines digitalen Portfolios! Ich bin Student der Medientechnik mit Fokus auf 3D-Design, Videoproduktion und Webentwicklung.
+
+Dieses Repository enthält den vollständigen Code meiner persönlichen Portfolio-Website, die meine Projekte in den Bereichen 3D-Modeling (Blender), Film, Fotografie und Interaktionsdesign präsentiert.
+
+🌐 **Live-Ansicht:** [https://tobiasjschreiber.github.io/Portfolio/](https://tobiasjschreiber.github.io/Portfolio/) *(falls über GitHub Pages veröffentlicht)*
+
+## 🛠️ Technologien & Design
+
+Dieses Portfolio ist eine performante, statische Webseite:
+
+- **Frontend:** HTML5, CSS3, Vanilla JavaScript
+- **Designsprache:** Streng monochromes, randloses Design ("Zero Blue Tint") mit eleganten Serifenschriften (*Cormorant Garamond*, *Cinzel*) und Ambient Blur-Effekten.
+- **Animationen & 3D:** 
+  - `Three.js` für interaktive 3D-Elemente 
+  - `Lenis` für flüssiges Smooth-Scrolling
+- **Performance:** Alle Medien-Assets (4K-Videos, große Renderings) wurden für das Web hochgradig komprimiert, um schnelle Ladezeiten zu garantieren.
+
+## 📂 Projektstruktur
+
+- `/assets/`: Strukturierte Ablage für Bilder, optimierte Videos (`.mp4`), Fonts und Icons
+- `/css/`: Stylesheets für das Layout
+- `/js/`: Logik für den 3D-Renderer, Smooth-Scrolling und das Portfolio-Reflector-Skript
+- `/scripts/`: Eigene PowerShell-Skripte zur automatisierten Medienkomprimierung
+
+## 🧰 Automatisierungs-Skripte
+
+Im Ordner `scripts/` liegen zwei nützliche PowerShell-Skripte, die ich entwickelt habe, um große Medien für GitHub und das Web zu optimieren. Sie können frei verwendet werden:
+- `compress_video_to_94mb.ps1`: Komprimiert große Videos mit FFmpeg (2-Pass-Encoding) verlässlich unter das 100-MB-Limit von GitHub. Skaliert 4K-Material automatisch auf 1080p herunter.
+- `compress_photos_for_web.ps1`: Skaliert große Bilderformate (.jpg, .png) stapelweise auf webfreundliche 1920px Breite und speichert sie hochkomprimiert.
+
+## 📬 Kontakt
+
+Du findest mich und weitere meiner Arbeiten hier:
+- [LinkedIn](#) *(Hier Link einfügen)*
+- [ArtStation / Vimeo / YouTube](#) *(Hier Link einfügen)*
+- [E-Mail](#) *(Hier E-Mail einfügen)*
 
 ---
-
-## Besonderheiten der statischen Version
-
-- **100% statisch & autark:** Keine serverseitigen Skripte, keine Build-Tools nötig. Einfach hochladen und fertig.
-- **GitHub-optimiert:** 
-  - Alle Video-Assets wurden für schnelles Web-Streaming (`H.264`, `AAC`, `+faststart`) optimiert und liegen deutlich unter dem 100-MB-Limit von GitHub.
-  - Enthält `.nojekyll`, damit GitHub Pages alle Unterordner und Ressourcen direkt und unverändert ausliefert.
-  - Vollständig relative Pfade (`css/`, `js/`, `Ressourcen/`), kompatibel mit benutzerdefinierten Domains sowie Sub-Pfaden wie `https://<username>.github.io/<repo-name>/`.
-- **Typografie & Ästhetik:** Elegante Serifenschrift (*Cormorant Garamond* & *Cinzel*), tiefschwarzer Hintergrund (`#020203`), Ambient Blur-Effekte, randlose Medienbühnen und fließendes Smooth-Scrolling (Lenis).
-
----
-
-## In 3 Schritten auf GitHub Pages veröffentlichen
-
-### 1. GitHub-Repository erstellen
-- Erstelle auf [github.com](https://github.com/new) ein neues Repository (z. B. `portfolio` oder `<dein-benutzername>.github.io`).
-- Wähle **Public** (damit GitHub Pages kostenlos genutzt werden kann).
-
-### 2. Projekt zu GitHub hochladen (Terminal)
-Öffne das Terminal in diesem Ordner (`c:\My_Skripts_Local\Portfolio`) und führe folgende Befehle aus:
-
-```bash
-git add .
-git commit -m "Initial portfolio release"
-git branch -M main
-git remote add origin https://github.com/<DEIN-GITHUB-BENUTZERNAME>/<DEIN-REPO-NAME>.git
-git push -u origin main
-```
-
-*(Ersetze `<DEIN-GITHUB-BENUTZERNAME>` und `<DEIN-REPO-NAME>` mit deinen GitHub-Daten).*
-
-### 3. GitHub Pages aktivieren
-1. Gehe in deinem GitHub-Repository auf **Settings** (Einstellungen).
-2. Klicke in der linken Seitenleiste auf **Pages**.
-3. Wähle unter **Build and deployment**:
-   - **Source:** `Deploy from a branch`
-   - **Branch:** `main` und Ordner `/ (root)`
-4. Klicke auf **Save**.
-
-Nach ca. 1 bis 2 Minuten ist deine Webseite weltweit erreichbar unter:
-`https://<DEIN-GITHUB-BENUTZERNAME>.github.io/<DEIN-REPO-NAME>/`
-
----
-
-## Lokale Vorschau
-
-- **Direkt im Browser öffnen:** Doppelklick auf `index.html`.
-- **Mit lokalem HTTP-Server testen:**
-  ```bash
-  npm start
-  ```
-  Öffne anschließend [http://localhost:3000](http://localhost:3000) im Browser.
+*© Tobias Schreiber*
