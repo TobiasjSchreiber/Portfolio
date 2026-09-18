@@ -4930,15 +4930,13 @@ body[data-ambient-theme="kontakt"] {
 .reveal-on-scroll {
   opacity: 0;
   transform: translate3d(0, 36px, 0);
-  filter: blur(6px);
-  transition: opacity 0.8s var(--ease-smooth), transform 0.8s var(--ease-smooth), filter 0.8s var(--ease-smooth);
-  will-change: opacity, transform, filter;
+  transition: opacity 0.8s var(--ease-smooth), transform 0.8s var(--ease-smooth);
+  will-change: opacity, transform;
 }
 
 .reveal-on-scroll.is-visible {
   opacity: 1;
   transform: none;
-  filter: none;
   will-change: auto;
 }
 
@@ -4955,15 +4953,13 @@ body[data-ambient-theme="kontakt"] {
 .section-header.reveal-on-scroll .section-intro-text {
   opacity: 0;
   transform: translate3d(0, 22px, 0);
-  filter: blur(4px);
-  transition: opacity 0.75s var(--ease-smooth), transform 0.75s var(--ease-smooth), filter 0.75s var(--ease-smooth);
-  will-change: opacity, transform, filter;
+  transition: opacity 0.75s var(--ease-smooth), transform 0.75s var(--ease-smooth);
+  will-change: opacity, transform;
 }
 
 .section-header.reveal-on-scroll.is-visible .section-num {
   opacity: 1;
   transform: none;
-  filter: none;
   transition-delay: 0.05s;
 
   will-change: auto;
@@ -4972,7 +4968,6 @@ body[data-ambient-theme="kontakt"] {
 .section-header.reveal-on-scroll.is-visible .section-title {
   opacity: 1;
   transform: none;
-  filter: none;
   transition-delay: 0.14s;
 
   will-change: auto;
@@ -4981,7 +4976,6 @@ body[data-ambient-theme="kontakt"] {
 .section-header.reveal-on-scroll.is-visible .section-category {
   opacity: 1;
   transform: none;
-  filter: none;
   transition-delay: 0.23s;
 
   will-change: auto;
@@ -4990,7 +4984,6 @@ body[data-ambient-theme="kontakt"] {
 .section-header.reveal-on-scroll.is-visible .section-intro-text {
   opacity: 1;
   transform: none;
-  filter: none;
   transition-delay: 0.32s;
 
   will-change: auto;
@@ -5000,15 +4993,13 @@ body[data-ambient-theme="kontakt"] {
 .bmw-blueprint-metrics.reveal-on-scroll > * {
   opacity: 0;
   transform: translate3d(0, 20px, 0);
-  filter: blur(4px);
-  transition: opacity 0.75s var(--ease-smooth), transform 0.75s var(--ease-smooth), filter 0.75s var(--ease-smooth);
-  will-change: opacity, transform, filter;
+  transition: opacity 0.75s var(--ease-smooth), transform 0.75s var(--ease-smooth);
+  will-change: opacity, transform;
 }
 
 .bmw-blueprint-metrics.reveal-on-scroll.is-visible > * {
   opacity: 1;
   transform: none;
-  filter: none;
 
   will-change: auto;
 }

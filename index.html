@@ -1891,7 +1891,7 @@
       <div class="thd-app-mockup">
         <div class="mockup-frame">
           <div class="mockup-screen-wrap" id="mockup-screen-wrap">
-            <div class="mockup-statusbar">
+            <div class="mockup-statusbar" id="mockup-statusbar" style="display: none; transition: opacity 0.4s ease; opacity: 0;">
               <span class="sb-time">09:41</span>
               <div class="sb-icons">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
@@ -1900,60 +1900,114 @@
               </div>
             </div>
             <div class="mockup-iframe-container" style="position: relative; flex-grow: 1; width: 100%; overflow: hidden;">
-              <div class="mockup-iframe-scaler" id="mockup-scaler">
-                <iframe src="https://tobiasjschreiber.github.io/THD-APP/?v=portfolio" class="mockup-iframe" frameborder="0" title="THD App Redesign"></iframe>
+              <!-- Platzhalter-Bild (verblurt) mit Overlay-Text -->
+              <div class="mockup-placeholder" id="mockup-placeholder" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; transition: opacity 0.4s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; cursor: pointer;">
+                <img src="assets/images/md/Handy_App_vorschau.png" alt="App Vorschau" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(12px) brightness(0.5); transform: scale(1.05); z-index: -1;">
+                
+                <svg viewBox="0 0 24 24" fill="white" style="width: 52px; height: 52px; margin-bottom: 0.5rem; opacity: 0.95; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));">
+                  <path d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5S14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.03-.24-.03-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.44 1.04.44h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z" />
+                </svg>
+                <span style="font-family: var(--font-sans); font-size: 1.15rem; font-weight: 500; letter-spacing: 0.05em; margin-bottom: 0.2rem;">Live App</span>
+                <span style="font-family: var(--font-sans); font-size: 0.8rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.1em;">Klicken zum Laden</span>
+              </div>
+              <div class="mockup-iframe-scaler" id="mockup-scaler" style="opacity: 0; transition: opacity 0.4s ease;">
+                <iframe data-src="https://tobiasjschreiber.github.io/THD-APP/?v=portfolio" class="mockup-iframe" frameborder="0" title="THD App Redesign"></iframe>
               </div>
             </div>
           </div>
           <img src="assets/images/md/handy_mockup.png" alt="Handy Mockup" class="mockup-image" draggable="false">
-          
-          <!-- Touch/Interact Indicator -->
-          <div class="touch-indicator" id="mockup-touch-indicator">
-            <div class="indicator-text">
-              <span>Interaktiv</span>
-              <span class="indicator-sub">Live App</span>
-            </div>
-            <svg class="curved-arrow" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <!-- Arrow starting top left, curving to bottom right -->
-              <path d="M 10,10 Q 10,60 80,60" />
-              <polyline points="65,45 80,60 65,75" />
-            </svg>
-          </div>
         </div>
       </div>
       
       <script>
-        // Blendet den Willkommensbildschirm aus, ohne den Code der originalen App zu verändern.
-        // Funktioniert in Produktion (GitHub Pages), da beide Seiten denselben Ursprung (gleiche Domain) teilen.
         document.addEventListener('DOMContentLoaded', () => {
           const iframe = document.querySelector('.mockup-iframe');
+          const iframeScaler = document.getElementById('mockup-scaler');
+          const placeholder = document.getElementById('mockup-placeholder');
           const frameContainer = document.querySelector('.mockup-frame');
-          const touchIndicator = document.getElementById('mockup-touch-indicator');
+          const statusBar = document.getElementById('mockup-statusbar');
           
-          if (frameContainer && touchIndicator) {
-            const hideIndicator = () => touchIndicator.style.opacity = '0';
-            frameContainer.addEventListener('mouseenter', hideIndicator, { once: true });
-            frameContainer.addEventListener('touchstart', hideIndicator, { once: true });
+          if (!iframe || !frameContainer) return;
+
+          let isLoaded = false;
+          const iframeSrc = iframe.getAttribute('data-src');
+
+          // Iframe laden und anzeigen
+          const loadApp = () => {
+            if (isLoaded) return;
+            isLoaded = true;
+            
+            // Iframe URL setzen
+            iframe.src = iframeSrc;
+            
+            // Platzhalter ausblenden, Klicks durchlassen
+            if (placeholder) {
+              placeholder.style.opacity = '0';
+              placeholder.style.pointerEvents = 'none';
+            }
+            if (iframeScaler) iframeScaler.style.opacity = '1';
+            
+            // Statusbar voll einblenden
+            if (statusBar) {
+              statusBar.style.display = 'flex';
+              setTimeout(() => statusBar.style.opacity = '1', 10);
+            }
+          };
+
+          // Iframe entladen (Performance schonen)
+          const unloadApp = () => {
+            if (!isLoaded) return;
+            isLoaded = false;
+            
+            // Iframe src leeren
+            iframe.src = '';
+            
+            // Platzhalter wieder anzeigen & klickbar machen
+            if (placeholder) {
+              placeholder.style.opacity = '1';
+              placeholder.style.pointerEvents = 'auto';
+            }
+            if (iframeScaler) iframeScaler.style.opacity = '0';
+            
+            // Statusbar weich ausblenden und Platz freigeben
+            if (statusBar) {
+              statusBar.style.opacity = '0';
+              setTimeout(() => { if (!isLoaded) statusBar.style.display = 'none'; }, 400);
+            }
+          };
+
+          // Klick/Touch lädt die App
+          frameContainer.addEventListener('mousedown', loadApp);
+          frameContainer.addEventListener('touchstart', loadApp, { passive: true });
+
+          // Entladen, wenn Mockup aus dem Sichtfeld scrollt
+          if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                // Nur entladen, wenn komplett aus dem Bild
+                if (!entry.isIntersecting && isLoaded) {
+                  unloadApp();
+                }
+              });
+            }, { threshold: 0, rootMargin: "100px" });
+            observer.observe(frameContainer);
           }
 
-          if (iframe) {
-            iframe.onload = () => {
-              try {
-                const doc = iframe.contentDocument || iframe.contentWindow.document;
-                
-                // Setup im LocalStorage des iframes auf abgeschlossen setzen
-                iframe.contentWindow.localStorage.setItem('thd_setup_completed', 'true');
-                
-                // Falls das Modal noch sichtbar ist, hart ausblenden
-                const modal = doc.getElementById('initial-setup-modal');
-                const overlay = doc.getElementById('modal-overlay');
-                if (modal) { modal.classList.remove('show'); modal.style.display = 'none'; }
-                if (overlay) { overlay.classList.remove('show'); overlay.style.display = 'none'; }
-              } catch (e) {
-                console.log('Info: Der Willkommensbildschirm kann lokal wegen der Browser-Sicherheitsrichtlinien (CORS) nicht vom Portfolio aus weggeklickt werden. Online auf GitHub Pages funktioniert es reibungslos!');
-              }
-            };
-          }
+          // Blendet den Willkommensbildschirm aus
+          iframe.onload = () => {
+            if (!iframe.src) return; // Leeren src ignorieren
+            try {
+              const doc = iframe.contentDocument || iframe.contentWindow.document;
+              iframe.contentWindow.localStorage.setItem('thd_setup_completed', 'true');
+              
+              const modal = doc.getElementById('initial-setup-modal');
+              const overlay = doc.getElementById('modal-overlay');
+              if (modal) { modal.classList.remove('show'); modal.style.display = 'none'; }
+              if (overlay) { overlay.classList.remove('show'); overlay.style.display = 'none'; }
+            } catch (e) {
+              // Online auf GitHub Pages funktioniert es reibungslos
+            }
+          };
         });
       </script>
     </div>

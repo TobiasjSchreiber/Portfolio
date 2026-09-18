@@ -2620,12 +2620,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function measureCards() {
       const trackOffset = track.offsetLeft;
       cardLayout = cards.map((card) => {
-        const media = card.querySelector('.cgi-parallax-media');
+        const medias = Array.from(card.querySelectorAll('.cgi-parallax-media'));
         const offsetLeft = card.offsetLeft - trackOffset;
         const width = card.offsetWidth;
         return {
           card,
-          media,
+          medias,
           center: offsetLeft + width / 2,
           width
         };
@@ -2658,16 +2658,10 @@ document.addEventListener('DOMContentLoaded', () => {
         nextBtn.classList.toggle('is-disabled', scrollLeft >= maxScroll - 8);
       }
 
-      // 3. Instant optical active card detection (pure arithmetic, 0ms latency)
+      // 3. Instant optical counter-parallax & active card detection (pure arithmetic, 0ms latency)
       let closestCardIndex = 0;
       let minDistance = Infinity;
-      
-      // Simplified Global Parallax: All images move synchronously based on track progress
-      const trackProgress = maxScroll > 0 ? (scrollLeft / maxScroll) : 0;
-      const isMobile = window.innerWidth <= 768;
-      const amplitude = isMobile ? 8 : 14; 
-      const globalShiftPct = (0.5 - trackProgress) * (amplitude * 2); 
-      const newTransform = `translate3d(${globalShiftPct.toFixed(2)}%, 0, 0)`;
+      const halfViewport = viewportWidth / 2;
 
       for (let i = 0; i < cardLayout.length; i++) {
         const item = cardLayout[i];
@@ -2679,11 +2673,24 @@ document.addEventListener('DOMContentLoaded', () => {
           closestCardIndex = i;
         }
 
-        // Apply global transform only to cards near the viewport to save DOM writes
-        if (absDist <= viewportWidth + item.width + 100) {
-          if (item.media && item.lastTransform !== newTransform) {
-            item.media.style.transform = newTransform;
-            item.lastTransform = newTransform;
+        // Only transform cards currently in or immediately adjacent to the viewport
+        if (absDist <= halfViewport + item.width / 2 + 100) {
+          const normDist = distToCenter / halfViewport;
+          const clampedNorm = Math.max(-1.3, Math.min(1.3, normDist));
+          
+          if (item.medias && item.medias.length > 0) {
+            // Re-enabled parallax on all devices, but optimized:
+            // 1. Scaled amplitude for smooth performance on mobile
+            // 2. Strict DOM write caching
+            const isMobile = window.innerWidth <= 768;
+            const amplitude = isMobile ? 12 : 18; 
+            const shiftPct = -clampedNorm * amplitude;
+            const newTransform = `translate3d(${shiftPct.toFixed(2)}%, 0, 0)`;
+            
+            if (item.lastTransform !== newTransform) {
+              item.medias.forEach(m => m.style.transform = newTransform);
+              item.lastTransform = newTransform;
+            }
           }
         }
       }
