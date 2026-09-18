@@ -246,28 +246,20 @@ document.addEventListener('DOMContentLoaded', () => {
       const isMediaReady = (loadedMedia >= totalMedia) || (elapsed > maxWaitTime);
       const minTimePassed = elapsed >= minLoadDuration;
 
-      // Calculate a smooth, linear progress value
       let displayProgress;
 
       if (!isMediaReady) {
-        // Phase A: Media still loading — fill linearly based on loaded count, capped at 90%
-        const mediaFraction = totalMedia > 0 ? (loadedMedia / totalMedia) : 1;
-        const timeFraction = Math.min(1, elapsed / minLoadDuration);
-        // Use whichever is slower so the bar never jumps backwards
-        displayProgress = Math.min(0.90, Math.max(mediaFraction * 0.90, timeFraction * 0.90));
+        // Asymptotic curve: always moving, never stops, approaches 99% but never reaches it
+        // At 2s → ~39%, 4s → ~63%, 8s → ~86%, 12s → ~95%
+        displayProgress = (1 - Math.exp(-elapsed / 3000)) * 0.99;
       } else {
-        // Phase B: All media ready — smoothly fill from current position to 100%
+        // Media ready — smoothly fill from current to 100%
         if (!mediaReadyTime) mediaReadyTime = now;
-
-        if (!minTimePassed) {
-          // Min time hasn't passed yet, fill linearly to ~95%
-          displayProgress = Math.min(0.95, elapsed / minLoadDuration);
-        } else {
-          // Smoothly animate last stretch to 100% over 300ms
-          const fillElapsed = now - mediaReadyTime;
-          const fillDuration = 300;
-          displayProgress = Math.min(1.0, 0.90 + 0.10 * Math.min(1, fillElapsed / fillDuration));
-        }
+        const currentAsymptotic = (1 - Math.exp(-elapsed / 3000)) * 0.99;
+        const fillElapsed = now - mediaReadyTime;
+        const fillDuration = minTimePassed ? 300 : Math.max(300, (minLoadDuration - elapsed));
+        const fillFraction = Math.min(1, fillElapsed / fillDuration);
+        displayProgress = currentAsymptotic + (1.0 - currentAsymptotic) * fillFraction;
       }
 
       const currentPercent = Math.min(100, Math.floor(displayProgress * 100));
