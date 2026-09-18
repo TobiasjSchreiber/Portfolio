@@ -1,0 +1,12 @@
+# Ignore all raw resources
+Ressourcen/
+*.ARW
+
+# Dependencies & Local tools
+node_modules/
+package-lock.json
+
+# System & OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
