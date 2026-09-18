@@ -30,6 +30,13 @@ Im Ordner `scripts/` liegen zwei nützliche PowerShell-Skripte, die ich entwicke
 - `compress_video_to_94mb.ps1`: Komprimiert große Videos mit FFmpeg (2-Pass-Encoding) verlässlich unter das 100-MB-Limit von GitHub. Skaliert 4K-Material automatisch auf 1080p herunter.
 - `compress_photos_for_web.ps1`: Skaliert große Bilderformate (.jpg, .png) stapelweise auf webfreundliche 1920px Breite und speichert sie hochkomprimiert.
 
+## 📜 Credits & Open Source
+
+Dieses Projekt nutzt folgende großartige Open-Source-Ressourcen:
+- **[Three.js](https://threejs.org/)** – JavaScript 3D Library (MIT License)
+- **[Lenis](https://lenis.studiofreight.com/)** – Smooth Scrolling by Studio Freight (MIT License)
+- **Google Fonts** – *Cormorant Garamond* & *Cinzel* (Open Font License)
+
 ## 📬 Kontakt
 
 Du findest mich und weitere meiner Arbeiten hier:
