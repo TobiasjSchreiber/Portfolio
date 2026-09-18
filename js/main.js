@@ -243,11 +243,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     criticalVideos.forEach(vid => {
-      if (vid.readyState >= 2) {
-        checkMediaDone();
+      if (vid === heroVideo) {
+        // For the large background video, wait until it has buffered at least 4 seconds
+        // so it plays smoothly when the aperture opens, but don't wait for the whole file.
+        let isHeroDone = false;
+        
+        const markHeroDone = () => {
+          if (isHeroDone) return;
+          isHeroDone = true;
+          checkMediaDone();
+        };
+
+        vid.addEventListener('error', markHeroDone, { once: true });
+
+        const checkHeroBuffer = () => {
+          if (isHeroDone) return;
+          
+          // readyState >= 4 (HAVE_ENOUGH_DATA) OR at least 4 seconds buffered
+          if (vid.readyState >= 4 || (vid.buffered.length > 0 && vid.buffered.end(vid.buffered.length - 1) >= 4)) {
+            markHeroDone();
+          } else {
+            setTimeout(checkHeroBuffer, 150);
+          }
+        };
+        
+        checkHeroBuffer();
+        
       } else {
-        vid.addEventListener('loadeddata', checkMediaDone, { once: true });
-        vid.addEventListener('error', checkMediaDone, { once: true });
+        // For standard preview videos, first frame (readyState >= 2) is enough
+        if (vid.readyState >= 2) {
+          checkMediaDone();
+        } else {
+          vid.addEventListener('loadeddata', checkMediaDone, { once: true });
+          vid.addEventListener('error', checkMediaDone, { once: true });
+        }
       }
     });
 
