@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 850);
   }
 
-  // Preloading & Calm Cinematic Animation Driver (Waits for all Assets)
+  // Preloading & Calm Cinematic Animation Driver (Waits for all media)
   function startCinematicSequence() {
     // Ensure single hero background video is queued at frame 0 and paused while loading
     if (heroVideo) {
@@ -204,63 +204,59 @@ document.addEventListener('DOMContentLoaded', () => {
       heroVideo.currentTime = 0;
     }
 
-    // Asset Tracking
-    const mediaElements = Array.from(document.querySelectorAll('img, video'));
-    let assetsTotal = mediaElements.length;
-    let assetsLoaded = 0;
+    // 1. Gather all media on the page to wait for them
+    const images = Array.from(document.querySelectorAll('img[src]'));
+    const videos = Array.from(document.querySelectorAll('video'));
+    const totalMedia = images.length + videos.length;
+    let loadedMedia = 0;
 
-    if (assetsTotal > 0) {
-      mediaElements.forEach(el => {
-        if (el.tagName.toLowerCase() === 'img') {
-          if (el.complete && el.naturalWidth > 0) assetsLoaded++;
-          else {
-            el.addEventListener('load', () => assetsLoaded++, { once: true });
-            el.addEventListener('error', () => assetsLoaded++, { once: true });
-          }
-        } else if (el.tagName.toLowerCase() === 'video') {
-          if (el.readyState >= 3) assetsLoaded++;
-          else {
-            el.addEventListener('canplay', () => assetsLoaded++, { once: true });
-            el.addEventListener('error', () => assetsLoaded++, { once: true });
-          }
-        }
-      });
+    function checkMediaDone() {
+      loadedMedia++;
     }
 
-    // Global fallback window load
-    window.addEventListener('load', () => {
-      assetsLoaded = assetsTotal;
+    images.forEach(img => {
+      if (img.complete) {
+        checkMediaDone();
+      } else {
+        img.addEventListener('load', checkMediaDone, { once: true });
+        img.addEventListener('error', checkMediaDone, { once: true });
+      }
     });
 
-    const minLoadDuration = 2400; // Minimum serene duration
+    videos.forEach(vid => {
+      // readyState >= 2 (HAVE_CURRENT_DATA) means the video is loaded enough to show a frame/poster
+      if (vid.readyState >= 2) {
+        checkMediaDone();
+      } else {
+        vid.addEventListener('loadeddata', checkMediaDone, { once: true });
+        vid.addEventListener('error', checkMediaDone, { once: true });
+      }
+    });
+
+    const minLoadDuration = 2400; // Minimum duration for the animation
+    const maxWaitTime = 12000;    // Absolute maximum wait time (12s) before forcing the site to open
     const startTime = performance.now();
     let animFrame = null;
     let hasUnfolded = false;
-    let currentProgress = 0;
+    let hasSetText = false;
 
     function updateProgress(now) {
       const elapsed = now - startTime;
-      const timeProgress = Math.min(1, elapsed / minLoadDuration);
+      const isMediaReady = (loadedMedia >= totalMedia) || (elapsed > maxWaitTime);
       
-      // Force load after 12 seconds to prevent infinite lock
-      const forceLoad = elapsed > 12000;
-      const assetProgress = (assetsTotal > 0 && !forceLoad) ? (assetsLoaded / assetsTotal) : 1;
+      let rawProgress = elapsed / minLoadDuration;
       
-      // Target progress is bound by both minimum time and actual loaded assets
-      const targetProgress = Math.min(timeProgress, assetProgress);
-      
-      // Smoothly chase target progress to prevent jumping when assets finish loading
-      currentProgress += (targetProgress - currentProgress) * 0.08;
-      
-      // Snap to 100% when extremely close
-      if (currentProgress > 0.99 && targetProgress === 1) {
-        currentProgress = 1;
+      // Stall the progress bar at 90% if media is still downloading
+      if (!isMediaReady) {
+        rawProgress = Math.min(0.90, rawProgress);
+      } else {
+        rawProgress = Math.min(1.0, rawProgress);
       }
-      
-      // Smooth cubic easing for calm aesthetic
-      const easedProgress = currentProgress < 0.5 
-        ? 2 * currentProgress * currentProgress 
-        : -1 + (4 - 2 * currentProgress) * currentProgress;
+
+      // Smooth cubic easing for calm, steady progression
+      const easedProgress = rawProgress < 0.5 
+        ? 2 * rawProgress * rawProgress 
+        : -1 + (4 - 2 * rawProgress) * rawProgress;
       
       const currentPercent = Math.min(100, Math.floor(easedProgress * 100));
 
@@ -271,13 +267,17 @@ document.addEventListener('DOMContentLoaded', () => {
       if (currentPercent >= 28 && !hasUnfolded) {
         hasUnfolded = true;
         if (loader) loader.classList.add('step-unfold');
-        if (statusText) statusText.textContent = 'Initialisiere';
       }
 
-      if (currentProgress < 1) {
+      if (currentPercent >= 28 && !hasSetText && statusText) {
+        hasSetText = true;
+        statusText.textContent = 'Lade Medien...';
+      }
+
+      if (rawProgress < 1) {
         animFrame = requestAnimationFrame(updateProgress);
       } else {
-        // 100% Reached
+        // 100% Reached & Media Loaded!
         if (progressFill) progressFill.style.width = '100%';
         if (percentText) percentText.textContent = '100%';
         if (statusText) statusText.textContent = 'Bereit';
