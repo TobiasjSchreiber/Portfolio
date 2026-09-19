@@ -15,6 +15,7 @@
 
   function initPhotoReflector() {
     console.log("initPhotoReflector called");
+    if (window.innerWidth <= 768) return; // Deaktiviert auf mobilen Geräten
     if (typeof THREE === 'undefined') {
       setTimeout(initPhotoReflector, 60);
       return;

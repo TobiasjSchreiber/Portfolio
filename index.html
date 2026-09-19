@@ -33,56 +33,9 @@
   </script>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css?v=44">
+  <link rel="stylesheet" href="css/style.css?v=72">
 </head>
 <body class="is-loading" data-ambient-theme="hero">
-  <!-- =========================================================================
-       MOBILE WARNING OVERLAY (GitHub Pages only)
-       ========================================================================= -->
-  <div id="mobile-warning-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #020202; z-index: 999999; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 2rem; box-sizing: border-box; color: #d8d8d8; font-family: 'Plus Jakarta Sans', sans-serif; opacity: 1; transition: opacity 0.4s ease;">
-    <h1 style="font-size: 2rem; margin-bottom: 1rem; font-weight: 600;">Hinweis</h1>
-    <p style="font-size: 1.1rem; line-height: 1.5; color: rgba(255, 255, 255, 0.7); max-width: 400px; margin: 0 auto 2rem;">
-      Diese Seite ist aktuell für PC und Tablet optimiert. Auf Smartphones kann es zu Darstellungsfehlern kommen.
-    </p>
-    <button id="mobile-warning-dismiss" style="background: rgba(255, 255, 255, 0.08); border: none; outline: none; box-shadow: none; padding: 1rem 2rem; color: #fff; font-size: 1rem; border-radius: 8px; cursor: pointer; transition: background 0.3s ease; backdrop-filter: blur(10px);">
-      Trotzdem ansehen
-    </button>
-  </div>
-
-  <script>
-    (function() {
-      const isLocal = ['localhost', '127.0.0.1', '192.168.178.173'].includes(window.location.hostname);
-      const isMobile = window.innerWidth <= 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
-      
-      if (isMobile && !isLocal) {
-        document.addEventListener('DOMContentLoaded', () => {
-          const overlay = document.getElementById('mobile-warning-overlay');
-          const dismissBtn = document.getElementById('mobile-warning-dismiss');
-          
-          if (overlay && dismissBtn) {
-            overlay.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            
-            // Hover effect for button without using scale
-            dismissBtn.addEventListener('mouseenter', () => {
-              dismissBtn.style.background = 'rgba(255, 255, 255, 0.12)';
-            });
-            dismissBtn.addEventListener('mouseleave', () => {
-              dismissBtn.style.background = 'rgba(255, 255, 255, 0.08)';
-            });
-
-            dismissBtn.addEventListener('click', () => {
-              overlay.style.opacity = '0';
-              setTimeout(() => {
-                overlay.style.display = 'none';
-                document.body.style.overflow = '';
-              }, 400);
-            });
-          }
-        });
-      }
-    })();
-  </script>
 
   <!-- =========================================================================
        CINEMATIC PRELOADER & NAME UNFOLD SEQUENCE
@@ -130,7 +83,177 @@
       <a href="#about" data-bouncy-tabs-button="">Über mich</a>
     </nav>
     <a href="#kontakt" class="nav-contact-btn" aria-label="Zum Kontaktbereich springen">Kontakt</a>
+
+    <!-- Mobile Nav FAB Button (Symbol Only) -->
+    <button id="mobile-nav-fab" class="mobile-nav-fab" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-nav-overlay">
+      <span class="mobile-nav-fab__icon" aria-hidden="true">
+        <span class="mobile-nav-fab__line mobile-nav-fab__line--1"></span>
+        <span class="mobile-nav-fab__line mobile-nav-fab__line--2"></span>
+      </span>
+    </button>
   </header>
+
+  <!-- Mobile Navigation Overlay (Framer Aesthetic with Blur & Section Highlight) -->
+  <div id="mobile-nav-overlay" class="mobile-nav-overlay framer-1r400ta" data-framer-name="Wrapper" aria-hidden="true">
+    <div class="mobile-nav-backdrop"></div>
+    <div class="mobile-nav-container framer-1dk0014" data-framer-name="Nav Menu">
+      <div class="mobile-nav-top-row">
+        <span class="mobile-nav-brand-text">T. Schreiber</span>
+        <button id="mobile-nav-close" class="mobile-nav-close-btn" aria-label="Menü schließen">
+          <span class="mobile-nav-close__icon" aria-hidden="true">
+            <span class="mobile-nav-close__line mobile-nav-close__line--1"></span>
+            <span class="mobile-nav-close__line mobile-nav-close__line--2"></span>
+          </span>
+        </button>
+      </div>
+
+      <nav class="mobile-nav-links" aria-label="Mobile Navigation">
+        <!-- 01 Home -->
+        <div class="framer-1z849f mobile-nav-item" data-framer-name="Link Wrapper" data-section="hero" data-highlight="true">
+          <div class="framer-9djkea-container" data-framer-appear-id="9djkea" data-framer-name="Home Link" name="Home Link">
+            <a name="Home Link" class="framer-ykkGy framer-m5oBt framer-pbP82 framer-1gksxod mobile-nav-link" data-framer-name="Desktop" data-highlight="true" href="#hero">
+              <div class="framer-1i5u9np mobile-nav-link-inner" data-framer-name="Wrapper">
+                <div class="framer-hg02tu mobile-nav-count-wrap" data-framer-name="Count">
+                  <span class="framer-text mobile-nav-count">[01]</span>
+                </div>
+                <div class="framer-hmftg8 mobile-nav-text-wrap" data-framer-name="Text">
+                  <span class="framer-text mobile-nav-title">Home</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- 02 3D & CGI -->
+        <div class="framer-xl23zs mobile-nav-item" data-framer-name="Link Wrapper" data-section="cgi" data-highlight="false">
+          <div class="framer-y6b5lg-container" data-framer-appear-id="y6b5lg" data-framer-name="Works Link" name="Works Link">
+            <a name="Works Link" class="framer-ykkGy framer-m5oBt framer-pbP82 framer-1gksxod mobile-nav-link" data-framer-name="Desktop" href="#cgi">
+              <div class="framer-1i5u9np mobile-nav-link-inner" data-framer-name="Wrapper">
+                <div class="framer-hg02tu mobile-nav-count-wrap" data-framer-name="Count">
+                  <span class="framer-text mobile-nav-count">[02]</span>
+                </div>
+                <div class="framer-hmftg8 mobile-nav-text-wrap" data-framer-name="Text">
+                  <span class="framer-text mobile-nav-title">3D &amp; CGI</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- 03 Film -->
+        <div class="mobile-nav-item" data-framer-name="Link Wrapper" data-section="film" data-highlight="false">
+          <div data-framer-name="Film Link" name="Film Link">
+            <a name="Film Link" class="framer-ykkGy framer-m5oBt framer-pbP82 framer-1gksxod mobile-nav-link" data-framer-name="Desktop" href="#film">
+              <div class="framer-1i5u9np mobile-nav-link-inner" data-framer-name="Wrapper">
+                <div class="framer-hg02tu mobile-nav-count-wrap" data-framer-name="Count">
+                  <span class="framer-text mobile-nav-count">[03]</span>
+                </div>
+                <div class="framer-hmftg8 mobile-nav-text-wrap" data-framer-name="Text">
+                  <span class="framer-text mobile-nav-title">Film</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- 04 Fotografie -->
+        <div class="mobile-nav-item" data-framer-name="Link Wrapper" data-section="fotografie" data-highlight="false">
+          <div data-framer-name="Photo Link" name="Photo Link">
+            <a name="Photo Link" class="framer-ykkGy framer-m5oBt framer-pbP82 framer-1gksxod mobile-nav-link" data-framer-name="Desktop" href="#fotografie">
+              <div class="framer-1i5u9np mobile-nav-link-inner" data-framer-name="Wrapper">
+                <div class="framer-hg02tu mobile-nav-count-wrap" data-framer-name="Count">
+                  <span class="framer-text mobile-nav-count">[04]</span>
+                </div>
+                <div class="framer-hmftg8 mobile-nav-text-wrap" data-framer-name="Text">
+                  <span class="framer-text mobile-nav-title">Fotografie</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- 05 Kunst -->
+        <div class="mobile-nav-item" data-framer-name="Link Wrapper" data-section="kunst" data-highlight="false">
+          <div data-framer-name="Art Link" name="Art Link">
+            <a name="Art Link" class="framer-ykkGy framer-m5oBt framer-pbP82 framer-1gksxod mobile-nav-link" data-framer-name="Desktop" href="#kunst">
+              <div class="framer-1i5u9np mobile-nav-link-inner" data-framer-name="Wrapper">
+                <div class="framer-hg02tu mobile-nav-count-wrap" data-framer-name="Count">
+                  <span class="framer-text mobile-nav-count">[05]</span>
+                </div>
+                <div class="framer-hmftg8 mobile-nav-text-wrap" data-framer-name="Text">
+                  <span class="framer-text mobile-nav-title">Kunst</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- 06 Uni-Projekte -->
+        <div class="mobile-nav-item" data-framer-name="Link Wrapper" data-section="uni" data-highlight="false">
+          <div data-framer-name="Uni Link" name="Uni Link">
+            <a name="Uni Link" class="framer-ykkGy framer-m5oBt framer-pbP82 framer-1gksxod mobile-nav-link" data-framer-name="Desktop" href="#uni">
+              <div class="framer-1i5u9np mobile-nav-link-inner" data-framer-name="Wrapper">
+                <div class="framer-hg02tu mobile-nav-count-wrap" data-framer-name="Count">
+                  <span class="framer-text mobile-nav-count">[06]</span>
+                </div>
+                <div class="framer-hmftg8 mobile-nav-text-wrap" data-framer-name="Text">
+                  <span class="framer-text mobile-nav-title">Uni-Projekte</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- 07 Über mich -->
+        <div class="framer-na9mvv mobile-nav-item" data-framer-name="Link Wrapper" data-section="about" data-highlight="false">
+          <div class="framer-1gczql1-container" data-framer-appear-id="1gczql1" data-framer-name="About us Link" name="About us Link">
+            <a name="About us Link" class="framer-ykkGy framer-m5oBt framer-pbP82 framer-1gksxod mobile-nav-link" data-framer-name="Desktop" href="#about">
+              <div class="framer-1i5u9np mobile-nav-link-inner" data-framer-name="Wrapper">
+                <div class="framer-hg02tu mobile-nav-count-wrap" data-framer-name="Count">
+                  <span class="framer-text mobile-nav-count">[07]</span>
+                </div>
+                <div class="framer-hmftg8 mobile-nav-text-wrap" data-framer-name="Text">
+                  <span class="framer-text mobile-nav-title">Über mich</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- 08 Kontakt -->
+        <div class="framer-1ts58q0 mobile-nav-item" data-framer-name="Link Wrapper" data-section="kontakt" data-highlight="false">
+          <div class="framer-1qsa53w-container" data-framer-appear-id="1qsa53w" data-framer-name="Contact Link" name="Contact Link">
+            <a name="Contact Link" class="framer-ykkGy framer-m5oBt framer-pbP82 framer-1gksxod mobile-nav-link" data-framer-name="Desktop" href="#kontakt">
+              <div class="framer-1i5u9np mobile-nav-link-inner" data-framer-name="Wrapper">
+                <div class="framer-hg02tu mobile-nav-count-wrap" data-framer-name="Count">
+                  <span class="framer-text mobile-nav-count">[08]</span>
+                </div>
+                <div class="framer-hmftg8 mobile-nav-text-wrap" data-framer-name="Text">
+                  <span class="framer-text mobile-nav-title">Kontakt</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Contact / Info Links from Framer footer -->
+      <div class="framer-1eu6yc3 mobile-nav-footer" data-framer-name="Contact Links">
+        <div class="framer-13xpv4i mobile-nav-copyright" data-framer-name="Copyright">
+          <div class="framer-yf5tft mobile-nav-footer-row" data-framer-name="Wrapper">
+            <div class="framer-i8ysx">
+              <p class="framer-text">®2026 All Rights Reserved</p>
+            </div>
+            <div class="framer-1jp6fu6"><p class="framer-text">|</p></div>
+            <div class="framer-p7wo9u"><p class="framer-text">Tobias Schreiber</p></div>
+          </div>
+        </div>
+        <div class="framer-1wzdrc9 mobile-nav-location" data-framer-name="Location">
+          <p class="framer-text">Medientechnik &bull; Bayern, Deutschland</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <main id="main-content">
   
@@ -166,9 +289,8 @@
       <div class="hero-subtitle-top reveal-on-scroll delay-1">Medientechnik &bull; Digital Arts &bull; Fotografie</div>
       <h1 class="hero-title reveal-on-scroll delay-2">Tobias <em>Schreiber</em></h1>
       <p class="hero-desc reveal-on-scroll delay-3">
-        Visuelle Narrative an der Schnittstelle von Medientechnik, CGI, 
-        filmischer Inszenierung, Fotografie und digitaler Kunst.
-      </p>
+          Visuelle Narrative an der Schnittstelle von Medientechnik, CGI, Film, Fotografie und digitaler Kunst.
+        </p>
 
       <div class="hero-bottom-bar reveal-on-scroll delay-4">
         <div class="hero-meta-tags">
@@ -199,14 +321,10 @@
       <span class="section-num">01 / 3D-MODELING &amp; CGI</span>
       <div class="section-title-wrap">
         <h2 class="section-title">3D &amp; <em>CGI</em></h2>
-        <span class="section-category">Surreale Environments &bull; High-Contrast Lighting &bull; Natur &bull; Dreamscapes</span>
       </div>
       <p class="section-intro-text">
-        Was mit 12 Jahren als autodidaktische Leidenschaft begann, ist heute mein stärkstes Werkzeug: 
-        In meiner Freizeit gestalte ich in Blender Cycles künstlerische, immersive Environments. 
-        Mein Fokus liegt dabei auf surrealen, träumerischen Orten, die durch starke Kontraste und 
-        eine tiefe Verbundenheit zur Natur besondere emotionale Wirkungen entfalten.
-      </p>
+          Was als autodidaktische Leidenschaft begann, ist heute mein stärkstes Werkzeug: In Blender Cycles erschaffe ich surreale, atmosphärische Environments mit starker emotionaler Wirkung und Naturverbundenheit.
+        </p>
     </div>
 
     <!-- 3D Showcase 03: 3D Render Gallery (Horizontal Parallax Swipe Showcase) -->
@@ -506,9 +624,7 @@
         <span class="cgi-project-label">Uni-Projekt (2026) &bull; 4. Semester &bull; 3ds Max &bull; Arnold Render</span>
         <h3 class="cgi-subproject-title">BMW 700 Coupé</h3>
         <p class="cgi-subproject-desc">
-          Im Rahmen eines Uni-Projekts im 4. Semester (2026) entstand diese Rekonstruktion eines BMW 700 anhand von Blueprints. 
-          Die Vorgabe war, komplett auf externe 3D-Assets zu verzichten und ein professionelles Modellieren (ohne Quads) zu demonstrieren. 
-          Zudem war dies mein allererstes Projekt in 3ds Max und mit dem Arnold Renderer.
+          Für ein Uni-Projekt entstand diese Blueprint-Rekonstruktion eines BMW 700. Ziel war professionelles Modeling ohne externe 3D-Assets. Zudem war es mein erstes Projekt in 3ds Max mit Arnold Render.
         </p>
       </div>
 
@@ -681,32 +797,12 @@
         </div>
       </div>
 
-      <div class="cgi-content-col">
+      <div class="cgi-content-col hide-on-mobile">
         <span class="cgi-project-label">Rauminstallation &bull; Konzeptkunst</span>
         <h3 class="cgi-heading">Historische Kaserne</h3>
         <p class="cgi-desc">
-          Um eine interaktive Lichtinstallation präzise planen zu können, wurde der Raum der historischen Kaserne in Regensburg maßstabsgetreu in Blender rekonstruiert. 
-          Das finale Konzept zeigt einen leuchtenden Baum, dessen Abstrahlung das träumerische Gefühl von durch Blätter fallendem Sonnenlicht im Wald erzeugt.
+          Der Raum der historischen Kaserne Regensburg wurde für eine interaktive Lichtinstallation maßstabsgetreu rekonstruiert. Der leuchtende Baum erzeugt das Gefühl von Sonnenlicht im Wald.
         </p>
-
-        <div class="spec-list">
-          <div class="spec-item">
-            <span class="spec-key">Konzept</span>
-            <span class="spec-value">Licht- & Rauminstallation</span>
-          </div>
-          <div class="spec-item">
-            <span class="spec-key">Software</span>
-            <span class="spec-value">Blender &bull; Cycles X</span>
-          </div>
-          <div class="spec-item">
-            <span class="spec-key">Location</span>
-            <span class="spec-value">Kaserne Regensburg</span>
-          </div>
-          <div class="spec-item">
-            <span class="spec-key">Fokus</span>
-            <span class="spec-value">Maßstabsgetreuer Nachbau</span>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -716,7 +812,7 @@
         <span class="cgi-project-label">Fotoreferenz vs. 3D-Rekonstruktion</span>
         <h3 class="cgi-heading kaserne-compare-title">Real / 3D</h3>
         <p class="cgi-desc kaserne-compare-desc">
-          Interaktiver Direktvergleich: Die originale Archiv-Fotografie im Abgleich mit der fotorealistischen 3D-Rekonstruktion in Blender Cycles.
+          Interaktiver Direktvergleich zwischen der originalen Archiv-Fotografie und der 3D-Rekonstruktion in Blender.
         </p>
       </div>
 
@@ -1100,7 +1196,6 @@
       <span class="section-num">03 / FOTOGRAFIE &amp; LICHTFÜHRUNG</span>
       <div class="section-title-wrap">
         <h2 class="section-title">Licht &amp; <em>Fotografie</em></h2>
-        <span class="section-category">Porträt &bull; Stillleben &bull; Makro &bull; BTS</span>
       </div>
       <p class="section-intro-text">
         Präzise Lichtführung, haptische Texturen und analog inspirierte Bildkompositionen. 
@@ -1240,7 +1335,7 @@
         </div>
 
         <!-- 09: Food Stillleben III (Hochformat — 1 Spalte × 2 Zeilen) -->
-        <div class="photo-card photo-card--tall"
+        <div class="photo-card photo-card--tall hide-on-desktop hide-on-mobile"
              data-cinema-trigger data-cinema-type="image"
              data-cinema-src="assets/images/full/Bild_Essen_3.webp"
              data-cinema-title="Food Stillleben III — Bildtiefe &amp; Farbharmonie"
@@ -1296,7 +1391,9 @@
           <span class="photo-chapter-specs">Portrait &bull; Handwerk</span>
         </div>
         <h3 class="photo-chapter-title">Keramikring — <em>Die Werkstatt</em></h3>
-        <p class="photo-chapter-desc">Eine Bilderserie aus dem Studium, die eine befreundete Keramikerin bei der Arbeit porträtiert. Im Zentrum steht die lebhafte, staubige Werkstatt, die durch unzählige Details ihre ganz eigenen Geschichten vom handwerklichen Schaffen erzählt.</p>
+        <p class="photo-chapter-desc">
+          Eine Bilderserie aus dem Studium über eine Keramikerin bei der Arbeit. Die staubige Werkstatt erzählt durch viele Details eigene Geschichten des handwerklichen Schaffens.
+        </p>
       </div>
 
       <!-- Horizontal Contact Sheet Strip -->
@@ -1490,10 +1587,6 @@
       <div class="kunst-ticker-intro-row">
         <div class="kunst-ticker-heading-group">
           <h4 class="kunst-ticker-title">Figürliche Studien &amp; Dynamische Posen</h4>
-        </div>
-        <div class="kunst-ticker-controls-hint">
-          <span class="kunst-ticker-pulse"></span>
-          <span>Laufband &bull; Hover zum Anhalten &bull; Klick für Vollbild</span>
         </div>
       </div>
 
@@ -1691,10 +1784,17 @@
       </div>
 
       <div class="uni-projects-container uni-split-layout">
-      <!-- LEFT COLUMN: Apple-Inspired Controls / Project Selector -->
-      <div class="controls uni-controls-panel" style="pointer-events: auto;">
-        <div class="intro-element" style="display: none;"></div>
-        <ul class="control-group" id="uni-control-group">
+      <!-- CONTROLS & PROJECT SELECTOR WITH EDGE NAVIGATION PADDLES -->
+      <div class="uni-controls-wrapper">
+        <button id="doc-paddlenav-prev" class="paddlenav-button paddlenav-prev is-disabled" type="button" aria-label="Vorheriges PDF" title="Vorheriges PDF">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+
+        <div class="controls uni-controls-panel" style="pointer-events: auto;">
+          <div class="intro-element" style="display: none;"></div>
+          <ul class="control-group" id="uni-control-group">
           <!-- Item 1: Selbst Layout -->
           <li class="control-item control-item1 active reveal-on-scroll delay-1" data-index="0" data-pdf-key="layout">
             <div class="control-item-bg-container">
@@ -1841,6 +1941,13 @@
         </ul>
       </div>
 
+        <button id="doc-paddlenav-next" class="paddlenav-button paddlenav-next" type="button" aria-label="Nächstes PDF" title="Nächstes PDF">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
       <!-- RIGHT COLUMN: Document Canvas Viewport & In-Page Reader -->
       <div class="doc-viewer-container uni-viewer-panel reveal-on-scroll delay-1" id="doc-viewer">
         <!-- Document Canvas Viewport -->
@@ -1906,8 +2013,8 @@
             </div>
             <div class="mockup-iframe-container" style="position: relative; flex-grow: 1; width: 100%; overflow: hidden;">
               <!-- Platzhalter-Bild (verblurt) mit Overlay-Text -->
-              <div class="mockup-placeholder" id="mockup-placeholder" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; transition: opacity 0.4s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; cursor: pointer;">
-                <img src="assets/images/md/Handy_App_vorschau_blurred.jpg" alt="App Vorschau" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.05); z-index: -1;">
+              <div class="mockup-placeholder" id="mockup-placeholder" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; transition: opacity 0.4s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; cursor: pointer; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;">
+                <img src="assets/images/md/Handy_App_vorschau_blurred.jpg" alt="App Vorschau" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.05); z-index: -1; pointer-events: none;" draggable="false">
                 
                 <svg viewBox="0 0 24 24" fill="white" style="width: 52px; height: 52px; margin-bottom: 0.5rem; opacity: 0.95; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));">
                   <path d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5S14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.03-.24-.03-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.44 1.04.44h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z" />
@@ -1981,9 +2088,48 @@
             }
           };
 
-          // Klick/Touch lädt die App
-          frameContainer.addEventListener('mousedown', loadApp);
-          frameContainer.addEventListener('touchstart', loadApp, { passive: true });
+          // Klick/Touch lädt die App – nur bei echtem Klick / gezieltem Antippen, NIE beim Scrollen
+          let touchStartX = 0;
+          let touchStartY = 0;
+          let isTouchDrag = false;
+
+          frameContainer.addEventListener('touchstart', (e) => {
+            if (isLoaded) return;
+            if (e.touches && e.touches.length > 0) {
+              touchStartX = e.touches[0].clientX;
+              touchStartY = e.touches[0].clientY;
+              isTouchDrag = false;
+            }
+          }, { passive: true });
+
+          frameContainer.addEventListener('touchmove', (e) => {
+            if (isLoaded) return;
+            if (e.touches && e.touches.length > 0) {
+              const diffX = Math.abs(e.touches[0].clientX - touchStartX);
+              const diffY = Math.abs(e.touches[0].clientY - touchStartY);
+              if (diffX > 8 || diffY > 8) {
+                isTouchDrag = true;
+              }
+            }
+          }, { passive: true });
+
+          frameContainer.addEventListener('touchend', () => {
+            if (isLoaded) return;
+            if (!isTouchDrag) {
+              loadApp();
+            }
+          });
+
+          frameContainer.addEventListener('touchcancel', () => {
+            isTouchDrag = true;
+          });
+
+          // Klick für Desktop / Maus
+          frameContainer.addEventListener('click', () => {
+            if (isLoaded) return;
+            if (isTouchDrag) return;
+            loadApp();
+          });
 
           // Entladen, wenn Mockup aus dem Sichtfeld scrollt
           if ('IntersectionObserver' in window) {
@@ -2049,35 +2195,60 @@
       </div>
 
       <div class="about-text-col reveal-on-scroll delay-1">
-        <div class="competencies-grid">
-          <div class="competency-item">
-            <h5>3D &amp; CGI</h5>
-            <p>Blender, Cycles, Gestaltung surrealer Environments, 3D-Rekonstruktionen, Procedural Materials &amp; Shading.</p>
+        <div class="competencies-tabs-container">
+          <div class="competencies-nav" role="tablist" aria-label="Kompetenzen">
+            <button type="button" class="competency-tab" role="tab" id="comp-tab-3d" aria-controls="comp-panel-3d" aria-expanded="false" data-category="3d">
+              <span class="comp-tab-title">3D &amp; CGI</span>
+              <span class="comp-tab-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </span>
+            </button>
+
+            <button type="button" class="competency-tab" role="tab" id="comp-tab-foto" aria-controls="comp-panel-foto" aria-expanded="false" data-category="foto">
+              <span class="comp-tab-title">FOTOGRAFIE</span>
+              <span class="comp-tab-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </span>
+            </button>
+
+            <button type="button" class="competency-tab" role="tab" id="comp-tab-film" aria-controls="comp-panel-film" aria-expanded="false" data-category="film">
+              <span class="comp-tab-title">FILM</span>
+              <span class="comp-tab-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </span>
+            </button>
+
+            <button type="button" class="competency-tab" role="tab" id="comp-tab-kunst" aria-controls="comp-panel-kunst" aria-expanded="false" data-category="kunst">
+              <span class="comp-tab-title">KUNST</span>
+              <span class="comp-tab-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </span>
+            </button>
           </div>
-          <div class="competency-item">
-            <h5>FILM</h5>
-            <p>Kameraführung (Schulterrig &amp; Set), szenische Low-Key-Ausleuchtung, Stop-Motion-Animation, DaVinci Resolve.</p>
-          </div>
-          <div class="competency-item">
-            <h5>FOTOGRAFIE</h5>
-            <p>Dokumentarische Reportagen, Portraitfotografie, Handwerks-Dokus, Lichtsetzung im Studio &amp; Bildretusche.</p>
-          </div>
-          <div class="competency-item">
-            <h5>KUNST</h5>
-            <p>Rauminstallationen mit Licht, akademisches Zeichnen, plastische Gestaltungsmittel &amp; experimentelles Layout.</p>
+
+          <div class="competencies-drawer" id="competencies-drawer">
+            <div class="competencies-drawer-inner">
+              <div class="competency-panel" id="comp-panel-3d" role="tabpanel" aria-labelledby="comp-tab-3d" data-category="3d">
+                <p>Blender, Cycles, Gestaltung surrealer Environments, 3D-Rekonstruktionen, Procedural Materials &amp; Shading.</p>
+              </div>
+              <div class="competency-panel" id="comp-panel-foto" role="tabpanel" aria-labelledby="comp-panel-foto" data-category="foto">
+                <p>Dokumentarische Reportagen, Portraitfotografie, Handwerks-Dokus, Lichtsetzung im Studio &amp; Bildretusche.</p>
+              </div>
+              <div class="competency-panel" id="comp-panel-film" role="tabpanel" aria-labelledby="comp-tab-film" data-category="film">
+                <p>Kameraführung (Schulterrig &amp; Set), szenische Low-Key-Ausleuchtung, Stop-Motion-Animation, DaVinci Resolve.</p>
+              </div>
+              <div class="competency-panel" id="comp-panel-kunst" role="tabpanel" aria-labelledby="comp-tab-kunst" data-category="kunst">
+                <p>Rauminstallationen mit Licht, akademisches Zeichnen, plastische Gestaltungsmittel &amp; experimentelles Layout.</p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <p class="about-bio" style="margin-top: 3.5rem;">
-          Ich bin Tobias Schreiber (*2005) und studiere aktuell Medientechnik (Bachelor of Engineering). 
-          Mein kreativer Weg begann mit einem Fachabitur in Gestaltung – und bereits viele Jahre zuvor als 
-          12-jähriger Autodidakt in Blender. Mich fasziniert das Zusammenspiel aus haptischem Handwerk und 
-          digitaler Raumgenerierung. Ob als Kameramann im tiefen Bergwerk, beim Planen von Licht-Installationen 
-          oder beim Rendern surrealer CGI-Welten: Jedes Projekt basiert auf einem klaren visuellen Konzept und 
-          technischer Sorgfalt.
+        <p class="about-bio">
+          Ich bin Tobias Schreiber (*2005), Medientechnik-Student und 3D-Artist. Mich fasziniert das Zusammenspiel aus haptischem Handwerk und digitaler Raumgenerierung – sei es bei Lichtinstallationen, CGI-Welten oder als Kameramann.
         </p>
 
-        <div style="margin-top: 1.5rem; margin-bottom: 2.5rem;">
+        <div class="about-cv-wrap">
           <a href="#" class="cv-download-btn" style="display: inline-flex; align-items: center; gap: 0.6rem; color: #d8d8d8; background: rgba(255,255,255,0.05); padding: 0.75rem 1.5rem; border-radius: 50px; text-decoration: none; font-size: 0.95rem; border: none; box-shadow: none; transition: background 0.3s ease, color 0.3s ease;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
             Lebenslauf / CV (PDF)
@@ -2101,31 +2272,32 @@
         Kontakt aufnehmen
       </a>
       <div class="contact-form-container">
-        <form class="contact-form" id="contact-form">
-          <input type="text" name="subject" class="contact-input" placeholder="Betreff" required aria-label="Betreff">
-          <textarea name="message" class="contact-input contact-textarea" placeholder="Deine Nachricht..." required aria-label="Nachricht"></textarea>
-          <button type="submit" class="contact-submit-btn">
-            In E-Mail-Programm öffnen
+        <form class="contact-form" id="contact-form" autocomplete="off">
+          <input type="text" name="subject" id="contact-subject" class="contact-input" placeholder="Betreff" required autocomplete="off" autocorrect="off" autocapitalize="sentences" spellcheck="true" data-lpignore="true" data-1p-ignore="true" data-form-type="other" aria-label="Betreff">
+          <textarea name="message" id="contact-message" class="contact-input contact-textarea" placeholder="Deine Nachricht..." required autocomplete="off" autocorrect="off" autocapitalize="sentences" spellcheck="true" aria-label="Nachricht"></textarea>
+          <button type="submit" class="contact-submit-btn" aria-label="In E-Mail-Programm öffnen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            <span>In E-Mail-Programm öffnen</span>
           </button>
         </form>
       </div>
       
       <div class="contact-direct">
         <a href="mailto:tobiasjschreiber@gmail.com" class="contact-email-link" aria-label="E-Mail an tobiasjschreiber@gmail.com senden">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" width="16" height="16" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" width="15" height="15" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
           <span>tobiasjschreiber@gmail.com</span>
         </a>
 
         <a href="https://instagram.com/tobiashdxd" target="_blank" rel="noopener noreferrer" class="contact-email-link" aria-label="Instagram Profil tobiashdxd (öffnet in neuem Tab)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" width="16" height="16" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-          <span>tobiashdxd</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" width="15" height="15" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          <span>@tobiashdxd</span>
         </a>
       </div>
     </div>
 
-    <div class="footer-bottom" style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+    <div class="footer-bottom">
       <span>Tobias Schreiber &bull; Medientechnik</span>
-      <a href="#" onclick="openImpressum(event)" style="color: inherit; text-decoration: underline; text-underline-offset: 4px;">Impressum</a>
+      <a href="#" onclick="openImpressum(event)" class="footer-impressum-link" style="color: inherit; text-decoration: underline; text-underline-offset: 4px;">Impressum</a>
       <span>&copy; 2026 Alle Rechte vorbehalten</span>
     </div>
   </footer>
@@ -2194,8 +2366,8 @@
 
       <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 0.5rem; font-weight: 500;">Urheberrecht</h3>
       <p style="margin-top: 0; margin-bottom: 0; line-height: 1.6; font-size: 0.95rem; color: #a0a0a0;">
-        Die durch den Betreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.
-      </p>
+          Die Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Vervielfältigung, Bearbeitung und Verbreitung bedürfen der schriftlichen Zustimmung des Autors.
+        </p>
     </div>
   </div>
 
@@ -2219,7 +2391,7 @@
   <script src="js/three.min.js" defer></script>
   <script src="js/lenis.min.js" defer></script>
   <script src="js/photo-reflector-test.js?v=27" defer></script>
-  <script src="js/main.js?v=639253565776927118" defer></script>
+  <script src="js/main.js?v=639253565776927803" defer></script>
 </body>
 </html>
 

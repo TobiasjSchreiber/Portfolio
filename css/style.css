@@ -101,25 +101,28 @@ body.is-loading.hero-ui-reveal .hero-bottom-bar {
 /* Hero Video: Single-Source Aperture Portal during Preloader (Zero Flicker, Zero Duplication) */
 body.is-loading .hero-video-container {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: 99998;
-  clip-path: inset(50vh 50vw 50vh 50vw round 4px);
+  clip-path: inset(50% 50% 50% 50% round 4px);
   will-change: clip-path;
   transition: clip-path 0.95s cubic-bezier(0.16, 1.15, 0.3, 1);
   pointer-events: none;
 }
 
 body.is-loading.step-push .hero-video-container {
-  clip-path: inset(calc(50vh - min(23vw, 175px)) calc(50vw - min(41vw, 310px)) calc(50vh - min(23vw, 175px)) calc(50vw - min(41vw, 310px)) round 4px);
+  clip-path: inset(calc(50% - min(23vw, 175px)) calc(50% - min(41vw, 310px)) calc(50% - min(23vw, 175px)) calc(50% - min(41vw, 310px)) round 4px);
   transition: clip-path 0.95s cubic-bezier(0.16, 1.15, 0.3, 1);
 }
 
 body.is-loading.step-expand .hero-video-container {
-  clip-path: inset(0px 0px 0px 0px round 0px);
+  clip-path: inset(0% 0% 0% 0% round 0px);
   transition: clip-path 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.is-loading:not(.hero-ui-reveal) .hero-overlay-fade-bottom {
+  opacity: 0;
 }
 
 .loader-stage {
@@ -127,8 +130,8 @@ body.is-loading.step-expand .hero-video-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -184,12 +187,12 @@ body.is-loading.step-expand .hero-video-container {
 
 /* Step 2: Words push apart as the hero video portal opens */
 .cinematic-loader.step-push .loader-word-top {
-  transform: translateY(calc(-1 * min(23vw, 175px) - clamp(16px, 3.2vw, 36px))) rotateX(0deg);
+  transform: translateY(calc(-1 * min(23vw, 175px) - clamp(20px, 3.8vw, 34px))) rotateX(0deg);
   transition: transform 1.05s cubic-bezier(0.16, 1.15, 0.3, 1);
 }
 
 .cinematic-loader.step-push .loader-word-bottom {
-  transform: translateY(calc(min(23vw, 175px) + clamp(16px, 3.2vw, 36px))) rotateX(0deg);
+  transform: translateY(calc(min(23vw, 175px) + clamp(20px, 3.8vw, 34px))) rotateX(0deg);
   transition: transform 1.05s cubic-bezier(0.16, 1.15, 0.3, 1);
 }
 
@@ -885,6 +888,21 @@ body[data-ambient-theme="kontakt"] {
 }
 
 /* --------------------------------------------------------------------------
+   Mobile Navigation FAB Button & Drawer Overlay (Hidden on Desktop)
+   -------------------------------------------------------------------------- */
+.mobile-nav-fab {
+  display: none !important;
+}
+
+.mobile-nav-close-btn {
+  display: none !important;
+}
+
+.mobile-nav-overlay {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
    Work Dots Slide Indicator (Interactive Slider Dots for Strips & Docs)
    -------------------------------------------------------------------------- */
 .work__dots {
@@ -935,7 +953,7 @@ body[data-ambient-theme="kontakt"] {
   position: relative;
   width: 100%;
   height: 100vh;
-  height: 100dvh;
+  height: 100svh;
   min-height: 720px;
   overflow: hidden;
   display: flex;
@@ -1594,15 +1612,7 @@ body[data-ambient-theme="kontakt"] {
 
 @media (max-width: 768px) {
   .strip-arrow {
-  
-    width: 38px;
-    height: 38px;
-  }
-  .strip-arrow-prev {
-    left: 4px;
-  }
-  .strip-arrow-next {
-    right: 4px;
+    display: none !important;
   }
 }
 
@@ -2782,27 +2792,38 @@ body[data-ambient-theme="kontakt"] {
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .photo-compact-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr) !important;
     grid-auto-rows: auto;
-    gap: 1rem;
+    gap: 0.65rem;
   }
+  
+  /* Standard landscape & compact cards: 2 columns side by side */
   .photo-compact-grid .photo-card,
-  .photo-compact-grid .photo-card.photo-card--large-landscape,
-  .photo-compact-grid .photo-card.photo-card--large,
   .photo-compact-grid .photo-card.photo-card--small,
-  .photo-compact-grid .photo-card.photo-card--landscape-sm,
-  .photo-compact-grid .photo-card.photo-card--wide {
+  .photo-compact-grid .photo-card.photo-card--landscape-sm {
     grid-column: span 1 !important;
     grid-row: span 1 !important;
-    aspect-ratio: 3 / 2;
+    aspect-ratio: 4 / 3;
     height: auto;
   }
+
+  /* Tall portrait cards: 2 columns side by side (matching pair ratio) */
   .photo-compact-grid .photo-card.photo-card--tall {
     grid-column: span 1 !important;
     grid-row: span 1 !important;
     aspect-ratio: 2 / 3;
+    height: auto;
+  }
+
+  /* Standout hero pieces: rarely one alone across both columns (Porträt I, Iris-Makro, Dom Innen) */
+  .photo-compact-grid .photo-card.photo-card--large-landscape,
+  .photo-compact-grid .photo-card.photo-card--large,
+  .photo-compact-grid .photo-card.photo-card--wide {
+    grid-column: span 2 !important;
+    grid-row: span 1 !important;
+    aspect-ratio: 16 / 10;
     height: auto;
   }
 }
@@ -3482,57 +3503,52 @@ body[data-ambient-theme="kontakt"] {
 }
 
 /* --------------------------------------------------------------------------
-   Section 06: Uni-Projekte & In-Page PDF-Viewer (Apple-Inspired Split Layout)
+   Section 05: Akademische Werke / Uni-Projekte (Apple-Inspired Split Layout & Sticky Scroll)
    -------------------------------------------------------------------------- */
-@media (min-width: 1025px) {
-  .project-section.uni-sticky-section {
-    position: relative;
-    height: 400vh;
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-  
-  .uni-sticky-wrapper {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding-top: clamp(6.8rem, 11vh, 8.5rem);
-    padding-bottom: clamp(1rem, 2vh, 1.8rem);
-    box-sizing: border-box;
-    overflow: hidden;
-  }
+.project-section.uni-sticky-section {
+  position: relative;
+  height: 400vh;
+  padding-top: 0;
+  padding-bottom: 0;
+}
 
-  #uni .section-header {
-    margin-top: clamp(0.5rem, 1.2vh, 1.2rem);
-    margin-bottom: clamp(0.85rem, 1.8vh, 1.6rem);
-    gap: 0.35rem;
-    flex-shrink: 0;
-  }
+.uni-sticky-wrapper {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: clamp(6.8rem, 11vh, 8.5rem);
+  padding-bottom: clamp(1rem, 2vh, 1.8rem);
+  box-sizing: border-box;
+  overflow: hidden;
+}
 
-  #uni .section-title {
-    font-size: clamp(2.2rem, 3.8vw, 3.4rem);
-  }
+#uni .section-header {
+  margin-top: clamp(0.5rem, 1.2vh, 1.2rem);
+  margin-bottom: clamp(0.85rem, 1.8vh, 1.6rem);
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
 
-  #uni .section-intro-text {
-    margin-top: 0.1rem;
-    font-size: 0.95rem;
-    line-height: 1.4;
-  }
-  
-  .uni-projects-container.uni-split-layout {
-    flex: 1;
-    min-height: 0;
-    align-items: stretch;
-  }
+#uni .section-title {
+  font-size: clamp(2.2rem, 3.8vw, 3.4rem);
+}
+
+#uni .section-intro-text {
+  margin-top: 0.1rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
 }
 
 .uni-projects-container {
   display: flex;
   flex-direction: column;
   gap: var(--section-header-gap);
+  flex: 1;
+  min-height: 0;
 }
 
 .uni-split-layout {
@@ -3540,16 +3556,18 @@ body[data-ambient-theme="kontakt"] {
   grid-template-columns: minmax(320px, 390px) 1fr;
   gap: clamp(2.5rem, 4vw, 4.5rem);
   align-items: center;
+  flex: 1;
+  min-height: 0;
 }
 
-@media (max-width: 1024px) {
-  #uni .section-header {
-    margin-top: clamp(1.2rem, 3vh, 2.5rem);
-  }
-  .uni-split-layout {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
+.uni-controls-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.uni-controls-wrapper .paddlenav-button {
+  display: none; /* Hidden on desktop; edge arrows used on mobile */
 }
 
 .uni-controls-panel {
@@ -4271,12 +4289,8 @@ body[data-ambient-theme="kontakt"] {
     padding: 1.2rem 0.6rem;
   }
   .doc-floating-arrow {
-    opacity: 0.85;
-    width: 36px;
-    height: 36px;
+    display: none !important;
   }
-  .doc-floating-prev { left: 0.5rem; }
-  .doc-floating-next { right: 0.5rem; }
 }
 
 .sketches-stream {
@@ -4531,7 +4545,7 @@ body[data-ambient-theme="kontakt"] {
 .about-text-col {
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 1.25rem;
 }
 
 .about-bio {
@@ -4539,29 +4553,156 @@ body[data-ambient-theme="kontakt"] {
   color: var(--text-secondary);
   font-weight: 300;
   line-height: 1.8;
+  margin: 0;
 }
 
-.competencies-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-  padding: 0 0 2.2rem 0;
-  border-bottom: 1px solid var(--border-subtle);
+/* ==========================================================================
+   Competencies Interactive Tabs & Drawer (3D, Foto, Film, Kunst)
+   ========================================================================== */
+.competencies-tabs-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  border: none;
+  margin: 0;
 }
 
-.competency-item h5 {
+.competencies-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(0.6rem, 2vw, 2.2rem);
+  width: 100%;
+  padding-bottom: 0.35rem;
+  border-bottom: none;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.competencies-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.competency-tab {
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0.35rem 0;
+  margin: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: color 0.3s ease;
+}
+
+.comp-tab-title {
   font-family: var(--font-serif-display);
-  font-size: 0.85rem;
+  font-size: clamp(0.8rem, 1.8vw, 0.88rem);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  margin-bottom: 0.6rem;
-  color: #fff;
+  color: #999999;
+  transition: color 0.3s ease;
 }
 
-.competency-item p {
-  font-size: 0.88rem;
+.comp-tab-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
   color: var(--text-muted);
-  line-height: 1.6;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+  flex-shrink: 0;
+}
+
+.comp-tab-icon svg {
+  width: 11px;
+  height: 11px;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+/* Hover & Active States */
+.competency-tab:hover .comp-tab-title,
+.competency-tab.is-active .comp-tab-title {
+  color: #ffffff;
+}
+
+.competency-tab:hover .comp-tab-icon {
+  color: #d8d8d8;
+}
+
+.competency-tab.is-active .comp-tab-icon {
+  transform: rotate(45deg);
+  color: var(--accent-warm);
+}
+
+.competency-tab::after {
+  content: '';
+  position: absolute;
+  bottom: -0.25rem;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: var(--accent-warm);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.competency-tab.is-active::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Drawer & Panels */
+.competencies-drawer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.competencies-drawer.is-open {
+  grid-template-rows: 1fr;
+}
+
+.competencies-drawer-inner {
+  display: grid;
+  overflow: hidden;
+}
+
+.competency-panel {
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  padding: 0.85rem 0 0.35rem 0;
+  transform: translateY(-4px);
+  transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s ease;
+}
+
+.competency-panel.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.competency-panel p {
+  font-size: clamp(0.88rem, 1.8vw, 0.94rem);
+  line-height: 1.65;
+  color: var(--text-secondary);
+  margin: 0;
 }
 
 .dossier-downloads {
@@ -4654,7 +4795,8 @@ body[data-ambient-theme="kontakt"] {
   transform: scaleX(1);
   transform-origin: left;
 }
-.contact-form-container {
+.contact-form-container,
+.contact-card {
   max-width: 540px;
   margin: 3.5rem auto 1.5rem auto;
 }
@@ -4663,6 +4805,10 @@ body[data-ambient-theme="kontakt"] {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+.contact-field-wrap {
+  width: 100%;
 }
 
 .contact-input {
@@ -4704,8 +4850,11 @@ body[data-ambient-theme="kontakt"] {
   text-transform: uppercase;
   cursor: pointer;
   padding: 0.5rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   
-  /* Hidden by default */
+  /* Hidden by default on desktop */
   opacity: 0;
   pointer-events: none;
   visibility: hidden;
@@ -4790,7 +4939,7 @@ body[data-ambient-theme="kontakt"] {
 .cinema-modal {
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  z-index: 99999;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4806,6 +4955,15 @@ body[data-ambient-theme="kontakt"] {
 .cinema-modal.open {
   opacity: 1;
   pointer-events: auto;
+}
+
+/* Herobar (Mobile Header & Brand) vollständig ausblenden wenn Vollbild-Modal geöffnet ist */
+body.cinema-modal-open .nav-header,
+body:has(#cinema-modal.open) .nav-header {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: opacity 0.25s ease, visibility 0.25s ease !important;
 }
 
 .modal-close-btn {
@@ -5064,45 +5222,466 @@ body[data-ambient-theme="kontakt"] {
   }
 
   .intro-header {
-    padding-top: 1.6rem;
-  }
-
-  .intro-nav-link:not(.intro-nav-link--contact) {
-    display: none;
+    display: none !important;
   }
 
   .nav-contact-btn {
-    display: none;
+    display: none !important;
+  }
+
+  .intro-nav-link--contact {
+    display: none !important;
+  }
+
+  /* Hide the horizontal bouncy tabs hero bar on mobile */
+  .hero__nav,
+  [data-bouncy-tabs-nav] {
+    display: none !important;
   }
 
   .nav-header {
-    top: 0.8rem;
-    padding: 0 0.5rem;
+    position: fixed !important;
+    top: calc(0.85rem + env(safe-area-inset-top, 0px)) !important;
+    left: 0 !important;
+    right: 0 !important;
+    padding: 0 1.25rem !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    pointer-events: none;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    z-index: 1050 !important;
   }
-  
-  .hero__nav,
-  [data-bouncy-tabs-nav] {
-    overflow-x: auto;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-    max-width: 98vw;
-    padding: 3px;
+
+  /* T. Schreiber brand always visible in the mobile header */
+  .nav-brand {
+    display: block !important;
+    position: static !important;
+    pointer-events: auto !important;
+    font-family: var(--font-serif-display);
+    font-size: 0.92rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #ffffff;
+    opacity: 0.9 !important;
+    visibility: visible !important;
+    transition: opacity 0.3s ease;
+    z-index: 1055 !important;
   }
-  
-  .hero__nav::-webkit-scrollbar {
-    display: none;
+
+  body.mobile-nav-open .nav-brand {
+    opacity: 0.9 !important;
+    pointer-events: auto !important;
   }
-  
-  [data-bouncy-tabs-button] {
-    padding: 0 10px;
-    font-size: 0.65rem;
-    height: 30px;
+
+  /* The FAB Button (Top-Right Symbol Only - Stays fixed at top all the time) */
+  .mobile-nav-fab {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    color: #ffffff;
+    cursor: pointer;
+    pointer-events: auto !important;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    z-index: 1055 !important;
+    margin-left: auto;
+    padding: 0;
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
   }
-  
-  .hero-bottom-bar {
+
+  .mobile-nav-fab:active {
+    opacity: 0.6;
+    background: transparent !important;
+  }
+
+  /* Hamburger Icon (Two minimalist lines morphing into clean X in place) */
+  .mobile-nav-fab__icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 22px;
+    height: 22px;
+    position: relative;
+    pointer-events: none;
+  }
+
+  .mobile-nav-fab__line {
+    position: absolute;
+    width: 20px;
+    height: 1.5px;
+    background-color: #ffffff;
+    border-radius: 1px;
+    transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+    transform-origin: center;
+  }
+
+  .mobile-nav-fab__line--1 {
+    transform: translateY(-4px);
+  }
+
+  .mobile-nav-fab__line--2 {
+    transform: translateY(4px);
+  }
+
+  .mobile-nav-fab.is-open .mobile-nav-fab__line--1 {
+    transform: translateY(0) rotate(45deg);
+  }
+
+  .mobile-nav-fab.is-open .mobile-nav-fab__line--2 {
+    transform: translateY(0) rotate(-45deg);
+  }
+
+  /* Duplicate in-window top row hidden so only the main fixed button remains */
+  .mobile-nav-top-row,
+  .mobile-nav-close-btn {
+    display: none !important;
+  }
+
+  /* Framer-Style Mobile Drawer Overlay (Centered, Translucent Frosted Blur, Butter-Smooth Slide-Down & Unfold) */
+  .mobile-nav-overlay {
+    display: flex !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 990;
+    background: rgba(12, 12, 12, 0.74);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    visibility: hidden;
+    pointer-events: none;
+    transform: translate3d(0, -100%, 0);
+    will-change: transform;
+    transition: 
+      transform 0.52s cubic-bezier(0.25, 1, 0.5, 1),
+      visibility 0s linear 0.52s;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 1.5rem;
+    justify-content: space-between;
+    align-items: center;
+    padding: calc(4.6rem + env(safe-area-inset-top, 0px)) 1.5rem calc(1.8rem + env(safe-area-inset-bottom, 0px));
+    box-sizing: border-box;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mobile-nav-overlay.is-open {
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate3d(0, 0, 0);
+    transition: 
+      transform 0.58s cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0s linear;
+  }
+
+  .mobile-nav-backdrop {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .mobile-nav-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 480px;
+    height: 100%;
+    min-height: 100%;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .mobile-nav-brand-text {
+    font-family: var(--font-serif-display);
+    font-size: 0.88rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #ffffff;
+    opacity: 0.85;
+  }
+
+  .mobile-nav-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: clamp(0.6rem, 1.8vh, 1.15rem);
+    margin: auto 0;
+    padding: 0.6rem 0;
+    text-align: center;
+  }
+
+  .mobile-nav-item {
+    position: relative;
+    user-select: none;
+    width: 100%;
+    text-align: center;
+    overflow: hidden; /* Mask for the text unfold reveal */
+  }
+
+  .mobile-nav-link {
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-nav-link-inner {
+    display: inline-flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 0.75rem;
+    text-align: center;
+    transform: translateY(120%);
+    opacity: 0;
+    transition: transform 0.46s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.38s ease;
+    will-change: transform, opacity;
+  }
+
+  /* Staggered Text Unfold Reveal when Drawer is Open */
+  .mobile-nav-overlay.is-open .mobile-nav-item:nth-child(1) .mobile-nav-link-inner {
+    transition-delay: 0.10s;
+  }
+  .mobile-nav-overlay.is-open .mobile-nav-item:nth-child(2) .mobile-nav-link-inner {
+    transition-delay: 0.14s;
+  }
+  .mobile-nav-overlay.is-open .mobile-nav-item:nth-child(3) .mobile-nav-link-inner {
+    transition-delay: 0.18s;
+  }
+  .mobile-nav-overlay.is-open .mobile-nav-item:nth-child(4) .mobile-nav-link-inner {
+    transition-delay: 0.22s;
+  }
+  .mobile-nav-overlay.is-open .mobile-nav-item:nth-child(5) .mobile-nav-link-inner {
+    transition-delay: 0.26s;
+  }
+  .mobile-nav-overlay.is-open .mobile-nav-item:nth-child(6) .mobile-nav-link-inner {
+    transition-delay: 0.30s;
+  }
+  .mobile-nav-overlay.is-open .mobile-nav-item:nth-child(7) .mobile-nav-link-inner {
+    transition-delay: 0.34s;
+  }
+  .mobile-nav-overlay.is-open .mobile-nav-item:nth-child(8) .mobile-nav-link-inner {
+    transition-delay: 0.38s;
+  }
+
+  .mobile-nav-overlay.is-open .mobile-nav-link-inner {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .mobile-nav-count {
+    font-family: 'Plus Jakarta Sans', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.32);
+    transition: color 0.25s ease;
+  }
+
+  .mobile-nav-title {
+    font-family: var(--font-serif-editorial), 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1.55rem, 5.5vw, 2.05rem);
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    color: rgba(255, 255, 255, 0.42);
+    transition: color 0.25s ease, transform 0.25s ease;
+    line-height: 1.15;
+    text-align: center;
+  }
+
+  /* Active / Highlighted Section in Menu */
+  .mobile-nav-item[data-highlight="true"] .mobile-nav-count,
+  .mobile-nav-item.is-active .mobile-nav-count {
+    color: var(--accent-warm, #eae7e3);
+    font-weight: 600;
+  }
+
+  .mobile-nav-item[data-highlight="true"] .mobile-nav-title,
+  .mobile-nav-item.is-active .mobile-nav-title {
+    color: #ffffff;
+    font-weight: 400;
+  }
+
+  .mobile-nav-link:active .mobile-nav-title {
+    color: #ffffff;
+  }
+
+  /* Footer Section in Mobile Menu */
+  .mobile-nav-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 1.2rem;
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.38);
+    width: 100%;
+    text-align: center;
+  }
+
+  .mobile-nav-footer-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .mobile-nav-footer p {
+    margin: 0;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  .mobile-nav-location p {
+    color: rgba(255, 255, 255, 0.28);
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    text-align: center;
+  }
+  
+  /* --------------------------------------------------------------------------
+     Hero / Intro Section Mobile Adaptation
+     -------------------------------------------------------------------------- */
+  .hero-section {
+    min-height: 0 !important;
+    height: 100vh;
+    height: 100svh;
+    padding: calc(4rem + env(safe-area-inset-top, 0px)) 0 calc(2rem + env(safe-area-inset-bottom, 0px)) 0;
+    justify-content: flex-end;
+  }
+
+  #cgi.project-section,
+  #bmw.project-section {
+    padding-top: 3.5rem;
+  }
+
+  .hero-content {
+    padding: 0 1.25rem;
+    width: 100%;
+  }
+
+  .hero-subtitle-top {
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    margin-bottom: 0.75rem;
+    gap: 0.6rem;
+  }
+
+  .hero-subtitle-top::before {
+    width: 22px;
+  }
+
+  .hero-title {
+    font-size: clamp(2.55rem, 10vw, 3.25rem);
+    line-height: 1.05;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-desc {
+    font-size: clamp(0.92rem, 3.2vw, 1.02rem);
+    line-height: 1.6;
+    margin-bottom: 0.6rem;
+    max-width: 95%;
+    color: rgba(235, 235, 235, 0.88);
+  }
+
+  .hero-bottom-bar {
+    display: none !important;
+  }
+
+  .hero-meta-tags,
+  .hero-controls,
+  .scroll-indicator {
+    display: none !important;
+  }
+
+  /* --------------------------------------------------------------------------
+     Global Section Typography on Mobile (01 CGI bis 08 Kontakt)
+     -------------------------------------------------------------------------- */
+  .section-header {
+    margin-bottom: 2.2rem;
+  }
+
+  .section-num {
+    font-size: 0.74rem;
+    letter-spacing: 0.22em;
+    margin-bottom: 0.45rem;
+  }
+
+  .section-title {
+    font-size: clamp(2.15rem, 8vw, 2.75rem);
+    line-height: 1.1;
+    margin-bottom: 0.35rem;
+  }
+
+  .section-category {
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-intro-text {
+    font-size: clamp(0.9rem, 3vw, 0.98rem);
+    line-height: 1.62;
+    color: var(--text-secondary);
+  }
+
+  /* 3D & CGI Subprojects */
+  .cgi-subproject-header {
+    margin-bottom: 1.6rem;
+  }
+
+  .cgi-project-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    margin-bottom: 0.4rem;
+  }
+
+  .cgi-subproject-title {
+    font-size: clamp(1.75rem, 6.8vw, 2.25rem);
+    line-height: 1.15;
+    margin-bottom: 0.6rem;
+  }
+
+  .cgi-subproject-desc {
+    font-size: clamp(0.88rem, 2.9vw, 0.95rem);
+    line-height: 1.62;
+  }
+
+  .cgi-heading {
+    font-size: clamp(1.75rem, 6.8vw, 2.25rem);
+    line-height: 1.15;
+    margin-bottom: 0.6rem;
+  }
+
+  .cgi-desc {
+    font-size: clamp(0.88rem, 2.9vw, 0.95rem);
+    line-height: 1.62;
   }
   
   .photo-duo-flow {
@@ -5117,82 +5696,794 @@ body[data-ambient-theme="kontakt"] {
     grid-template-columns: 1fr;
   }
 
-  .cgi-parallax-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.5rem;
+  /* Alle Pfeilbuttons auf Mobilgeräten ausblenden */
+  .strip-arrow,
+  .doc-floating-arrow,
+  .cgi-parallax-btn,
+  .cgi-parallax-header,
+  .modal-nav-prev,
+  .modal-nav-next {
+    display: none !important;
+  }
+
+  /* Kaserne: Doppelte Textspalte auf dem Handy ausblenden */
+  #project-kaserne .cgi-feature-grid .cgi-content-col {
+    display: none !important;
+  }
+
+  #project-kaserne .cgi-feature-grid {
+    margin-bottom: 2.2rem;
   }
   
+  .cgi-parallax-viewport {
+    scroll-snap-type: none !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 1.2rem;
+  }
+
+  .cgi-parallax-track {
+    gap: 0.75rem !important;
+  }
+
+  /* CGI Parallax Cards: 1.25 bis 1.5 Karten sichtbar (Peek-Effekt zum Durchwischen) */
   .cgi-parallax-card {
-    flex: 0 0 290px;
-    width: 290px;
-    height: 410px;
+    flex: 0 0 70vw !important;
+    width: 70vw !important;
+    max-width: 320px;
+    height: clamp(330px, 48vh, 410px) !important;
+    scroll-snap-align: none !important;
+    border-radius: 8px;
   }
   
   .cgi-parallax-card.cgi-parallax-card-wide {
-    flex: 0 0 400px;
-    width: 400px;
+    flex: 0 0 76vw !important;
+    width: 76vw !important;
+    max-width: 350px;
   }
   
   .cgi-parallax-card-info {
-    padding: 2rem 1.4rem 1.4rem;
+    padding: 1.2rem 1.1rem 1.1rem;
+  }
+
+  /* Horizontal Stills Strips (BMW 700 Vorstudien & Kaserne Phasen): 1.25 bis 1.5 Karten nebeneinander */
+  .stills-strip {
+    gap: 0.75rem !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.8rem;
+    padding-right: 1.25rem;
+  }
+
+  .still-card {
+    flex: 0 0 70vw !important;
+    width: 70vw !important;
+    max-width: 320px;
+    aspect-ratio: 16 / 10;
+    scroll-snap-align: start;
+    border-radius: 4px;
+  }
+
+  .still-caption {
+    opacity: 0.92 !important;
+    transform: none !important;
+    font-size: 0.65rem;
+    padding: 1.4rem 0.8rem 0.55rem 0.8rem;
+  }
+
+  /* Ceramic 360 Strip: 1.25 bis 1.5 Karten sichtbar */
+  .ceramic-strip {
+    gap: 0.75rem !important;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 1rem;
+    padding-right: 1.25rem;
+  }
+
+  .ceramic-frame {
+    flex: 0 0 66vw !important;
+    width: 66vw !important;
+    max-width: 300px;
+    scroll-snap-align: start;
+  }
+
+  .cgi-card-num {
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    margin-bottom: 0.25rem;
   }
   
   .cgi-card-name {
-    font-size: 1.35rem;
+    font-size: 1.15rem;
+    margin-bottom: 0.2rem;
   }
 
-  .modal-nav-prev { left: 0.5rem; }
-  .modal-nav-next { right: 0.5rem; }
+  .cgi-card-sub {
+    font-size: 0.72rem;
+    line-height: 1.35;
+  }
 
-  /* Film Parallax Stage Mobile Overrides */
+  /* 3D / CGI Video Card Overlays (BMW 700 & Kaserne) */
+  .cinematic-overlay {
+    padding: 1rem 1.1rem;
+  }
+
+  .cinematic-title-mini {
+    font-size: clamp(1.18rem, 4.4vw, 1.42rem);
+    margin-bottom: 0.2rem;
+  }
+
+  .cinematic-sub-mini {
+    font-size: 0.64rem;
+    letter-spacing: 0.12em;
+  }
+
+  .media-hover-info h4 {
+    font-size: 1.18rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .media-hover-info p {
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+  }
+
+  .modal-nav-prev,
+  .modal-nav-next {
+    display: none !important;
+  }
+
+  .modal-info-bar {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    margin-top: 0.8rem;
+  }
+
+  /* Film Parallax Stage Mobile Overrides (Sticky Video Stage with Text Overlay) */
   .film-parallax-stage {
     margin-top: 1.5rem;
   }
   
   .film-sticky-overlay {
-    padding: 1.5rem 1.2rem 2rem;
+    padding: calc(4.2rem + env(safe-area-inset-top, 0px)) 1rem calc(1.2rem + env(safe-area-inset-bottom, 0px));
   }
   
   .film-scroll-hint {
     display: none;
   }
+
+  .film-text-stage {
+    margin-bottom: clamp(0.4rem, 1.2vh, 0.75rem);
+    max-width: 100%;
+  }
+
+  .film-tag-year {
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    margin-bottom: 0.35rem;
+  }
+  
+  .film-title {
+    font-size: clamp(1.45rem, 5.8vw, 1.85rem);
+    line-height: 1.14;
+    margin-bottom: 0.45rem;
+  }
+  
+  .film-synopsis {
+    font-size: clamp(0.82rem, 2.8vw, 0.88rem);
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+    max-width: 95%;
+  }
+  
+  .film-credits {
+    gap: 0.4rem 0.85rem;
+    font-size: 0.64rem;
+    letter-spacing: 0.09em;
+    margin-bottom: 0.75rem;
+  }
+
+  .film-stills-trigger-btn {
+    font-size: 0.66rem;
+    letter-spacing: 0.09em;
+    padding: 0.42rem 0.85rem;
+    gap: 0.4rem;
+  }
+
+  .film-stills-trigger-btn svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .film-dots {
+    gap: 0.4rem;
+    padding-bottom: 0.3rem;
+  }
+
+  .film-dot {
+    width: 22px;
+    height: 3px;
+  }
+
+  .film-dot.is-active {
+    width: 36px;
+  }
   
   .film-sticky-bottom-right {
-    gap: 0.6rem;
+    gap: 0.5rem;
   }
 
   .film-audio-btn,
   .film-cinema-btn {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
   }
 
   .film-audio-btn svg,
   .film-cinema-btn svg {
-    width: 15px;
-    height: 15px;
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Kunst / Art Section Mobile Typography */
+  .kunst-feature-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+  }
+
+  .kunst-feature-title {
+    font-size: clamp(1.75rem, 6.8vw, 2.25rem);
+    line-height: 1.15;
+    margin: 0.3rem 0;
+  }
+
+  .kunst-feature-subline {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    margin-bottom: 0.6rem;
+  }
+
+  .kunst-feature-p {
+    font-size: clamp(0.88rem, 2.9vw, 0.96rem);
+    line-height: 1.65;
+  }
+
+  .kunst-meta-kicker {
+    font-size: 0.64rem;
+  }
+
+  .kunst-meta-detail {
+    font-size: 0.82rem;
+  }
+
+  /* ==========================================================================
+     Akademische Werke / Uni-Projekte Mobile Layout & Scroll-Driven Sticky
+     ========================================================================== */
+  #uni.project-section {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    height: 320vh !important; /* Scroll distance to switch through the 4 PDFs */
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+  }
+
+  .uni-sticky-wrapper {
+    position: sticky !important;
+    top: 0 !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important; /* Vertikal schön mittig im Bildschirm platziert */
+    align-items: center !important;
+    padding: 3.2rem 0 1rem 0 !important; /* Freiraum für die schwebende Navbar oben, 0 links/rechts */
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  #uni .section-header {
+    margin: 0 0 0.4rem 0 !important; /* Direkt und nah am PDF */
+    padding: 0 1.25rem !important;
+    gap: 0.1rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    flex-shrink: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  #uni .section-num {
+    font-size: 0.62rem !important;
+    letter-spacing: 0.14em !important;
+    color: var(--text-muted) !important;
+    margin: 0 !important;
+  }
+
+  #uni .section-title {
+    font-size: clamp(1.3rem, 4.6vw, 1.65rem) !important;
+    line-height: 1.15 !important;
+    margin: 0 !important;
+    text-align: center !important;
+  }
+
+  #uni .section-intro-text {
+    display: none !important;
+  }
+
+  .uni-projects-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: initial !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .uni-split-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.45rem !important; /* PDF und Text nah beieinander */
+    width: 100% !important;
+    flex: initial !important;
+    min-height: 0 !important;
+  }
+
+  /* 1. Oben beim Handy das PDF */
+  .uni-viewer-panel {
+    order: 1 !important;
+    width: 100% !important;
+    padding: 0 1.25rem !important;
+    box-sizing: border-box !important;
+    flex: initial !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .doc-stage-viewport {
+    height: clamp(220px, 38vh, 310px) !important;
+    min-height: 200px !important;
+    max-height: 320px !important;
+    width: 100% !important;
+    max-width: 480px !important;
+    margin: 0 auto !important;
+    flex: initial !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+  }
+
+  .doc-page-display .doc-page-img {
+    box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.85) !important;
+  }
+
+  /* 2. Unten darunter die Beschreibung, nah am PDF */
+  .uni-controls-wrapper {
+    order: 2 !important;
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    margin: 0.35rem 0 0 0 !important; /* Direkt und nah unter dem PDF */
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 3. Pfeile als bündige Halbkreise direkt am linken & rechten Displayrand */
+  .uni-controls-wrapper .paddlenav-button {
+    display: flex !important;
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 30px !important;
+    height: 56px !important;
+    background: rgba(22, 22, 22, 0.94) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: none !important;
+    outline: none !important;
+    color: #ffffff !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    z-index: 25 !important;
+    flex-shrink: 0 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7) !important;
+    transition: opacity 0.25s ease, background 0.25s ease !important;
+  }
+
+  .uni-controls-wrapper .paddlenav-prev {
+    left: 0 !important; /* Bündig am linken Displayrand */
+    border-radius: 0 28px 28px 0 !important; /* Perfekter Halbkreis nach innen */
+    padding-left: 2px !important;
+    padding-right: 5px !important;
+  }
+
+  .uni-controls-wrapper .paddlenav-next {
+    right: 0 !important; /* Bündig am rechten Displayrand */
+    border-radius: 28px 0 0 28px !important; /* Perfekter Halbkreis nach innen */
+    padding-left: 5px !important;
+    padding-right: 2px !important;
+  }
+
+  .uni-controls-wrapper .paddlenav-button svg {
+    width: 16px !important;
+    height: 16px !important;
+    stroke-width: 2.4 !important;
+  }
+
+  .uni-controls-panel {
+    width: 100% !important;
+    max-width: 480px !important;
+    padding: 0 2.6rem !important; /* Genügend Abstand zu den Rand-Halbkreisen */
+    box-sizing: border-box !important;
+    cursor: pointer !important;
+    text-align: center !important;
+  }
+
+  .control-group {
+    gap: 0 !important;
+  }
+
+  /* Only active project description is shown on mobile */
+  .control-item:not(.active) {
+    display: none !important;
+  }
+
+  .control-item.active {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+  }
+
+  .control-item.active .control-item-open {
+    padding: 0 0 0.15rem 0 !important;
+    cursor: pointer !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .control-item.active .control-item-label {
+    justify-content: center !important;
+    width: auto !important;
+  }
+
+  .control-item.active .plus-icon {
+    display: none !important;
+  }
+
+  .control-item.active .control-label-text {
+    font-size: clamp(1.05rem, 3.6vw, 1.22rem) !important;
+    font-weight: 500 !important;
+    color: #ffffff !important;
+    letter-spacing: 0.01em !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.45rem !important;
+  }
+
+  .control-item.active .control-label-text::after {
+    content: '⤢';
+    font-size: 0.85rem;
+    opacity: 0.6;
+  }
+
+  .control-item.active .control-item-content {
+    grid-template-rows: 1fr !important;
+    width: 100% !important;
+  }
+
+  .control-item.active .control-item-content-inner {
+    padding: 0 !important;
+    opacity: 1 !important;
+    gap: 0.25rem !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .control-item-badge {
+    font-size: 0.62rem !important;
+    letter-spacing: 0.14em !important;
+  }
+
+  .typography-all-access-pass-pv-item-title {
+    display: none !important;
+  }
+
+  .typography-all-access-pass-pv-item-body {
+    font-size: clamp(0.78rem, 2.3vw, 0.84rem) !important;
+    line-height: 1.4 !important;
+    color: var(--text-secondary) !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-align: center !important;
   }
   
-  .film-title {
-    font-size: 2.1rem;
-    margin-bottom: 0.8rem;
+  .typography-all-access-pass-pv-item-body.is-expanded {
+    -webkit-line-clamp: unset !important;
   }
-  
-  .film-synopsis {
-    font-size: 0.88rem;
-    line-height: 1.6;
-    margin-bottom: 1.2rem;
+
+  .control-item-meta {
+    margin-top: 0.35rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.4rem !important;
+    font-size: 0.72rem !important;
+    width: 100% !important;
   }
-  
-  .film-credits {
-    gap: 0.9rem;
-    font-size: 0.65rem;
+
+  .control-dossier-link {
+    font-size: 0.72rem !important;
+    padding: 0.3rem 0.85rem !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-radius: 50px !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+  }
+
+  /* About / Über mich Mobile Spacing & Typography */
+  .about-section-inner {
+    gap: 2.5rem !important;
+  }
+
+  .about-portrait-wrap {
+    margin-top: 2rem !important;
+  }
+
+  .about-statement {
+    font-size: clamp(1.6rem, 5.8vw, 2.05rem);
+    line-height: 1.32;
+  }
+
+  .about-text-col {
+    gap: 1.15rem !important;
+  }
+
+  .competencies-tabs-container {
+    padding: 0 !important;
+    margin-bottom: 0 !important;
+    border: none !important;
+  }
+
+  .competencies-nav {
+    gap: 0.5rem !important;
+    padding-bottom: 0.25rem !important;
+    border-bottom: none !important;
+  }
+
+  .competency-tab {
+    gap: 0.35rem !important;
+    padding: 0.3rem 0 !important;
+  }
+
+  .comp-tab-title {
+    font-size: 0.76rem !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  .comp-tab-icon {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  .comp-tab-icon svg {
+    width: 10px !important;
+    height: 10px !important;
+  }
+
+  .competency-tab::after {
+    bottom: -0.2rem !important;
+  }
+
+  .competency-panel {
+    padding: 0.75rem 0 0.25rem 0 !important;
+  }
+
+  .competency-panel p {
+    font-size: 0.84rem !important;
+    line-height: 1.6 !important;
+  }
+
+  .about-bio {
+    font-size: clamp(0.9rem, 3.1vw, 0.96rem) !important;
+    line-height: 1.65 !important;
+    color: var(--text-secondary) !important;
+    margin: 0 !important;
+  }
+
+  .about-cv-wrap {
+    margin-top: -0.25rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* --------------------------------------------------------------------------
+     Kontakt Section Mobile Layout & Elementgrößen-Anpassung (No Cards, Pure Editorial)
+     -------------------------------------------------------------------------- */
+  .contact-section {
+    min-height: 100vh !important;
+    min-height: 100svh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    padding: calc(4.5rem + env(safe-area-inset-top, 0px)) 1.4rem calc(1rem + env(safe-area-inset-bottom, 0px)) 1.4rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .contact-section > .reveal-on-scroll {
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+    width: 100% !important;
+  }
+
+  .contact-pre {
+    font-size: 0.58rem !important;
+    letter-spacing: 0.14em !important;
+    margin-bottom: 0.65rem !important;
+    color: var(--text-muted) !important;
+  }
+
+  .contact-huge-link {
+    font-size: clamp(2.2rem, 8.4vw, 2.85rem) !important;
+    line-height: 1.12 !important;
+    letter-spacing: 0.03em !important;
+    margin-bottom: 1.8rem !important;
+    white-space: nowrap !important;
+  }
+
+  .contact-form-container {
+    max-width: 380px !important;
+    margin: 0 auto 1.25rem auto !important;
+    width: 100% !important;
+    background: transparent !important;
+    padding: 0 !important;
+  }
+
+  .contact-form {
+    gap: 1.15rem !important;
+    width: 100% !important;
+  }
+
+  /* 16px Schriftgröße verhindert das automatische Zoom-Verhalten von iOS Safari */
+  .contact-input,
+  .contact-textarea {
+    font-size: 16px !important;
+    line-height: 1.4 !important;
+    padding: 0.65rem 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14) !important;
+    border-radius: 0 !important;
+    color: var(--text-primary) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .contact-input::placeholder,
+  .contact-textarea::placeholder {
+    color: var(--text-muted) !important;
+    font-size: 0.92rem !important;
+  }
+
+  .contact-input:focus,
+  .contact-textarea:focus {
+    border-bottom-color: var(--text-secondary) !important;
+  }
+
+  .contact-textarea {
+    min-height: 80px !important;
+    resize: none !important;
+  }
+
+  .contact-submit-btn {
+    align-self: center !important;
+    margin-top: 0.35rem !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    color: var(--text-secondary) !important;
+    font-size: 0.74rem !important;
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase !important;
+    padding: 0.6rem 1rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.45rem !important;
+    cursor: pointer !important;
+    transition: color 0.3s ease, opacity 0.3s ease !important;
+  }
+
+  .contact-submit-btn:active {
+    color: #ffffff !important;
+  }
+
+  /* Direktkontakte: Dezent, schlank und ohne klobige Boxen */
+  .contact-direct {
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+  }
+
+  .contact-email-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    font-size: 0.82rem !important;
+    color: var(--text-secondary) !important;
+    text-decoration: none !important;
+    border: none !important;
+    outline: none !important;
+    background: transparent !important;
+    padding: 0.25rem 0 !important;
+    transition: color 0.25s ease !important;
+  }
+
+  .contact-email-link svg {
+    color: var(--text-muted) !important;
+    flex-shrink: 0 !important;
+  }
+
+  .contact-email-link:active {
+    color: #ffffff !important;
+  }
+
+  /* Footer-Abschluss: Kleiner, dezent ganz unten */
+  .footer-bottom {
+    margin-top: auto !important;
+    padding-top: 1.8rem !important;
+    padding-bottom: calc(0.6rem + env(safe-area-inset-bottom, 0px)) !important;
+    border-top: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    font-size: 0.56rem !important;
+    letter-spacing: 0.16em !important;
+    text-transform: uppercase !important;
+    color: var(--text-muted) !important;
+    opacity: 0.75 !important;
+    text-align: center !important;
+    line-height: 1.5 !important;
+  }
+
+  .footer-bottom .footer-impressum-link {
+    color: inherit !important;
+    text-decoration: underline !important;
+    text-underline-offset: 3px !important;
   }
 }
 .photo-liquid-reflector { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; pointer-events: none; z-index: 3; opacity: 0; transition: opacity 0.5s ease; } .photo-liquid-reflector.is-active { opacity: 1; }
 .photo-liquid-reflector canvas { width: 100%; height: 100%; display: block; }
 body:has(#cinema-modal.open) .photo-liquid-reflector { opacity: 0 !important; visibility: hidden; transition: none; }
+@media (max-width: 768px) {
+  .photo-liquid-reflector { display: none !important; }
+}
 
 
 
@@ -5200,3 +6491,12 @@ body:has(#cinema-modal.open) .photo-liquid-reflector { opacity: 0 !important; vi
 
 
 
+
+
+/* Utility classes for responsive grid balancing */
+@media (min-width: 1101px) {
+  .hide-on-desktop { display: none !important; }
+}
+@media (max-width: 768px) {
+  .hide-on-mobile { display: none !important; }
+}

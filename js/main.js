@@ -177,6 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initLenis();
         initScrollFeatures();
         initBouncyTabsNav();
+        initMobileNav();
         if (typeof updateSectionBounds === 'function') {
           updateSectionBounds();
         }
@@ -420,11 +421,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateNavHeaderVisibility(scrollPos) {
     if (!navHeader) return;
+    if (document.body.classList.contains('cinema-modal-open') || (cinemaModal && cinemaModal.classList.contains('open'))) {
+      navHeader.classList.remove('is-visible');
+      return;
+    }
     const currentScroll = typeof scrollPos === 'number'
       ? scrollPos
       : (window.scrollY || document.documentElement.scrollTop || (typeof lenis !== 'undefined' && lenis ? lenis.scroll : 0) || 0);
 
-    // Only reveal when scrolled below the intro section (entering section 01 BMW)
+    const isMobile = window.innerWidth <= 768;
+
+    if (isMobile) {
+      if (!isNavHeaderVisible) {
+        isNavHeaderVisible = true;
+        navHeader.classList.add('is-visible');
+      }
+      const navBrand = navHeader.querySelector('.nav-brand');
+      if (navBrand) {
+        navBrand.style.opacity = '0.9';
+        navBrand.style.pointerEvents = 'auto';
+      }
+      return;
+    }
+
+    const navBrand = navHeader.querySelector('.nav-brand');
+    if (navBrand && navBrand.style.opacity) {
+      navBrand.style.opacity = '';
+      navBrand.style.pointerEvents = '';
+    }
+
+    // Desktop logic: Only reveal when scrolled below the intro section (entering section 01 BMW)
     const heroHeight = heroSection ? heroSection.offsetHeight : window.innerHeight;
     const revealThreshold = heroHeight - 100;
     const hideThreshold = heroHeight - 180;
@@ -451,11 +477,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, { passive: true });
 
+  window.addEventListener('resize', () => {
+    updateNavHeaderVisibility();
+  }, { passive: true });
+
   // --------------------------------------------------------------------------
   // Bouncy Tabs Navigation Controller (Ghost Hover & Elastic Spring Indicator)
   // --------------------------------------------------------------------------
   let updateBouncyTabsIndicator = () => {};
   let syncBouncyTabsToSection = () => {};
+  let syncMobileNavToSection = () => {};
   let updateActiveSection = () => {};
   let currentActiveSectionId = null;
   let performSmoothNavigation = () => {};
@@ -680,6 +711,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (activeBtn) activeBtn.removeAttribute('data-active');
         indicator.style.opacity = '0';
       }
+
+      // Synchronize mobile FAB button indicator & drawer highlights
+      syncMobileNavToSection(sectionId);
     };
     updateBouncyTabsIndicator = function(animate = false) {
       const activeBtn = nav.querySelector('[data-bouncy-tabs-button][data-active]');
@@ -703,6 +737,153 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setTimeout(() => updateBouncyTabsIndicator(false), 300);
     setTimeout(() => updateBouncyTabsIndicator(false), 1200);
+  }
+
+  // --------------------------------------------------------------------------
+  // Mobile Navigation Drawer & FAB Controller (Framer Aesthetic & Active Section Tracker)
+  // --------------------------------------------------------------------------
+  const MOBILE_SECTION_MAP = {
+    hero: { count: '[01]', short: 'Home', full: 'Home', id: 'hero' },
+    intro: { count: '[01]', short: 'Home', full: 'Home', id: 'hero' },
+    cgi: { count: '[02]', short: '3D & CGI', full: '3D & CGI', id: 'cgi' },
+    bmw: { count: '[02]', short: '3D & CGI', full: '3D & CGI', id: 'cgi' },
+    work: { count: '[02]', short: '3D & CGI', full: '3D & CGI', id: 'cgi' },
+    film: { count: '[03]', short: 'Film', full: 'Film', id: 'film' },
+    fotografie: { count: '[04]', short: 'Fotografie', full: 'Fotografie', id: 'fotografie' },
+    kunst: { count: '[05]', short: 'Kunst', full: 'Kunst', id: 'kunst' },
+    uni: { count: '[06]', short: 'Uni-Projekte', full: 'Uni-Projekte', id: 'uni' },
+    'thd-app': { count: '[06]', short: 'Uni-Projekte', full: 'Uni-Projekte', id: 'uni' },
+    about: { count: '[07]', short: 'Über mich', full: 'Über mich', id: 'about' },
+    approach: { count: '[07]', short: 'Über mich', full: 'Über mich', id: 'about' },
+    kontakt: { count: '[08]', short: 'Kontakt', full: 'Kontakt', id: 'kontakt' }
+  };
+
+  syncMobileNavToSection = function(rawSectionId) {
+    const fabCount = document.getElementById('mobile-fab-count');
+    const fabLabel = document.getElementById('mobile-fab-label');
+    const overlay = document.getElementById('mobile-nav-overlay');
+
+    const info = MOBILE_SECTION_MAP[rawSectionId] || { count: '[01]', short: 'Home', full: 'Home', id: 'hero' };
+    if (fabCount) fabCount.textContent = info.count;
+    if (fabLabel) fabLabel.textContent = info.short;
+
+    if (overlay) {
+      const items = overlay.querySelectorAll('.mobile-nav-item');
+      items.forEach((item) => {
+        const itemSec = item.getAttribute('data-section');
+        const isMatch = (itemSec === info.id);
+        if (isMatch) {
+          item.setAttribute('data-highlight', 'true');
+          item.classList.add('is-active');
+        } else {
+          item.setAttribute('data-highlight', 'false');
+          item.classList.remove('is-active');
+        }
+      });
+    }
+  };
+
+  function initMobileNav() {
+    const fabBtn = document.getElementById('mobile-nav-fab');
+    const overlay = document.getElementById('mobile-nav-overlay');
+    const closeBtn = document.getElementById('mobile-nav-close');
+    if (!fabBtn || !overlay) return;
+
+    let isMenuOpen = false;
+
+    function openMobileMenu() {
+      if (isMenuOpen) return;
+      isMenuOpen = true;
+      document.body.classList.add('mobile-nav-open');
+      fabBtn.classList.add('is-open');
+      fabBtn.setAttribute('aria-expanded', 'true');
+      fabBtn.setAttribute('aria-label', 'Menü schließen');
+      overlay.classList.add('is-open');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      if (typeof updateNavHeaderVisibility === 'function') {
+        updateNavHeaderVisibility();
+      }
+      if (typeof lenis !== 'undefined' && lenis) {
+        lenis.stop();
+      }
+    }
+
+    function closeMobileMenu() {
+      if (!isMenuOpen) return;
+      isMenuOpen = false;
+      document.body.classList.remove('mobile-nav-open');
+      fabBtn.classList.remove('is-open');
+      fabBtn.setAttribute('aria-expanded', 'false');
+      fabBtn.setAttribute('aria-label', 'Menü öffnen');
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (typeof updateNavHeaderVisibility === 'function') {
+        updateNavHeaderVisibility();
+      }
+      if (typeof lenis !== 'undefined' && lenis) {
+        lenis.start();
+      }
+    }
+
+    function toggleMobileMenu() {
+      if (isMenuOpen) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
+    }
+
+    fabBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleMobileMenu();
+    });
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeMobileMenu();
+      });
+    }
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay || e.target.classList.contains('mobile-nav-backdrop') || e.target.classList.contains('mobile-nav-container')) {
+        closeMobileMenu();
+      }
+    });
+
+    const navLinks = overlay.querySelectorAll('.mobile-nav-link');
+    navLinks.forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = link.getAttribute('href');
+        if (!href || !href.startsWith('#')) return;
+
+        const targetId = href.substring(1);
+        closeMobileMenu();
+        syncMobileNavToSection(targetId);
+        if (typeof syncBouncyTabsToSection === 'function') {
+          syncBouncyTabsToSection(targetId, true);
+        }
+        if (typeof performSmoothNavigation === 'function') {
+          setTimeout(() => {
+            performSmoothNavigation(targetId);
+          }, 60);
+        }
+      });
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isMenuOpen) {
+        closeMobileMenu();
+      }
+    });
+
+    // Initial section state
+    syncMobileNavToSection('hero');
   }
 
   // Kick off sequence
@@ -888,22 +1069,26 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Scroll Reveal Animations (Replays smoothly on scrolling up and down)
+    // Scroll Reveal Animations (Replays smoothly on scrolling up and down without top-edge feedback loops)
     const revealElements = document.querySelectorAll('.reveal-on-scroll');
     if ('IntersectionObserver' in window && revealElements.length > 0) {
       const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting || entry.boundingClientRect.bottom < 0) {
             entry.target.classList.add('is-visible');
           } else {
-            // Re-arm animation when scrolled out of view
-            entry.target.classList.remove('is-visible');
+            // ONLY re-arm if the element has scrolled completely BELOW the bottom of the viewport!
+            // NEVER remove is-visible when an element is at or above the top edge, preventing infinite transform feedback loops.
+            const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 800;
+            if (entry.boundingClientRect.top >= viewportHeight - 20) {
+              entry.target.classList.remove('is-visible');
+            }
           }
         });
       }, {
         root: null,
         threshold: 0.05,
-        rootMargin: '0px 0px -40px 0px'
+        rootMargin: '0px 0px -30px 0px'
       });
 
       revealElements.forEach((el) => revealObserver.observe(el));
@@ -925,16 +1110,25 @@ document.addEventListener('DOMContentLoaded', () => {
       const scrollY = window.scrollY || document.documentElement.scrollTop || (typeof lenis !== 'undefined' && lenis ? lenis.scroll : 0) || 0;
       const windowH = window.innerHeight;
 
-      // 1. Hero Dynamic Depth Shift (Video moves down gently, Content moves up and dissolves)
+      // 1. Hero Dynamic Depth Shift (Desktop: Video moves down, Content moves up; Mobile: Calm fade without transform shifts)
       if (heroSection) {
+        const isMobile = window.innerWidth <= 768;
         const heroHeight = heroSection.offsetHeight || windowH;
         if (scrollY <= heroHeight * 1.15) {
           if (heroVideoEl) {
-            heroVideoEl.style.transform = `translate3d(0, ${(scrollY * 0.32).toFixed(1)}px, 0)`;
+            if (!isMobile) {
+              heroVideoEl.style.transform = `translate3d(0, ${(scrollY * 0.32).toFixed(1)}px, 0)`;
+            } else if (heroVideoEl.style.transform) {
+              heroVideoEl.style.transform = '';
+            }
           }
           if (heroContentEl) {
-            const fade = Math.max(0, 1 - (scrollY / (heroHeight * 0.72)));
-            heroContentEl.style.transform = `translate3d(0, ${(-scrollY * 0.18).toFixed(1)}px, 0)`;
+            const fade = Math.max(0, 1 - (scrollY / (heroHeight * (isMobile ? 0.65 : 0.72))));
+            if (!isMobile) {
+              heroContentEl.style.transform = `translate3d(0, ${(-scrollY * 0.18).toFixed(1)}px, 0)`;
+            } else if (heroContentEl.style.transform) {
+              heroContentEl.style.transform = '';
+            }
             heroContentEl.style.opacity = fade.toFixed(3);
           }
         }
@@ -1152,6 +1346,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cinemaModal) {
       cinemaModal.classList.add('open');
       document.body.style.overflow = 'hidden';
+      document.body.classList.add('cinema-modal-open');
       if (lenis) lenis.stop();
     }
   }
@@ -1253,6 +1448,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cinemaModal) {
       cinemaModal.classList.add('open');
       document.body.style.overflow = 'hidden';
+      document.body.classList.add('cinema-modal-open');
       if (lenis) lenis.stop();
     }
   }
@@ -1262,7 +1458,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cinemaModal) {
       cinemaModal.classList.remove('open');
       document.body.style.overflow = '';
+      document.body.classList.remove('cinema-modal-open');
       if (lenis) lenis.start();
+      if (typeof updateNavHeaderVisibility === 'function') {
+        updateNavHeaderVisibility();
+      }
     }
     if (modalVideo) {
       modalVideo.pause();
@@ -2162,8 +2362,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   if (docPageDisplay) {
-    docPageDisplay.addEventListener('click', () => {
-      openCinemaDoc(currentDocKey, currentDocPageIndex);
+    let touchStartX = 0;
+    let touchEndX = 0;
+    let isSwiping = false;
+
+    docPageDisplay.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      isSwiping = false;
+    }, { passive: true });
+
+    docPageDisplay.addEventListener('touchmove', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (Math.abs(touchEndX - touchStartX) > 15) {
+        isSwiping = true;
+      }
+    }, { passive: true });
+
+    docPageDisplay.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchStartX - touchEndX > 40) {
+        // Swipe left -> Next page
+        renderDocPage(currentDocPageIndex + 1);
+      } else if (touchEndX - touchStartX > 40) {
+        // Swipe right -> Prev page
+        renderDocPage(currentDocPageIndex - 1);
+      }
+    });
+
+    docPageDisplay.addEventListener('click', (e) => {
+      if (!isSwiping) {
+        openCinemaDoc(currentDocKey, currentDocPageIndex);
+      }
     });
   }
   if (docLongboardDisplay) {
@@ -2261,17 +2490,19 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.target.closest('.control-dossier-link')) return;
       
       const uniSection = document.getElementById('uni');
-      if (uniSection && window.innerWidth > 1024) {
-        const top = uniSection.getBoundingClientRect().top + window.scrollY;
-        const targetScroll = top + ((index + 0.1) / controlItems.length) * (uniSection.offsetHeight - window.innerHeight);
-        if (typeof lenis !== 'undefined' && lenis) {
-           lenis.scrollTo(targetScroll, { duration: 1.0 });
-        } else {
-           window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+      if (uniSection) {
+        const totalScrollable = uniSection.offsetHeight - window.innerHeight;
+        if (totalScrollable > 50) {
+          const top = uniSection.getBoundingClientRect().top + window.scrollY;
+          const targetScroll = top + ((index + 0.15) / controlItems.length) * totalScrollable;
+          if (typeof lenis !== 'undefined' && lenis) {
+             lenis.scrollTo(targetScroll, { duration: 0.75 });
+          } else {
+             window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+          }
         }
-      } else {
-        setActiveDocItem(index);
       }
+      setActiveDocItem(index);
     });
   });
 
@@ -2295,20 +2526,59 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // On mobile: Clicking on the active project description opens Fullscreen Cinema
+  const uniControlsPanel = document.querySelector('.uni-controls-panel');
+  if (uniControlsPanel) {
+    let descTouchStartX = 0;
+    let descTouchStartY = 0;
+    let descTouchMoved = false;
+
+    uniControlsPanel.addEventListener('touchstart', (e) => {
+      if (e.touches && e.touches.length > 0) {
+        descTouchStartX = e.touches[0].clientX;
+        descTouchStartY = e.touches[0].clientY;
+        descTouchMoved = false;
+      }
+    }, { passive: true });
+
+    uniControlsPanel.addEventListener('touchmove', (e) => {
+      if (e.touches && e.touches.length > 0) {
+        const diffX = Math.abs(e.touches[0].clientX - descTouchStartX);
+        const diffY = Math.abs(e.touches[0].clientY - descTouchStartY);
+        if (diffX > 8 || diffY > 8) {
+          descTouchMoved = true;
+        }
+      }
+    }, { passive: true });
+
+    uniControlsPanel.addEventListener('click', (e) => {
+      // Don't intercept PDF download links or paddle buttons
+      if (e.target.closest('.control-dossier-link')) return;
+      if (e.target.closest('.paddlenav-button')) return;
+      if (descTouchMoved) return;
+
+      // Das Öffnen des Bildes im Vollbild beim Klick auf den Text wurde deaktiviert.
+      // Stattdessen wird nun der Text aufgeklappt (falls er abgeschnitten war).
+      const activeTextBody = document.querySelector('.control-item.active .typography-all-access-pass-pv-item-body');
+      if (activeTextBody) {
+        activeTextBody.classList.toggle('is-expanded');
+      }
+    });
+  }
+
   // Initialize with layout
   setActiveDocItem(0);
 
-  // Scroll-Driven Accordion Logic
+  // Scroll-Driven Accordion & Document Switching Logic (Desktop & Mobile)
   const uniSection = document.getElementById('uni');
   if (uniSection) {
     function updateUniScroll() {
       const rect = uniSection.getBoundingClientRect();
-      const start = 0;
       const end = rect.height - window.innerHeight;
       const scrolled = -rect.top;
 
-      if (window.innerWidth > 1024) {
-        if (scrolled >= 0 && scrolled <= end && end > 0) {
+      if (end > 50) {
+        if (scrolled >= 0 && scrolled <= end) {
           let progress = scrolled / end;
           let numItems = controlItems.length;
           let index = Math.floor(progress * numItems);
@@ -2321,7 +2591,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (scrolled < 0) {
           const currentIndex = controlItems.findIndex(el => el.classList.contains('active'));
           if (currentIndex !== 0) setActiveDocItem(0);
-        } else if (scrolled > end && end > 0) {
+        } else if (scrolled > end) {
           const currentIndex = controlItems.findIndex(el => el.classList.contains('active'));
           if (currentIndex !== controlItems.length - 1) setActiveDocItem(controlItems.length - 1);
         }
@@ -2442,6 +2712,32 @@ document.addEventListener('DOMContentLoaded', () => {
     cinemaModal.addEventListener('click', (e) => {
       if (e.target === cinemaModal) closeCinemaModal();
     });
+
+    // Touch Swipe navigation for Modal on mobile
+    let modalTouchStartX = 0;
+    let modalTouchStartY = 0;
+    cinemaModal.addEventListener('touchstart', (e) => {
+      if (e.touches.length !== 1) return;
+      modalTouchStartX = e.touches[0].clientX;
+      modalTouchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    cinemaModal.addEventListener('touchend', (e) => {
+      if (!cinemaModal.classList.contains('open') || !e.changedTouches || e.changedTouches.length !== 1) return;
+      const touchEndX = e.changedTouches[0].clientX;
+      const touchEndY = e.changedTouches[0].clientY;
+      const diffX = touchEndX - modalTouchStartX;
+      const diffY = touchEndY - modalTouchStartY;
+      if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
+        if (diffX < 0) {
+          // Swipe left -> Next item
+          showGalleryItem(activeDocCinema ? activeDocCinema.pageIndex + 1 : currentGalleryIndex + 1);
+        } else {
+          // Swipe right -> Previous item
+          showGalleryItem(activeDocCinema ? activeDocCinema.pageIndex - 1 : currentGalleryIndex - 1);
+        }
+      }
+    }, { passive: true });
   }
 
   window.addEventListener('keydown', (e) => {
@@ -2842,17 +3138,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('mouseup', endDrag);
 
-    // Touch Swipe events
+    // Touch Swipe events with directional scroll locking
     let touchStartX = 0;
     let touchStartY = 0;
     let touchLastX = 0;
     let touchLastY = 0;
+    let touchIntent = null; // 'horizontal' | 'vertical' | null
 
     viewport.addEventListener('touchstart', (e) => {
       if (e.touches.length !== 1) return;
       stopMomentum();
       isDown = true;
       hasDragged = false;
+      touchIntent = null;
       touchStartX = e.touches[0].pageX;
       touchStartY = e.touches[0].pageY;
       touchLastX = touchStartX;
@@ -2869,14 +3167,27 @@ document.addEventListener('DOMContentLoaded', () => {
       const currentTouchY = e.touches[0].pageY;
       touchLastX = currentTouchX;
       touchLastY = currentTouchY;
-      const diffX = currentTouchX - touchStartX;
-      const totalTouchDist = Math.hypot(currentTouchX - touchStartX, currentTouchY - touchStartY);
 
-      if (totalTouchDist > 12) {
+      const diffX = currentTouchX - touchStartX;
+      const diffY = currentTouchY - touchStartY;
+
+      // Determine intent early: horizontal carousel swipe vs vertical page scroll
+      if (!touchIntent) {
+        const absX = Math.abs(diffX);
+        const absY = Math.abs(diffY);
+        if (absX > 6 || absY > 6) {
+          touchIntent = absX >= absY ? 'horizontal' : 'vertical';
+        }
+      }
+
+      // If vertical scroll, let native page scroll happen without interfering
+      if (touchIntent === 'vertical') {
+        return;
+      }
+
+      if (touchIntent === 'horizontal' && Math.abs(diffX) > 8) {
         hasDragged = true;
         viewport.classList.add('is-dragging');
-      }
-      if (hasDragged) {
         viewport.scrollLeft = scrollLeftStart - diffX;
         updateParallaxAndUI();
         const now = performance.now();
@@ -2893,10 +3204,15 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!isDown) return;
       isDown = false;
       viewport.classList.remove('is-dragging');
-      const totalDist = Math.hypot(touchLastX - touchStartX, touchLastY - touchStartY);
-      if (totalDist <= 12) {
+      const wasHorizontal = touchIntent === 'horizontal';
+      touchIntent = null;
+
+      if (!wasHorizontal || !hasDragged) {
         hasDragged = false;
-      } else if (hasDragged && Math.abs(velocity) > 0.15) {
+        return;
+      }
+
+      if (Math.abs(velocity) > 0.12) {
         startMomentum();
         setTimeout(() => {
           hasDragged = false;
@@ -2906,6 +3222,13 @@ document.addEventListener('DOMContentLoaded', () => {
           hasDragged = false;
         }, 120);
       }
+    }, { passive: true });
+
+    viewport.addEventListener('touchcancel', () => {
+      isDown = false;
+      hasDragged = false;
+      touchIntent = null;
+      viewport.classList.remove('is-dragging');
     }, { passive: true });
 
     // Dedicated Click Handler for Parallax Cards
@@ -3298,6 +3621,67 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 50);
     });
   });
+
+  // --------------------------------------------------------------------------
+  // Competencies Tabs & Drawer (3D & CGI, Fotografie, Film, Kunst)
+  // Single active selection, manual click only (no auto-scroll unfold)
+  // --------------------------------------------------------------------------
+  function initCompetenciesAccordion() {
+    const tabs = Array.from(document.querySelectorAll('.competency-tab'));
+    const drawer = document.getElementById('competencies-drawer');
+    const panels = Array.from(document.querySelectorAll('.competency-panel'));
+    if (tabs.length === 0 || !drawer || panels.length === 0) return;
+
+    let activeCategory = null;
+
+    const setCategory = (category) => {
+      if (activeCategory === category) {
+        // Active item clicked again -> close it
+        activeCategory = null;
+      } else {
+        // Only one active at a time
+        activeCategory = category;
+      }
+
+      // Update tabs state
+      tabs.forEach((tab) => {
+        const isCurrent = tab.getAttribute('data-category') === activeCategory;
+        tab.classList.toggle('is-active', isCurrent);
+        tab.setAttribute('aria-expanded', isCurrent ? 'true' : 'false');
+      });
+
+      // Update drawer and panels
+      if (activeCategory) {
+        panels.forEach((panel) => {
+          const isCurrent = panel.getAttribute('data-category') === activeCategory;
+          panel.classList.toggle('is-active', isCurrent);
+        });
+        drawer.classList.add('is-open');
+      } else {
+        drawer.classList.remove('is-open');
+        // Clean up panels when drawer fully closed
+        setTimeout(() => {
+          if (!activeCategory) {
+            panels.forEach((panel) => panel.classList.remove('is-active'));
+          }
+        }, 400);
+      }
+    };
+
+    tabs.forEach((tab) => {
+      const handleTrigger = (e) => {
+        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+        e.preventDefault();
+        const category = tab.getAttribute('data-category');
+        setCategory(category);
+      };
+
+      tab.addEventListener('click', handleTrigger);
+      tab.addEventListener('keydown', handleTrigger);
+    });
+  }
+
+  initCompetenciesAccordion();
 });
 
 
