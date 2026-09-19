@@ -1330,33 +1330,34 @@ document.addEventListener('DOMContentLoaded', () => {
   function showModalImageWithPlaceholder(src, triggerEl) {
     if (!modalImage) return;
 
-    // Try to read the aspect ratio from the already-loaded thumbnail
-    let ratioStr = '16 / 9';
+    // Use a pure decimal ratio to avoid CSS calc() parsing issues across browsers
+    let ratioNum = 16 / 9; // 1.7778
     if (triggerEl) {
       const thumb = triggerEl.querySelector('img');
       if (thumb && thumb.naturalWidth > 0 && thumb.naturalHeight > 0) {
-        ratioStr = `${thumb.naturalWidth} / ${thumb.naturalHeight}`;
+        ratioNum = thumb.naturalWidth / thumb.naturalHeight;
       }
     }
 
-    // Show placeholder with the known aspect ratio
     if (modalImagePlaceholder) {
-      modalImagePlaceholder.style.setProperty('--placeholder-ratio', ratioStr);
+      modalImagePlaceholder.style.setProperty('--placeholder-ratio', ratioNum.toFixed(5));
       modalImagePlaceholder.style.display = 'block';
     }
 
-    // Keep image out of flex flow but still visible to the browser so it loads
-    modalImage.style.position = 'absolute';
-    modalImage.style.opacity = '0';
-    modalImage.style.pointerEvents = 'none';
+    // Load the image but keep it invisible and out of flow
+    // Using visibility: hidden + position: absolute ensures it doesn't push the text
     modalImage.style.display = 'block';
+    modalImage.style.position = 'absolute';
+    modalImage.style.visibility = 'hidden';
+    modalImage.style.pointerEvents = 'none';
     modalImage.src = src;
 
     const onLoad = () => {
-      // Restore normal flow and reveal the image
+      // Restore normal flow and reveal
       modalImage.style.position = '';
-      modalImage.style.opacity = '';
+      modalImage.style.visibility = '';
       modalImage.style.pointerEvents = '';
+      
       if (modalImagePlaceholder) {
         modalImagePlaceholder.style.display = 'none';
       }
@@ -1431,12 +1432,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const modalStage = cinemaModal ? cinemaModal.querySelector('.modal-content-stage') : null;
-    if (modalStage) {
-      modalStage.classList.add('media-loading');
-      modalStage.classList.remove('media-loaded');
-    }
 
     if (type === 'video') {
+      if (modalStage) {
+        modalStage.classList.add('media-loading');
+        modalStage.classList.remove('media-loaded');
+      }
       if (modalPdf) { modalPdf.style.display = 'none'; modalPdf.src = ''; }
       if (modalImage) modalImage.style.display = 'none';
       if (modalImagePlaceholder) modalImagePlaceholder.style.display = 'none';
@@ -1478,6 +1479,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (lbl) lbl.textContent = 'Ton aus';
       });
     } else {
+      if (modalStage) {
+        // We use our new custom placeholder for images, so clear the global stage loading state
+        modalStage.classList.remove('media-loading');
+        modalStage.classList.add('media-loaded');
+      }
       if (modalVideo) { modalVideo.pause(); modalVideo.style.display = 'none'; modalVideo.src = ''; }
       if (modalPdf) { modalPdf.style.display = 'none'; modalPdf.src = ''; }
       showModalImageWithPlaceholder(src, item);
@@ -1504,21 +1510,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (modalVideo) {
       modalVideo.pause();
-      modalVideo.src = '';
     }
-    if (modalImage) {
-      modalImage.src = '';
-      modalImage.style.position = '';
-      modalImage.style.opacity = '';
-      modalImage.style.pointerEvents = '';
-    }
-    if (modalImagePlaceholder) {
-      modalImagePlaceholder.style.display = 'none';
-    }
-    if (modalPdf) {
-      modalPdf.src = '';
-      modalPdf.style.display = 'none';
-    }
+    // Warten bis der 0.35s Fade-Out abgeschlossen ist, damit das Bild/Placeholder nicht vorzeitig
+    // auf 0x0 kollabiert und der Text während des Ausblendens in die Mitte springt.
+    setTimeout(() => {
+      if (cinemaModal && cinemaModal.classList.contains('open')) return;
+      if (modalVideo) {
+        modalVideo.src = '';
+      }
+      if (modalImage) {
+        modalImage.src = '';
+        modalImage.style.position = '';
+        modalImage.style.visibility = '';
+        modalImage.style.pointerEvents = '';
+      }
+      if (modalImagePlaceholder) {
+        modalImagePlaceholder.style.display = 'none';
+      }
+      if (modalPdf) {
+        modalPdf.src = '';
+        modalPdf.style.display = 'none';
+      }
+    }, 380);
   }
 
   function showGalleryItem(index) {

@@ -5011,29 +5011,32 @@ body:has(#cinema-modal.open) .nav-header {
   position: absolute;
   top: 2rem;
   right: 2.5rem;
-  width: 44px;
-  height: 44px;
-  border-radius: 999px;
-  background: rgba(26, 26, 26, 0.65);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  width: 48px;
+  height: 48px;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
   color: #ffffff;
+  opacity: 0.65;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.25s ease, transform 0.25s ease;
+  transition: opacity 0.2s ease;
   z-index: 1010;
   cursor: pointer;
+  padding: 0;
 }
 
 .modal-close-btn:hover {
-  background: rgba(255, 255, 255, 0.22);
-  transform: scale(1.08);
+  background: transparent !important;
+  color: #ffffff;
+  opacity: 1;
   border: none !important;
   box-shadow: none !important;
+  transform: none !important;
 }
 
 .modal-content-stage {
