@@ -1310,6 +1310,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalCloseBtn = document.getElementById('modal-close-btn');
   const modalVideo = document.getElementById('modal-video');
   const modalImage = document.getElementById('modal-image');
+  const modalImagePlaceholder = document.getElementById('modal-image-placeholder');
   const modalPdf = document.getElementById('modal-pdf');
   const modalTitle = document.getElementById('modal-title');
   const modalMeta = document.getElementById('modal-meta');
@@ -1319,6 +1320,59 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentGallery = [];
   let currentGalleryIndex = 0;
   let activeDocCinema = null;
+
+  /**
+   * Show skeleton placeholder while the modal image loads.
+   * Sets the real image src immediately (hidden behind the placeholder),
+   * polls for naturalWidth to update the aspect ratio early, and hides
+   * the placeholder once the image fully loads.
+   */
+  function showModalImageWithPlaceholder(src) {
+    if (!modalImage) return;
+
+    // Show placeholder with a default aspect ratio
+    if (modalImagePlaceholder) {
+      modalImagePlaceholder.style.setProperty('--placeholder-ratio', '16 / 9');
+      modalImagePlaceholder.style.display = 'block';
+    }
+
+    // Set source on the real image but keep it invisible until loaded
+    modalImage.style.display = 'block';
+    modalImage.style.opacity = '0';
+    modalImage.src = src;
+
+    // Poll for dimensions so the placeholder matches the real aspect ratio
+    // as soon as image metadata arrives (before full decode)
+    let dimensionPoll = null;
+    if (modalImagePlaceholder) {
+      dimensionPoll = setInterval(() => {
+        if (modalImage.naturalWidth > 0 && modalImage.naturalHeight > 0) {
+          modalImagePlaceholder.style.setProperty(
+            '--placeholder-ratio',
+            `${modalImage.naturalWidth} / ${modalImage.naturalHeight}`
+          );
+          clearInterval(dimensionPoll);
+          dimensionPoll = null;
+        }
+      }, 30);
+    }
+
+    const onLoad = () => {
+      if (dimensionPoll) clearInterval(dimensionPoll);
+      // Reveal the real image and hide the placeholder
+      modalImage.style.opacity = '';
+      if (modalImagePlaceholder) {
+        modalImagePlaceholder.style.display = 'none';
+      }
+      modalImage.removeEventListener('load', onLoad);
+    };
+
+    if (modalImage.complete && modalImage.naturalWidth > 0) {
+      onLoad();
+    } else {
+      modalImage.addEventListener('load', onLoad);
+    }
+  }
 
   function openCinemaDoc(docKey, pageIndex) {
     const doc = DOC_REGISTRY[docKey];
@@ -1338,10 +1392,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (modalVideo) { modalVideo.pause(); modalVideo.style.display = 'none'; modalVideo.src = ''; }
     if (modalPdf) { modalPdf.style.display = 'none'; modalPdf.src = ''; }
-    if (modalImage) {
-      modalImage.style.display = 'block';
-      modalImage.src = doc.pages[pageIndex];
-    }
+    showModalImageWithPlaceholder(doc.pages[pageIndex]);
 
     if (modalPrev && modalNext) {
       modalPrev.style.display = doc.pages.length > 1 ? 'flex' : 'none';
@@ -1383,7 +1434,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    const modalStage = cinemaModal ? cinemaModal.querySelector('.modal-stage') : null;
+    const modalStage = cinemaModal ? cinemaModal.querySelector('.modal-content-stage') : null;
     if (modalStage) {
       modalStage.classList.add('media-loading');
       modalStage.classList.remove('media-loaded');
@@ -1392,6 +1443,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (type === 'video') {
       if (modalPdf) { modalPdf.style.display = 'none'; modalPdf.src = ''; }
       if (modalImage) modalImage.style.display = 'none';
+      if (modalImagePlaceholder) modalImagePlaceholder.style.display = 'none';
       if (modalVideo) {
         modalVideo.style.display = 'block';
         modalVideo.src = src;
@@ -1432,22 +1484,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       if (modalVideo) { modalVideo.pause(); modalVideo.style.display = 'none'; modalVideo.src = ''; }
       if (modalPdf) { modalPdf.style.display = 'none'; modalPdf.src = ''; }
-      if (modalImage) {
-        modalImage.style.display = 'block';
-        modalImage.src = src;
-        const onModalImgLoad = () => {
-          if (modalStage) {
-            modalStage.classList.remove('media-loading');
-            modalStage.classList.add('media-loaded');
-          }
-          modalImage.removeEventListener('load', onModalImgLoad);
-        };
-        if (modalImage.complete && modalImage.naturalWidth > 0) {
-          onModalImgLoad();
-        } else {
-          modalImage.addEventListener('load', onModalImgLoad);
-        }
-      }
+      showModalImageWithPlaceholder(src);
     }
 
     if (cinemaModal) {
@@ -1475,6 +1512,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (modalImage) {
       modalImage.src = '';
+      modalImage.style.opacity = '';
+    }
+    if (modalImagePlaceholder) {
+      modalImagePlaceholder.style.display = 'none';
     }
     if (modalPdf) {
       modalPdf.src = '';
