@@ -2471,6 +2471,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const activeItem = controlItems[targetIndex];
     const key = activeItem.getAttribute('data-pdf-key');
 
+    const currentlyActiveIdx = controlItems.findIndex(el => el.classList.contains('active'));
+    if (currentlyActiveIdx === targetIndex && currentDocKey === key) return;
+
     controlItems.forEach((item, idx) => {
       const isActive = idx === targetIndex;
       item.classList.toggle('active', isActive);
@@ -2484,25 +2487,47 @@ document.addEventListener('DOMContentLoaded', () => {
     rebuildDocViewer(key);
   }
 
+  let isProgrammaticScroll = false;
+  let programmaticScrollTimer = null;
+
+  function goToDocIndex(index) {
+    if (index < 0 || index >= controlItems.length) return;
+
+    setActiveDocItem(index);
+
+    isProgrammaticScroll = true;
+    if (programmaticScrollTimer) clearTimeout(programmaticScrollTimer);
+
+    const uniSection = document.getElementById('uni');
+    if (uniSection) {
+      const totalScrollable = uniSection.offsetHeight - window.innerHeight;
+      if (totalScrollable > 50) {
+        const top = uniSection.getBoundingClientRect().top + window.scrollY;
+        // Position dead-center in the target document's slot
+        const targetScroll = top + ((index + 0.5) / controlItems.length) * totalScrollable;
+        if (typeof lenis !== 'undefined' && lenis) {
+          lenis.scrollTo(targetScroll, {
+            duration: 0.5,
+            onComplete: () => {
+              isProgrammaticScroll = false;
+            }
+          });
+        } else {
+          window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+        }
+      }
+    }
+
+    programmaticScrollTimer = setTimeout(() => {
+      isProgrammaticScroll = false;
+    }, 600);
+  }
+
   controlItems.forEach((item, index) => {
     item.addEventListener('click', (e) => {
       // Don't intercept clicks on download links
       if (e.target.closest('.control-dossier-link')) return;
-      
-      const uniSection = document.getElementById('uni');
-      if (uniSection) {
-        const totalScrollable = uniSection.offsetHeight - window.innerHeight;
-        if (totalScrollable > 50) {
-          const top = uniSection.getBoundingClientRect().top + window.scrollY;
-          const targetScroll = top + ((index + 0.15) / controlItems.length) * totalScrollable;
-          if (typeof lenis !== 'undefined' && lenis) {
-             lenis.scrollTo(targetScroll, { duration: 0.75 });
-          } else {
-             window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-          }
-        }
-      }
-      setActiveDocItem(index);
+      goToDocIndex(index);
     });
   });
 
@@ -2511,7 +2536,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.stopPropagation();
       const currentIndex = controlItems.findIndex(el => el.classList.contains('active'));
       if (currentIndex > 0) {
-        controlItems[currentIndex - 1].click();
+        goToDocIndex(currentIndex - 1);
       }
     });
   }
@@ -2521,7 +2546,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.stopPropagation();
       const currentIndex = controlItems.findIndex(el => el.classList.contains('active'));
       if (currentIndex >= 0 && currentIndex < controlItems.length - 1) {
-        controlItems[currentIndex + 1].click();
+        goToDocIndex(currentIndex + 1);
       }
     });
   }
@@ -2613,6 +2638,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const uniSection = document.getElementById('uni');
   if (uniSection) {
     function updateUniScroll() {
+      if (isProgrammaticScroll) return;
       const rect = uniSection.getBoundingClientRect();
       const end = rect.height - window.innerHeight;
       const scrolled = -rect.top;
