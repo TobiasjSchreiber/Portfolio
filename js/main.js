@@ -1323,16 +1323,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /**
    * Show skeleton placeholder while the modal image loads.
-   * Sets the real image src immediately (hidden behind the placeholder),
-   * polls for naturalWidth to update the aspect ratio early, and hides
-   * the placeholder once the image fully loads.
+   * @param {string} src – full-res image URL
+   * @param {Element} [triggerEl] – the clicked trigger element; its thumbnail
+   *   img is used to read the aspect ratio instantly (already loaded).
    */
-  function showModalImageWithPlaceholder(src) {
+  function showModalImageWithPlaceholder(src, triggerEl) {
     if (!modalImage) return;
 
-    // Show placeholder with a default aspect ratio
+    // Try to read the aspect ratio from the already-loaded thumbnail
+    let ratioStr = '16 / 9';
+    if (triggerEl) {
+      const thumb = triggerEl.querySelector('img');
+      if (thumb && thumb.naturalWidth > 0 && thumb.naturalHeight > 0) {
+        ratioStr = `${thumb.naturalWidth} / ${thumb.naturalHeight}`;
+      }
+    }
+
+    // Show placeholder with the known aspect ratio
     if (modalImagePlaceholder) {
-      modalImagePlaceholder.style.setProperty('--placeholder-ratio', '16 / 9');
+      modalImagePlaceholder.style.setProperty('--placeholder-ratio', ratioStr);
       modalImagePlaceholder.style.display = 'block';
     }
 
@@ -1341,24 +1350,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modalImage.style.opacity = '0';
     modalImage.src = src;
 
-    // Poll for dimensions so the placeholder matches the real aspect ratio
-    // as soon as image metadata arrives (before full decode)
-    let dimensionPoll = null;
-    if (modalImagePlaceholder) {
-      dimensionPoll = setInterval(() => {
-        if (modalImage.naturalWidth > 0 && modalImage.naturalHeight > 0) {
-          modalImagePlaceholder.style.setProperty(
-            '--placeholder-ratio',
-            `${modalImage.naturalWidth} / ${modalImage.naturalHeight}`
-          );
-          clearInterval(dimensionPoll);
-          dimensionPoll = null;
-        }
-      }, 30);
-    }
-
     const onLoad = () => {
-      if (dimensionPoll) clearInterval(dimensionPoll);
       // Reveal the real image and hide the placeholder
       modalImage.style.opacity = '';
       if (modalImagePlaceholder) {
@@ -1484,7 +1476,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       if (modalVideo) { modalVideo.pause(); modalVideo.style.display = 'none'; modalVideo.src = ''; }
       if (modalPdf) { modalPdf.style.display = 'none'; modalPdf.src = ''; }
-      showModalImageWithPlaceholder(src);
+      showModalImageWithPlaceholder(src, item);
     }
 
     if (cinemaModal) {
