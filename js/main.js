@@ -422,6 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateNavHeaderVisibility(scrollPos) {
     if (!navHeader) return;
     if (document.body.classList.contains('cinema-modal-open') || (cinemaModal && cinemaModal.classList.contains('open'))) {
+      isNavHeaderVisible = false;
       navHeader.classList.remove('is-visible');
       return;
     }
@@ -432,10 +433,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const isMobile = window.innerWidth <= 768;
 
     if (isMobile) {
-      if (!isNavHeaderVisible) {
-        isNavHeaderVisible = true;
-        navHeader.classList.add('is-visible');
-      }
+      isNavHeaderVisible = true;
+      navHeader.classList.add('is-visible');
       const navBrand = navHeader.querySelector('.nav-brand');
       if (navBrand) {
         navBrand.style.opacity = '0.9';
@@ -1401,6 +1400,9 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.style.overflow = 'hidden';
       document.body.classList.add('cinema-modal-open');
       if (lenis) lenis.stop();
+      if (typeof updateNavHeaderVisibility === 'function') {
+        updateNavHeaderVisibility();
+      }
     }
   }
 
@@ -1494,6 +1496,9 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.style.overflow = 'hidden';
       document.body.classList.add('cinema-modal-open');
       if (lenis) lenis.stop();
+      if (typeof updateNavHeaderVisibility === 'function') {
+        updateNavHeaderVisibility();
+      }
     }
   }
 
@@ -2820,7 +2825,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeCinemaModal);
+  if (modalCloseBtn) {
+    modalCloseBtn.addEventListener('click', (e) => {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      closeCinemaModal();
+    });
+  }
 
   if (modalPrev) {
     modalPrev.addEventListener('click', (e) => {

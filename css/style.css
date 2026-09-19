@@ -4988,13 +4988,15 @@ body[data-ambient-theme="kontakt"] {
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.35s var(--ease-smooth);
+  transition: opacity 0.35s var(--ease-smooth), visibility 0.35s ease;
   padding: 2rem;
 }
 
 .cinema-modal.open {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
 }
 
@@ -5386,6 +5388,12 @@ body:has(#cinema-modal.open) .nav-header {
     background: transparent !important;
   }
 
+  /* Ensure FAB button is always interactive when modal is closed */
+  body:not(.cinema-modal-open) .nav-header .mobile-nav-fab,
+  body:not(.cinema-modal-open) .nav-header:not(.is-visible) .mobile-nav-fab {
+    pointer-events: auto !important;
+  }
+
   /* Hamburger Icon (Two minimalist lines morphing into clean X in place) */
   .mobile-nav-fab__icon {
     display: flex;
@@ -5439,6 +5447,9 @@ body:has(#cinema-modal.open) .nav-header {
     bottom: 0;
     width: 100vw;
     height: 100vh;
+    height: 100svh;
+    height: 100dvh;
+    max-height: 100dvh;
     
     z-index: 990;
     background: rgba(12, 12, 12, 0.74);
@@ -5454,7 +5465,7 @@ body:has(#cinema-modal.open) .nav-header {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: calc(4.6rem + env(safe-area-inset-top, 0px)) 1.5rem calc(1.8rem + env(safe-area-inset-bottom, 0px));
+    padding: calc(3.6rem + env(safe-area-inset-top, 0px)) 1.25rem calc(1rem + env(safe-area-inset-bottom, 0px));
     box-sizing: border-box;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -5505,9 +5516,9 @@ body:has(#cinema-modal.open) .nav-header {
     align-items: center;
     justify-content: center;
     width: 100%;
-    gap: clamp(0.6rem, 1.8vh, 1.15rem);
+    gap: clamp(0.35rem, 1.3vh, 0.85rem);
     margin: auto 0;
-    padding: 0.6rem 0;
+    padding: 0.25rem 0;
     text-align: center;
   }
 
@@ -5613,8 +5624,9 @@ body:has(#cinema-modal.open) .nav-header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
-    padding-top: 1.2rem;
+    gap: 0.35rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.2rem;
     font-family: var(--font-sans);
     font-size: 0.72rem;
     color: rgba(255, 255, 255, 0.38);
@@ -6638,7 +6650,7 @@ body:has(#cinema-modal.open) .photo-liquid-reflector { opacity: 0 !important; vi
   left: 0;
   width: 100vw;
   height: 100vh;
-  
+  height: 100dvh;
   z-index: 10050;
   display: flex;
   align-items: center;
