@@ -324,10 +324,34 @@ body {
   min-height: 100vh;
 }
 
-/* Selection */
+/* ==========================================================================
+   Zero Blue Tint & Zero Tap-Highlight Guarantee (Strict Monochromie)
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+  outline: none !important;
+}
+
+*:focus,
+*:focus-visible,
+*:active {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+}
+
+/* Neutral Monochrome Selection (No Blue Browser Default) */
 ::selection {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+::-moz-selection {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
 }
 
 /* Subtle Scrollbar */
@@ -350,6 +374,8 @@ a {
   color: inherit;
   text-decoration: none;
   transition: opacity 0.3s ease, color 0.3s ease;
+  -webkit-tap-highlight-color: transparent !important;
+  outline: none !important;
 }
 
 button {
@@ -358,13 +384,19 @@ button {
   color: inherit;
   font-family: inherit;
   cursor: pointer;
-  outline: none;
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
 }
 
 button:focus,
 button:focus-visible,
+a:focus,
 a:focus-visible {
-  outline: none;
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 img, video {
@@ -6248,12 +6280,17 @@ body:has(#cinema-modal.open) .nav-header {
     cursor: pointer !important;
     pointer-events: auto !important;
     -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    outline: none !important;
     transition: color 0.18s ease, background 0.18s ease !important;
   }
 
   .typography-all-access-pass-pv-item-body:active {
     background: rgba(255, 255, 255, 0.08) !important;
     color: #ffffff !important;
+    outline: none !important;
   }
 
   .control-item-meta {
@@ -6274,6 +6311,18 @@ body:has(#cinema-modal.open) .nav-header {
     border-radius: 50px !important;
     color: #ffffff !important;
     text-decoration: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    outline: none !important;
+    border: none !important;
+  }
+
+  .control-dossier-link:active {
+    background: rgba(255, 255, 255, 0.16) !important;
+    color: #ffffff !important;
+    outline: none !important;
   }
 
   /* About / Über mich Mobile Spacing & Typography */
