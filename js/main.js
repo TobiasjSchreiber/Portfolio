@@ -1345,13 +1345,18 @@ document.addEventListener('DOMContentLoaded', () => {
       modalImagePlaceholder.style.display = 'block';
     }
 
-    // Keep the real image hidden (no layout space) while loading
-    modalImage.style.display = 'none';
+    // Keep image out of flex flow but still visible to the browser so it loads
+    modalImage.style.position = 'absolute';
+    modalImage.style.opacity = '0';
+    modalImage.style.pointerEvents = 'none';
+    modalImage.style.display = 'block';
     modalImage.src = src;
 
     const onLoad = () => {
-      // Reveal the real image and hide the placeholder
-      modalImage.style.display = 'block';
+      // Restore normal flow and reveal the image
+      modalImage.style.position = '';
+      modalImage.style.opacity = '';
+      modalImage.style.pointerEvents = '';
       if (modalImagePlaceholder) {
         modalImagePlaceholder.style.display = 'none';
       }
@@ -1503,6 +1508,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (modalImage) {
       modalImage.src = '';
+      modalImage.style.position = '';
+      modalImage.style.opacity = '';
+      modalImage.style.pointerEvents = '';
     }
     if (modalImagePlaceholder) {
       modalImagePlaceholder.style.display = 'none';
