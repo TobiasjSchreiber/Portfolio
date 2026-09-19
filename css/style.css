@@ -1203,6 +1203,10 @@ body[data-ambient-theme="kontakt"] {
   padding-top: clamp(6.2rem, 9.5vh, 8rem);
 }
 
+#cgi.project-section {
+  padding-bottom: clamp(2rem, 4vh, 3rem);
+}
+
 .section-header {
   margin-bottom: var(--section-header-gap);
   display: flex;
@@ -1789,7 +1793,7 @@ body[data-ambient-theme="kontakt"] {
 }
 
 #project-kaserne .stills-strip-wrap {
-  margin-bottom: clamp(6.5rem, 11vh, 10.5rem);
+  margin-bottom: clamp(1rem, 2vh, 2rem);
 }
 
 .kaserne-compare-info {
@@ -5609,6 +5613,10 @@ body:has(#cinema-modal.open) .nav-header {
   #cgi.project-section,
   #bmw.project-section {
     padding-top: 3.5rem;
+  }
+
+  #cgi.project-section {
+    padding-bottom: 2rem !important;
   }
 
   .hero-content {
