@@ -6147,7 +6147,7 @@ body:has(#cinema-modal.open) .nav-header {
     min-height: 110px !important;
     padding: 0 2.6rem !important; /* Genügend Abstand zu den Rand-Halbkreisen */
     box-sizing: border-box !important;
-    cursor: pointer !important;
+    cursor: default !important;
     text-align: center !important;
   }
 
@@ -6175,12 +6175,13 @@ body:has(#cinema-modal.open) .nav-header {
     box-shadow: none !important;
     border-radius: 0 !important;
     padding: 0 !important;
-    cursor: pointer !important;
+    cursor: default !important;
   }
 
   .control-item.active .control-item-open {
     padding: 0 0 0.15rem 0 !important;
-    cursor: pointer !important;
+    cursor: default !important;
+    pointer-events: none !important;
     justify-content: center !important;
     text-align: center !important;
   }
@@ -6205,9 +6206,7 @@ body:has(#cinema-modal.open) .nav-header {
   }
 
   .control-item.active .control-label-text::after {
-    content: '⤢';
-    font-size: 0.85rem;
-    opacity: 0.6;
+    display: none !important;
   }
 
   .control-item.active .control-item-content {
@@ -6241,10 +6240,20 @@ body:has(#cinema-modal.open) .nav-header {
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
     text-align: center !important;
+    width: fit-content !important;
+    max-width: 90% !important;
+    margin: 0 auto !important;
+    padding: 0.2rem 0.55rem !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    -webkit-tap-highlight-color: transparent !important;
+    transition: color 0.18s ease, background 0.18s ease !important;
   }
-  
-  .typography-all-access-pass-pv-item-body.is-expanded {
-    -webkit-line-clamp: unset !important;
+
+  .typography-all-access-pass-pv-item-body:active {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
   }
 
   .control-item-meta {
@@ -6509,13 +6518,107 @@ body:has(#cinema-modal.open) .photo-liquid-reflector { opacity: 0 !important; vi
   .photo-liquid-reflector { display: none !important; }
 }
 
+/* ==========================================================================
+   Document Text Fullscreen Modal (Pure Neutral Dark, Zero Blue Tint)
+   ========================================================================== */
+.doc-text-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 10050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
 
+.doc-text-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
 
+.doc-text-modal__backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(8, 8, 8, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
 
+.doc-text-modal__dialog {
+  position: relative;
+  background: #141414;
+  border: none !important;
+  outline: none !important;
+  border-radius: 12px;
+  padding: 2.2rem 1.8rem 1.8rem 1.8rem;
+  max-width: 440px;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
 
+.doc-text-modal__close {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.1rem;
+  background: transparent;
+  border: none !important;
+  outline: none !important;
+  color: #888888;
+  cursor: pointer;
+  padding: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
 
+.doc-text-modal__close:hover,
+.doc-text-modal__close:active {
+  color: #ffffff;
+}
 
+.doc-text-modal__badge {
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted, #888888);
+  margin-bottom: 0.4rem;
+  display: block;
+}
 
+.doc-text-modal__title {
+  font-size: clamp(1.25rem, 4.2vw, 1.55rem);
+  font-weight: 500;
+  color: #ffffff;
+  margin: 0 0 1rem 0;
+  line-height: 1.25;
+}
+
+.doc-text-modal__body {
+  font-size: clamp(0.92rem, 3.1vw, 1rem);
+  line-height: 1.65;
+  color: #d8d8d8;
+  margin: 0;
+  white-space: normal;
+}
 
 /* Utility classes for responsive grid balancing */
 @media (min-width: 1101px) {

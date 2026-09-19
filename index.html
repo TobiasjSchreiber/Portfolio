@@ -33,7 +33,7 @@
   </script>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css?v=74">
+  <link rel="stylesheet" href="css/style.css?v=75">
 </head>
 <body class="is-loading" data-ambient-theme="hero">
 
@@ -2338,6 +2338,24 @@
   </div>
 
   <!-- =========================================================================
+       DOCUMENT TEXT FULLSCREEN MODAL (Pure Neutral Dark)
+       ========================================================================= -->
+  <div id="doc-text-modal" class="doc-text-modal" aria-hidden="true" role="dialog">
+    <div class="doc-text-modal__backdrop" onclick="closeDocTextModal()"></div>
+    <div class="doc-text-modal__dialog">
+      <button class="doc-text-modal__close" onclick="closeDocTextModal()" aria-label="Schließen" type="button">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <span id="doc-text-modal-badge" class="doc-text-modal__badge"></span>
+      <h3 id="doc-text-modal-title" class="doc-text-modal__title"></h3>
+      <p id="doc-text-modal-body" class="doc-text-modal__body"></p>
+    </div>
+  </div>
+
+  <!-- =========================================================================
        IMPRESSUM MODAL (Pure Neutral Dark)
        ========================================================================= -->
   <div id="impressum-modal" aria-hidden="true" role="dialog" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; align-items: center; justify-content: center; z-index: 10000; padding: 2rem;">
@@ -2391,7 +2409,7 @@
   <script src="js/three.min.js" defer></script>
   <script src="js/lenis.min.js" defer></script>
   <script src="js/photo-reflector-test.js?v=27" defer></script>
-  <script src="js/main.js?v=639253565776927803" defer></script>
+  <script src="js/main.js?v=639253565776927804" defer></script>
 </body>
 </html>
 

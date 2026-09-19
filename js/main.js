@@ -2527,44 +2527,84 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // On mobile: Clicking on the active project description opens Fullscreen Cinema
-  const uniControlsPanel = document.querySelector('.uni-controls-panel');
-  if (uniControlsPanel) {
-    let descTouchStartX = 0;
-    let descTouchStartY = 0;
-    let descTouchMoved = false;
+  // Fullscreen Modal for Document Description Text (Mobile & Desktop)
+  const docTextModal = document.getElementById('doc-text-modal');
+  const docTextModalTitle = document.getElementById('doc-text-modal-title');
+  const docTextModalBadge = document.getElementById('doc-text-modal-badge');
+  const docTextModalBody = document.getElementById('doc-text-modal-body');
 
-    uniControlsPanel.addEventListener('touchstart', (e) => {
+  window.openDocTextModal = function(title, badge, body) {
+    if (!docTextModal) return;
+    if (docTextModalTitle) docTextModalTitle.textContent = title;
+    if (docTextModalBadge) docTextModalBadge.textContent = badge;
+    if (docTextModalBody) docTextModalBody.textContent = body;
+    docTextModal.classList.add('is-open');
+    docTextModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    if (typeof lenis !== 'undefined' && lenis) lenis.stop();
+  };
+
+  window.closeDocTextModal = function() {
+    if (!docTextModal) return;
+    docTextModal.classList.remove('is-open');
+    docTextModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (typeof lenis !== 'undefined' && lenis) lenis.start();
+  };
+
+  // Close doc text modal on Escape key
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && docTextModal && docTextModal.classList.contains('is-open')) {
+      closeDocTextModal();
+    }
+  });
+
+  // Attach click listener strictly to the description text itself (restricted hitbox)
+  document.querySelectorAll('.control-item .typography-all-access-pass-pv-item-body').forEach((bodyEl) => {
+    let textTouchStartX = 0;
+    let textTouchStartY = 0;
+    let textTouchMoved = false;
+
+    bodyEl.addEventListener('touchstart', (e) => {
       if (e.touches && e.touches.length > 0) {
-        descTouchStartX = e.touches[0].clientX;
-        descTouchStartY = e.touches[0].clientY;
-        descTouchMoved = false;
+        textTouchStartX = e.touches[0].clientX;
+        textTouchStartY = e.touches[0].clientY;
+        textTouchMoved = false;
       }
     }, { passive: true });
 
-    uniControlsPanel.addEventListener('touchmove', (e) => {
+    bodyEl.addEventListener('touchmove', (e) => {
       if (e.touches && e.touches.length > 0) {
-        const diffX = Math.abs(e.touches[0].clientX - descTouchStartX);
-        const diffY = Math.abs(e.touches[0].clientY - descTouchStartY);
+        const diffX = Math.abs(e.touches[0].clientX - textTouchStartX);
+        const diffY = Math.abs(e.touches[0].clientY - textTouchStartY);
         if (diffX > 8 || diffY > 8) {
-          descTouchMoved = true;
+          textTouchMoved = true;
         }
       }
     }, { passive: true });
 
-    uniControlsPanel.addEventListener('click', (e) => {
-      // Don't intercept PDF download links or paddle buttons
-      if (e.target.closest('.control-dossier-link')) return;
-      if (e.target.closest('.paddlenav-button')) return;
-      if (descTouchMoved) return;
+    bodyEl.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      if (textTouchMoved) return;
 
-      // Das Öffnen des Bildes im Vollbild beim Klick auf den Text wurde deaktiviert.
-      // Stattdessen wird nun der Text aufgeklappt (falls er abgeschnitten war).
-      const activeTextBody = document.querySelector('.control-item.active .typography-all-access-pass-pv-item-body');
-      if (activeTextBody) {
-        activeTextBody.classList.toggle('is-expanded');
+      const controlItem = bodyEl.closest('.control-item');
+      if (!controlItem) return;
+
+      const titleEl = controlItem.querySelector('.control-label-text');
+      const badgeEl = controlItem.querySelector('.control-item-badge');
+      const title = titleEl ? titleEl.childNodes[0].textContent.trim() : 'Projekt';
+      const badge = badgeEl ? badgeEl.textContent.trim() : '';
+
+      // Get full text without title prefix
+      let fullText = bodyEl.textContent.trim();
+      if (title && fullText.startsWith(title)) {
+        fullText = fullText.substring(title.length).replace(/^[.\s]+/, '');
       }
+
+      openDocTextModal(title, badge, fullText);
     });
-  }
+  });
 
   // Initialize with layout
   setActiveDocItem(0);
