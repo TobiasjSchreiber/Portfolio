@@ -1151,7 +1151,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.addEventListener('scroll', triggerContinuousParallax, { passive: true });
-    window.addEventListener('resize', triggerContinuousParallax, { passive: true });
+    let lastWinW2 = window.innerWidth;
+    window.addEventListener('resize', () => {
+      if (window.innerWidth <= 768 && window.innerWidth === lastWinW2) return;
+      lastWinW2 = window.innerWidth;
+      triggerContinuousParallax();
+    }, { passive: true });
     if (typeof lenis !== 'undefined' && lenis) {
       lenis.on('scroll', triggerContinuousParallax);
     }
@@ -1980,7 +1985,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial setup
     syncActiveFilmUI(0);
     updateFilmParallax();
-    window.addEventListener('resize', updateFilmParallax, { passive: true });
+    let lastWinW = window.innerWidth;
+    window.addEventListener('resize', () => {
+      if (window.innerWidth <= 768 && window.innerWidth === lastWinW) return;
+      lastWinW = window.innerWidth;
+      updateFilmParallax();
+    }, { passive: true });
 
     return updateFilmParallax;
   }

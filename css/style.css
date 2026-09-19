@@ -39,7 +39,7 @@ body.is-loading {
   overflow: hidden !important;
   height: 100% !important;
   height: 100vh !important;
-  height: 100dvh !important;
+  
   touch-action: none !important;
   overscroll-behavior: none !important;
 }
@@ -985,7 +985,7 @@ body[data-ambient-theme="kontakt"] {
   position: relative;
   width: 100%;
   height: 100vh;
-  height: 100svh;
+  
   min-height: 720px;
   overflow: hidden;
   display: flex;
@@ -2383,7 +2383,7 @@ body[data-ambient-theme="kontakt"] {
   width: 100vw;
   max-width: 100vw;
   height: 100vh;
-  height: 100dvh;
+  
   overflow: hidden;
   background: #020202;
 }
@@ -3548,7 +3548,7 @@ body[data-ambient-theme="kontakt"] {
   position: sticky;
   top: 0;
   height: 100vh;
-  height: 100dvh;
+  
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -5391,7 +5391,7 @@ body:has(#cinema-modal.open) .nav-header {
     bottom: 0;
     width: 100vw;
     height: 100vh;
-    height: 100dvh;
+    
     z-index: 990;
     background: rgba(12, 12, 12, 0.74);
     backdrop-filter: blur(28px);
@@ -5601,7 +5601,7 @@ body:has(#cinema-modal.open) .nav-header {
   .hero-section {
     min-height: 0 !important;
     height: 100vh;
-    height: 100svh;
+    
     padding: calc(4rem + env(safe-area-inset-top, 0px)) 0 calc(2rem + env(safe-area-inset-bottom, 0px)) 0;
     justify-content: flex-end;
   }
@@ -6004,7 +6004,7 @@ body:has(#cinema-modal.open) .nav-header {
     position: sticky !important;
     top: 0 !important;
     height: 100vh !important;
-    height: 100dvh !important;
+    
     display: flex !important;
     flex-direction: column !important;
     justify-content: center !important; /* Vertikal schön mittig im Bildschirm platziert */
@@ -6405,7 +6405,7 @@ body:has(#cinema-modal.open) .nav-header {
      -------------------------------------------------------------------------- */
   .contact-section {
     min-height: 100vh !important;
-    min-height: 100svh !important;
+    min-
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
@@ -6560,7 +6560,7 @@ body:has(#cinema-modal.open) .nav-header {
     text-underline-offset: 3px !important;
   }
 }
-.photo-liquid-reflector { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; pointer-events: none; z-index: 3; opacity: 0; transition: opacity 0.5s ease; } .photo-liquid-reflector.is-active { opacity: 1; }
+.photo-liquid-reflector { position: fixed; top: 0; left: 0; width: 100vw;  pointer-events: none; z-index: 3; opacity: 0; transition: opacity 0.5s ease; } .photo-liquid-reflector.is-active { opacity: 1; }
 .photo-liquid-reflector canvas { width: 100%; height: 100%; display: block; }
 body:has(#cinema-modal.open) .photo-liquid-reflector { opacity: 0 !important; visibility: hidden; transition: none; }
 @media (max-width: 768px) {
@@ -6576,7 +6576,7 @@ body:has(#cinema-modal.open) .photo-liquid-reflector { opacity: 0 !important; vi
   left: 0;
   width: 100vw;
   height: 100vh;
-  height: 100dvh;
+  
   z-index: 10050;
   display: flex;
   align-items: center;

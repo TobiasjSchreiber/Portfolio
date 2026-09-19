@@ -248,7 +248,12 @@
 
       samplePhotos();
     }
-    window.addEventListener('resize', onResize, { passive: true });
+    let lastPhotoWinW2 = window.innerWidth;
+    window.addEventListener('resize', () => {
+      if (window.innerWidth <= 768 && window.innerWidth === lastPhotoWinW2) return;
+      lastPhotoWinW2 = window.innerWidth;
+      onResize();
+    }, { passive: true });
 
     // ------------------------------------------------------------------------
     // 6. Intersection & Lifecycle Controller
