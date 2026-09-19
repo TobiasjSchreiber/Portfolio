@@ -1729,7 +1729,12 @@ body[data-ambient-theme="kontakt"] {
 .cgi-content-col {
   display: flex;
   flex-direction: column;
-  gap: 1.8rem;
+  gap: 0.5rem;
+}
+
+.cgi-content-col .cgi-project-label,
+.cgi-content-col .cgi-heading {
+  margin-bottom: 0 !important;
 }
 
 .cgi-project-label {
@@ -1799,7 +1804,7 @@ body[data-ambient-theme="kontakt"] {
 .kaserne-compare-info {
   display: flex;
   flex-direction: column;
-  gap: 1.8rem;
+  gap: 0.5rem;
 }
 
 .kaserne-compare-hint {
