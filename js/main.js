@@ -1345,14 +1345,13 @@ document.addEventListener('DOMContentLoaded', () => {
       modalImagePlaceholder.style.display = 'block';
     }
 
-    // Set source on the real image but keep it invisible until loaded
-    modalImage.style.display = 'block';
-    modalImage.style.opacity = '0';
+    // Keep the real image hidden (no layout space) while loading
+    modalImage.style.display = 'none';
     modalImage.src = src;
 
     const onLoad = () => {
       // Reveal the real image and hide the placeholder
-      modalImage.style.opacity = '';
+      modalImage.style.display = 'block';
       if (modalImagePlaceholder) {
         modalImagePlaceholder.style.display = 'none';
       }
@@ -1504,7 +1503,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (modalImage) {
       modalImage.src = '';
-      modalImage.style.opacity = '';
     }
     if (modalImagePlaceholder) {
       modalImagePlaceholder.style.display = 'none';
