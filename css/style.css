@@ -5997,11 +5997,16 @@ body:has(#cinema-modal.open) .nav-header {
     box-sizing: border-box !important;
   }
 
+  #uni .section-title-wrap {
+    order: 1 !important;
+  }
+
   #uni .section-num {
+    order: 2 !important;
     font-size: 0.62rem !important;
     letter-spacing: 0.14em !important;
     color: var(--text-muted) !important;
-    margin: 0 !important;
+    margin: 0.15rem 0 0 0 !important;
   }
 
   #uni .section-title {
