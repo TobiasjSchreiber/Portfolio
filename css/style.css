@@ -6081,11 +6081,18 @@ body:has(#cinema-modal.open) .nav-header {
   }
 
   /* 3. Pfeile als bündige Halbkreise direkt am linken & rechten Displayrand */
-  .uni-controls-wrapper .paddlenav-button {
+  .uni-controls-wrapper .paddlenav-button,
+  .uni-controls-wrapper .paddlenav-button:hover,
+  .uni-controls-wrapper .paddlenav-button:active,
+  .uni-controls-wrapper .paddlenav-button:focus,
+  .uni-controls-wrapper .paddlenav-button.is-disabled,
+  .uni-controls-wrapper .paddlenav-button:hover:not(.is-disabled),
+  .uni-controls-wrapper .paddlenav-button:active:not(.is-disabled) {
     display: flex !important;
     position: absolute !important;
     top: 50% !important;
-    transform: translateY(-50%) !important;
+    margin-top: -28px !important;
+    transform: none !important;
     width: 30px !important;
     height: 56px !important;
     background: rgba(22, 22, 22, 0.94) !important;
@@ -6101,6 +6108,12 @@ body:has(#cinema-modal.open) .nav-header {
     flex-shrink: 0 !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7) !important;
     transition: opacity 0.25s ease, background 0.25s ease !important;
+  }
+
+  .uni-controls-wrapper .paddlenav-button.is-disabled {
+    opacity: 0.2 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
   }
 
   .uni-controls-wrapper .paddlenav-prev {
@@ -6126,10 +6139,16 @@ body:has(#cinema-modal.open) .nav-header {
   .uni-controls-panel {
     width: 100% !important;
     max-width: 480px !important;
+    min-height: 110px !important;
     padding: 0 2.6rem !important; /* Genügend Abstand zu den Rand-Halbkreisen */
     box-sizing: border-box !important;
     cursor: pointer !important;
     text-align: center !important;
+  }
+
+  .control-item-content,
+  .control-item-content-inner {
+    transition: none !important;
   }
 
   .control-group {
