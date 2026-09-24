@@ -1426,18 +1426,25 @@ body[data-ambient-theme="kontakt"] {
 }
 
 .cinematic-hero-player:hover .cinematic-video {
-  filter: brightness(1.1);
+  filter: none;
 }
 
 .cinematic-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.1) 45%, rgba(0, 0, 0, 0.45) 100%);
+  background: none;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 2.2rem 2.8rem;
   transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.cinematic-overlay button,
+.cinematic-overlay .video-audio-toggle,
+.cinematic-overlay .cinematic-cinema-btn {
+  pointer-events: auto;
 }
 
 /* Film Stream Clean Borderless Overlay (No Dark Bars / Text Clutter) */
@@ -1723,7 +1730,7 @@ body[data-ambient-theme="kontakt"] {
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s var(--ease-smooth);
-  filter: brightness(0.92);
+  filter: none;
 }
 
 .still-card:hover .still-img {
@@ -1778,7 +1785,7 @@ body[data-ambient-theme="kontakt"] {
 }
 
 .cgi-main-media:hover video {
-  filter: brightness(1.15);
+  filter: none;
   transform: none;
 }
 
@@ -2303,14 +2310,14 @@ body[data-ambient-theme="kontakt"] {
   height: 100%;
   object-fit: cover;
   object-position: center;
-  filter: brightness(0.92) contrast(1.04);
+  filter: none;
   transition: opacity 0.5s var(--ease-smooth), filter 0.35s ease !important;
   will-change: transform;
   transform: none;
 }
 
 .cgi-parallax-card:hover .cgi-parallax-media {
-  filter: brightness(1.12) contrast(1.04);
+  filter: none;
 }
 
 /* Editorial Floating Meta Overlay */
@@ -2446,6 +2453,13 @@ body[data-ambient-theme="kontakt"] {
   margin: 0 !important;
 }
 
+body.film-drawer-open #film,
+body.film-drawer-open .film-section,
+body.film-drawer-open .film-parallax-stage {
+  z-index: 99990 !important;
+  position: relative !important;
+}
+
 
 .film-parallax-stage {
   position: relative;
@@ -2469,7 +2483,7 @@ body[data-ambient-theme="kontakt"] {
   height: 100dvh;
   overflow: visible;
   pointer-events: none;
-  z-index: 60;
+  z-index: 1000 !important;
 }
 
 /* Consecutive Video Track (4 x 100vh full-screen video panels attached one after another) */
@@ -2519,11 +2533,12 @@ body[data-ambient-theme="kontakt"] {
   pointer-events: none;
   z-index: 10;
   background: rgba(4, 4, 4, 0.22);
+  transition: opacity 0.4s ease;
 }
 
 /* Pinned Sticky UI Overlay (Floats above video track inside sticky viewport) */
 .film-sticky-overlay {
-  z-index: 60;
+  z-index: 1000 !important;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -2539,7 +2554,6 @@ body[data-ambient-theme="kontakt"] {
   padding: clamp(2.5rem, 5vh, 4rem) var(--section-space-x);
   box-sizing: border-box;
   pointer-events: none;
-  z-index: 60;
 }
 
 /* Top Status Bar: Pill Counter & Actions */
@@ -2765,14 +2779,14 @@ body[data-ambient-theme="kontakt"] {
   inset: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 50;
+  z-index: 900;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background: rgba(10, 10, 10, 0.72);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
+  background: rgba(18, 18, 18, 0.42);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
   visibility: hidden;
   pointer-events: none;
   transform: translate3d(0, 100%, 0);
@@ -3061,7 +3075,7 @@ body[data-ambient-theme="kontakt"] {
   user-select: none;
   white-space: nowrap;
   transition: color 0.22s ease, opacity 0.22s ease;
-  z-index: 70;
+  z-index: 1001 !important;
   pointer-events: auto !important;
 }
 
@@ -3116,19 +3130,43 @@ body.film-drawer-open .film-more-text-btn .film-more-text-label--back,
   pointer-events: auto;
 }
 
-body.film-drawer-open .film-more-text-btn {
-  color: #ffffff !important;
-  opacity: 1 !important;
+body.film-drawer-open .film-sticky-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 99995 !important;
+  pointer-events: none !important;
 }
 
-body.film-drawer-open .film-more-text-btn:hover {
-  color: var(--accent-silver) !important;
+body.film-drawer-open .film-more-text-btn,
+.film-more-text-btn.is-active {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  bottom: auto !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 99996 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  color: #ffffff !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body.film-drawer-open .film-more-text-btn:hover,
+.film-more-text-btn.is-active:hover {
+  color: #ffffff !important;
+  opacity: 0.8 !important;
 }
 
 /* When Film Info Drawer is open: Calm fade of stage text & peripheral buttons */
 body.film-drawer-open .film-center-stage,
 body.film-drawer-open .film-dots,
-body.film-drawer-open .film-sticky-bottom-right {
+body.film-drawer-open .film-sticky-bottom-right,
+body.film-drawer-open .film-vignette-overlay {
   opacity: 0 !important;
   pointer-events: none !important;
   transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1);
@@ -3532,12 +3570,12 @@ body.film-drawer-open .film-more-text-btn {
   height: 100%;
   object-fit: cover;
   display: block;
-  filter: brightness(0.92);
+  filter: none;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
 }
 
 .photo-card:hover .photo-card-img {
-  filter: brightness(1);
+  filter: none;
 }
 
 .photo-card-overlay {
@@ -3693,12 +3731,12 @@ body.film-drawer-open .film-more-text-btn {
   aspect-ratio: 4 / 4.8;
   object-fit: cover;
   display: block;
-  filter: brightness(0.92);
+  filter: none;
   transition: transform 0.5s ease, filter 0.3s ease;
 }
 
 .ceramic-frame:hover .ceramic-img {
-  filter: brightness(1);
+  filter: none;
 }
 
 .ceramic-frame-caption {
@@ -3848,11 +3886,11 @@ body.film-drawer-open .film-more-text-btn {
   object-fit: contain;
   object-position: center;
   transition: filter 0.35s ease;
-  filter: brightness(1.05) contrast(1.05);
+  filter: none;
 }
 
 .kunst-feature-media-wrap:hover .kunst-feature-img {
-  filter: brightness(1.18) contrast(1.08);
+  filter: none;
 }
 
 .kunst-feature-overlay-badge {
@@ -4102,11 +4140,11 @@ body.film-drawer-open .film-more-text-btn {
   object-fit: cover;
   object-position: center;
   transition: filter 0.3s ease;
-  filter: brightness(0.92) contrast(1.03);
+  filter: none;
 }
 
 .kunst-ticker-card:hover .kunst-ticker-img {
-  filter: brightness(1.06) contrast(1.06);
+  filter: none;
 }
 
 .kunst-ticker-info {
@@ -5004,7 +5042,7 @@ body.film-drawer-open .film-more-text-btn {
   height: 100%;
   object-fit: cover;
   transition: transform 0.4s ease;
-  filter: contrast(1.05) brightness(0.9);
+  filter: none;
 }
 
 .sketch-card:hover img {
@@ -5275,19 +5313,31 @@ body.film-drawer-open .film-more-text-btn {
   box-shadow: none;
   border: none;
   outline: none;
-  background: #0a0a0a;
+  background: transparent;
+  transition: transform 0.6s var(--ease-smooth);
 }
 
-.about-portrait-wrap img {
+.about-portrait-wrap:hover {
+  transform: scale(1.02);
+}
+
+.about-portrait-wrap img,
+[data-curtain-reveal] img,
+.curtain-reveal-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s var(--ease-smooth);
   display: block;
+  will-change: clip-path, transform;
 }
 
-.about-portrait-wrap:hover img {
-  transform: scale(1.02);
+@media (prefers-reduced-motion: reduce) {
+  .about-portrait-wrap img,
+  [data-curtain-reveal] img,
+  .curtain-reveal-img {
+    clip-path: none !important;
+    transform: none !important;
+  }
 }
 
 .about-statement {
@@ -7878,7 +7928,7 @@ portfolio-text { display: contents; }
 em { font-style: normal !important; }
 
 .film-info-drawer {
-  z-index: 9999 !important;
+  z-index: 900 !important;
 }
 
 /* ==========================================================================

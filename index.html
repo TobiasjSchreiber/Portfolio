@@ -33,7 +33,7 @@
   </script>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css?v=130">
+  <link rel="stylesheet" href="css/style.css?v=145">
 </head>
 <body class="is-loading" data-ambient-theme="hero">
 
@@ -550,12 +550,6 @@
                 </svg>
               </button>
             </div>
-            <div class="cinematic-bottom-info">
-              <div>
-                <h3 class="cinematic-title-mini">BMW 700 Studio Turnaround</h3>
-                <p class="cinematic-sub-mini">Klicken für Vollbild-Cinema & Details</p>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -672,12 +666,6 @@
             <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
           </svg>
         </button>
-        <div class="media-hover-overlay">
-          <div class="media-hover-info">
-            <h4>Historische Kaserne</h4>
-            <p>3D Rekonstruktion &bull; Cinema Master Player</p>
-          </div>
-        </div>
       </div>
 
       <portfolio-text tag="Rauminstallation &bull; Konzeptkunst" title="Historische Kaserne" extra-classes="cgi-content-col hide-on-mobile">
@@ -693,10 +681,6 @@
 
       <div class="kaserne-compare-slider-wrap">
         <div class="kaserne-compare-slider" id="kaserne-compare-slider">
-          <!-- Frosted Blur Badges matching site aesthetic -->
-          <span class="compare-blur-tag compare-blur-real">Real</span>
-          <span class="compare-blur-tag compare-blur-3d">3D</span>
-
           <!-- Base Layer (Right): 3D Reconstruction -->
           <div class="compare-layer compare-base" id="kaserne-compare-base">
             <img decoding="async" class="compare-img" 
@@ -2030,9 +2014,12 @@
   <section id="about" class="project-section light-mode-section">
     <div id="approach"></div>
     <div class="about-section-inner">
-      <div class="about-visual-col reveal-on-scroll">
+      <div class="about-visual-col">
         <!-- Portrait Tobias Schreiber -->
         <div class="about-portrait-wrap" 
+             data-curtain-reveal
+             data-curtain-start="top 96%"
+             data-curtain-end="top 40%"
              data-cinema-trigger 
              data-cinema-type="image" 
              data-cinema-src="assets/images/full/Ich.webp" 
@@ -2204,7 +2191,7 @@
 
   <!-- JavaScript Modules -->
   <script src="js/lenis.min.js" defer></script>
-  <script src="js/main.js?v=116" defer></script>
+  <script src="js/main.js?v=120" defer></script>
   <script src="js/portfolio-text.js"></script>
   <script src="js/cgi-card.js"></script>
   <script src="js/still-card.js"></script>

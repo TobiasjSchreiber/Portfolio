@@ -4341,6 +4341,113 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   initScrollTextHighlight();
+
+  // --------------------------------------------------------------------------
+  // Scroll-Driven Image Curtain Reveal (Top-to-Bottom Unroll on Scroll)
+  // --------------------------------------------------------------------------
+  function initScrollImageCurtain() {
+    const elements = document.querySelectorAll('[data-curtain-reveal], .about-portrait-wrap');
+    if (!elements.length) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    const instances = [];
+
+    elements.forEach((container) => {
+      const img = container.querySelector('img, video');
+      if (!img) return;
+
+      const startAttr = container.getAttribute('data-curtain-start') || 'top 92%';
+      const endAttr = container.getAttribute('data-curtain-end') || 'top 64%';
+
+      function parsePos(attr) {
+        const parts = attr.trim().split(/\s+/);
+        return {
+          edge: parts[0] || 'top',
+          viewport: parseFloat(parts[1]) / 100 || 0.5
+        };
+      }
+
+      instances.push({
+        container,
+        img,
+        start: parsePos(startAttr),
+        end: parsePos(endAttr),
+        isInView: true
+      });
+    });
+
+    let ticking = false;
+
+    function updateCurtains() {
+      const vh = window.innerHeight || document.documentElement.clientHeight || 800;
+
+      instances.forEach((inst) => {
+        if (!inst.isInView) return;
+
+        const rect = inst.container.getBoundingClientRect();
+        const startEdgePx = inst.start.edge === 'bottom' ? rect.bottom : rect.top;
+        const startThresholdPx = vh * inst.start.viewport;
+
+        const endEdgePx = inst.end.edge === 'bottom' ? rect.bottom : rect.top;
+        const endThresholdPx = vh * inst.end.viewport;
+
+        const totalRange = startThresholdPx - endThresholdPx;
+        if (totalRange <= 0) return;
+
+        const currentPx = startEdgePx;
+        const rawProgress = (startThresholdPx - currentPx) / totalRange;
+        const progress = Math.max(0, Math.min(1, rawProgress));
+
+        // Smooth cubic easing for slow, gentle unrolling
+        const eased = progress <= 0 ? 0 : progress >= 1 ? 1 : (progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2);
+
+        const insetBottom = Math.round((1 - eased) * 1000) / 10;
+        const translateY = Math.round((1 - eased) * -20 * 10) / 10;
+
+        inst.img.style.clipPath = `inset(0 0 ${insetBottom}% 0)`;
+        inst.img.style.transform = `translate3d(0, ${translateY}px, 0)`;
+      });
+
+      ticking = false;
+    }
+
+    function requestCurtainUpdate() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateCurtains);
+      }
+    }
+
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const inst = instances.find((i) => i.container === entry.target);
+        if (inst) {
+          inst.isInView = entry.isIntersecting;
+          if (entry.isIntersecting) {
+            requestCurtainUpdate();
+          }
+        }
+      });
+    }, {
+      root: null,
+      threshold: 0,
+      rootMargin: '250px 0px 250px 0px'
+    });
+
+    instances.forEach((inst) => obs.observe(inst.container));
+
+    window.addEventListener('scroll', requestCurtainUpdate, { passive: true });
+    if (typeof lenis !== 'undefined' && lenis) {
+      lenis.on('scroll', requestCurtainUpdate);
+    }
+    window.addEventListener('resize', requestCurtainUpdate, { passive: true });
+
+    requestCurtainUpdate();
+  }
+
+  initScrollImageCurtain();
 });
 
 
