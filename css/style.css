@@ -5978,6 +5978,7 @@ body:has(#cinema-modal.open) .nav-header {
   font-size: var(--text-size-body);
   color: var(--text-color-body);
   font-weight: 300;
+  max-width: 780px;
   
   opacity: 1;
   transform: none;
@@ -7817,6 +7818,7 @@ body:has(#cinema-modal.open) .nav-header {
   margin: 0 !important;
   padding: 0 !important;
   line-height: var(--lh-body);
+  max-width: 780px;
 }
 
 /* Staggered Text Unfold (Masks) */
