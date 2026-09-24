@@ -666,8 +666,9 @@ body[data-ambient-theme="kontakt"] {
   text-transform: uppercase;
   font-weight: 500;
   color: #ffffff;
+  mix-blend-mode: difference;
   text-decoration: none;
-  opacity: 0.88;
+  opacity: 1;
   user-select: none;
   transition: opacity 0.25s ease;
 }
@@ -759,11 +760,13 @@ body[data-ambient-theme="kontakt"] {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   font-weight: 500;
-  color: #fff;
+  color: #ffffff !important;
+  mix-blend-mode: difference;
   white-space: nowrap;
   text-decoration: none;
-  opacity: 0.85;
-  transition: color 0.35s ease, opacity 0.3s ease;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  z-index: 1055;
 }
 
 .nav-brand:hover {
@@ -6178,10 +6181,11 @@ body:has(#cinema-modal.open) .nav-header {
     font-size: 0.92rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #ffffff;
-    opacity: 0.9 !important;
+    color: #ffffff !important;
+    mix-blend-mode: difference;
+    opacity: 1 !important;
     visibility: visible !important;
-    transition: color 0.35s ease, opacity 0.3s ease;
+    transition: opacity 0.3s ease;
     z-index: 1055 !important;
   }
 
@@ -7980,7 +7984,8 @@ body.light-theme-active .nav-brand,
 body[data-ambient-theme="thd-app"] .nav-brand,
 body[data-ambient-theme="about"] .nav-brand,
 body[data-ambient-theme="kontakt"] .nav-brand {
-  color: #020202 !important;
+  color: #ffffff !important;
+  mix-blend-mode: difference;
   opacity: 1 !important;
 }
 
