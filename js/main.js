@@ -88,17 +88,14 @@ document.addEventListener('DOMContentLoaded', () => {
     currentAmbientTheme = themeKey;
 
     document.body.setAttribute('data-ambient-theme', themeKey);
-    if (LIGHT_SECTIONS.includes(themeKey)) {
-      document.body.classList.add('light-theme-active');
-    } else {
-      document.body.classList.remove('light-theme-active');
-    }
-
     const theme = AMBIENT_THEMES[themeKey];
     if (theme) {
       document.documentElement.style.setProperty('--glow-1', theme.glow1);
       document.documentElement.style.setProperty('--glow-2', theme.glow2);
       document.documentElement.style.setProperty('--glow-3', theme.glow3);
+    }
+    if (typeof updateNavTheme === 'function') {
+      updateNavTheme();
     }
   }
 
@@ -433,11 +430,45 @@ document.addEventListener('DOMContentLoaded', () => {
   let isNavHeaderVisible = false;
 
   function updateNavTheme() {
-    const firstLightSection = document.getElementById('thd-app') || document.querySelector('.light-mode-section');
-    if (!firstLightSection) return;
-    const secRect = firstLightSection.getBoundingClientRect();
-    const navRect = navHeader ? navHeader.getBoundingClientRect() : { top: 22 };
-    if (secRect.top <= (navRect.top + 2)) {
+    const brandEl = document.querySelector('.nav-brand');
+    const brandRect = brandEl ? brandEl.getBoundingClientRect() : (navHeader ? navHeader.getBoundingClientRect() : { left: 40, top: 25 });
+    const checkX = Math.max(10, Math.min(window.innerWidth - 10, (brandRect.left || 40) + 25));
+    const checkY = Math.max(10, Math.min(window.innerHeight - 10, (brandRect.top || 25) + 10));
+
+    let elUnder = null;
+    if (brandEl) brandEl.style.pointerEvents = 'none';
+    try {
+      elUnder = document.elementFromPoint(checkX, checkY);
+    } catch (e) {}
+    if (brandEl) brandEl.style.pointerEvents = 'auto';
+
+    let isOverLight = false;
+    if (elUnder) {
+      if (
+        elUnder.closest('#thd-app') ||
+        elUnder.closest('#about') ||
+        elUnder.closest('#kontakt') ||
+        elUnder.closest('.light-mode-section')
+      ) {
+        isOverLight = true;
+      } else {
+        let cur = elUnder;
+        while (cur && cur !== document.body && cur !== document.documentElement) {
+          const bg = window.getComputedStyle(cur).backgroundColor;
+          if (bg && bg !== 'transparent' && !bg.startsWith('rgba(0, 0, 0, 0') && !bg.startsWith('rgba(0,0,0,0')) {
+            const m = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+            if (m) {
+              const lum = 0.299 * parseInt(m[1]) + 0.587 * parseInt(m[2]) + 0.114 * parseInt(m[3]);
+              if (lum > 140) isOverLight = true;
+            }
+            break;
+          }
+          cur = cur.parentElement;
+        }
+      }
+    }
+
+    if (isOverLight) {
       document.body.classList.add('light-theme-active');
     } else {
       document.body.classList.remove('light-theme-active');
@@ -463,7 +494,7 @@ document.addEventListener('DOMContentLoaded', () => {
       navHeader.classList.add('is-visible');
       const navBrand = navHeader.querySelector('.nav-brand');
       if (navBrand) {
-        navBrand.style.opacity = '0.9';
+        navBrand.style.opacity = '1';
         navBrand.style.pointerEvents = 'auto';
       }
       return;
@@ -4237,19 +4268,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const rawProgress = (startThresholdPx - currentPx) / totalRange;
         const progress = Math.max(0, Math.min(1, rawProgress));
 
-        // Current "cursor" position in character index space
-        const cursorPos = progress * totalChars;
-
         // Soft gradient window width (chars that are in transition)
         const windowWidth = Math.max(4, Math.min(8, totalChars * 0.06));
+
+        // Current "cursor" position scaled so all chars reach opacity 1.0 when progress reaches 1.0
+        const cursorPos = progress * (totalChars + windowWidth);
 
         const baseOpacity = 0.12;
         for (let i = 0; i < totalChars; i++) {
           let opacity;
-          if (i < cursorPos - windowWidth) {
+          if (progress >= 1 || i < cursorPos - windowWidth) {
             // Fully revealed
             opacity = 1;
-          } else if (i > cursorPos) {
+          } else if (progress <= 0 || i > cursorPos) {
             // Not yet reached (less visible unrevealed text)
             opacity = baseOpacity;
           } else {

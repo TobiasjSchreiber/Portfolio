@@ -721,9 +721,10 @@ body[data-ambient-theme="kontakt"] {
    -------------------------------------------------------------------------- */
 .nav-header {
   position: fixed;
-  top: 1.4rem;
-  left: 50%;
-  transform: translate(-50%, -130%);
+  top: -80px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
   width: 100%;
   max-width: var(--layout-max-width);
   box-sizing: border-box;
@@ -737,14 +738,14 @@ body[data-ambient-theme="kontakt"] {
   visibility: hidden;
   transition: 
     opacity 0.45s ease,
-    transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    top 0.45s cubic-bezier(0.16, 1, 0.3, 1),
     visibility 0.45s ease;
 }
 
 .nav-header.is-visible {
   opacity: 1;
   visibility: visible;
-  transform: translate(-50%, 0);
+  top: 1.4rem;
 }
 
 .nav-header:not(.is-visible) * {
@@ -760,12 +761,16 @@ body[data-ambient-theme="kontakt"] {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   font-weight: 500;
-  color: #ffffff !important;
-  mix-blend-mode: difference;
+  color: #ffffff;
   white-space: nowrap;
   text-decoration: none;
-  opacity: 1;
-  transition: opacity 0.3s ease;
+  opacity: 0.88;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  padding: 0;
+  transition: color 0.35s ease, opacity 0.3s ease;
   z-index: 1055;
 }
 
@@ -6181,16 +6186,19 @@ body:has(#cinema-modal.open) .nav-header {
     font-size: 0.92rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #ffffff !important;
-    mix-blend-mode: difference;
-    opacity: 1 !important;
+    color: #ffffff;
+    opacity: 0.9 !important;
     visibility: visible !important;
-    transition: opacity 0.3s ease;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    transition: color 0.35s ease, opacity 0.3s ease;
     z-index: 1055 !important;
   }
 
   body.mobile-nav-open .nav-brand {
-    opacity: 0.9 !important;
+    opacity: 1 !important;
     pointer-events: auto !important;
   }
 
@@ -7979,71 +7987,44 @@ em { font-style: normal !important; }
    LIGHT MODE: NAVBAR & FOOTER FIXES
    ========================================================================== */
 
-/* 1. Navbar Inversion when scrolled into Light Mode Sections */
-body.light-theme-active .nav-brand,
-body[data-ambient-theme="thd-app"] .nav-brand,
-body[data-ambient-theme="about"] .nav-brand,
-body[data-ambient-theme="kontakt"] .nav-brand {
-  color: #ffffff !important;
-  mix-blend-mode: difference;
+/* 1. Navbar Inversion when scrolled into Light Mode Sections (Pure Black Text, Zero Background/Kachel) */
+body.light-theme-active .nav-brand {
+  color: #020202 !important;
+  background: transparent !important;
   opacity: 1 !important;
 }
 
-body.light-theme-active .hero__nav,
-body[data-ambient-theme="thd-app"] .hero__nav,
-body[data-ambient-theme="about"] .hero__nav,
-body[data-ambient-theme="kontakt"] .hero__nav {
+body.light-theme-active .hero__nav {
   background: rgba(0, 0, 0, 0.06) !important;
   color: #020202 !important;
 }
 
-body.light-theme-active .hero__nav a,
-body[data-ambient-theme="thd-app"] .hero__nav a,
-body[data-ambient-theme="about"] .hero__nav a,
-body[data-ambient-theme="kontakt"] .hero__nav a {
+body.light-theme-active .hero__nav a {
   color: #020202 !important;
 }
 
-body.light-theme-active .hero__nav a:hover,
-body[data-ambient-theme="thd-app"] .hero__nav a:hover,
-body[data-ambient-theme="about"] .hero__nav a:hover,
-body[data-ambient-theme="kontakt"] .hero__nav a:hover {
+body.light-theme-active .hero__nav a:hover {
   background: rgba(0, 0, 0, 0.05) !important;
 }
 
-body.light-theme-active .hero__nav-pill,
-body[data-ambient-theme="thd-app"] .hero__nav-pill,
-body[data-ambient-theme="about"] .hero__nav-pill,
-body[data-ambient-theme="kontakt"] .hero__nav-pill {
+body.light-theme-active .hero__nav-pill {
   background: rgba(0, 0, 0, 0.1) !important;
 }
 
-body.light-theme-active .hero__nav-ghost,
-body[data-ambient-theme="thd-app"] .hero__nav-ghost,
-body[data-ambient-theme="about"] .hero__nav-ghost,
-body[data-ambient-theme="kontakt"] .hero__nav-ghost {
+body.light-theme-active .hero__nav-ghost {
   background: rgba(0, 0, 0, 0.05) !important;
 }
 
-body.light-theme-active .nav-contact-btn,
-body[data-ambient-theme="thd-app"] .nav-contact-btn,
-body[data-ambient-theme="about"] .nav-contact-btn,
-body[data-ambient-theme="kontakt"] .nav-contact-btn {
+body.light-theme-active .nav-contact-btn {
   color: #ffffff !important;
   background: #020202 !important;
 }
 
-body.light-theme-active .mobile-nav-fab__icon span,
-body[data-ambient-theme="thd-app"] .mobile-nav-fab__icon span,
-body[data-ambient-theme="about"] .mobile-nav-fab__icon span,
-body[data-ambient-theme="kontakt"] .mobile-nav-fab__icon span {
+body.light-theme-active .mobile-nav-fab__icon span {
   background: #020202 !important;
 }
 
-body.light-theme-active .mobile-nav-fab,
-body[data-ambient-theme="thd-app"] .mobile-nav-fab,
-body[data-ambient-theme="about"] .mobile-nav-fab,
-body[data-ambient-theme="kontakt"] .mobile-nav-fab {
+body.light-theme-active .mobile-nav-fab {
   background: rgba(0, 0, 0, 0.05) !important;
 }
 

@@ -20,3 +20,4 @@
 
 ## 5. KI-Workflow & Sicherheit
 - **Niemals lokale Dateien mit Git überschreiben:** Führe niemals eigenmächtig Befehle wie `git checkout <datei>`, `git reset` oder `git restore` aus. Ungespeicherte oder lokale Änderungen, die noch nicht committed wurden, gehen dadurch unwiderruflich verloren!
+- **Keine Git-Uploads ohne ausdrücklichen Befehl:** Führe niemals eigenständig `git commit` oder `git push` aus, es sei denn, der Nutzer fordert dich in der jeweiligen Nachricht ausdrücklich dazu auf (z. B. *"lad das auf Git"*, *"pushe die Änderungen"*). Alle Änderungen verbleiben standardmäßig rein lokal.
