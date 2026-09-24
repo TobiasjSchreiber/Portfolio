@@ -17,3 +17,6 @@
 
 ## 4. Ruhige, stabile Übergänge (No Bounce)
 - Keine übertriebenen Spring- oder Bouncing-Skalierungen (`scale()`) auf UI-Karten, PDF-Bühnen oder Bildwechseln. Sanfte, ruhige Deckkraft-Überblendungen bevorzugen.
+
+## 5. KI-Workflow & Sicherheit
+- **Niemals lokale Dateien mit Git überschreiben:** Führe niemals eigenmächtig Befehle wie `git checkout <datei>`, `git reset` oder `git restore` aus. Ungespeicherte oder lokale Änderungen, die noch nicht committed wurden, gehen dadurch unwiderruflich verloren!

@@ -33,7 +33,7 @@
   </script>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css?v=81">
+  <link rel="stylesheet" href="css/style.css?v=121">
 </head>
 <body class="is-loading" data-ambient-theme="hero">
 
@@ -62,10 +62,6 @@
   </div>
 
   <!-- Ambient Blur Depth Glows -->
-  <div class="ambient-glow ambient-glow-1"></div>
-  <div class="ambient-glow ambient-glow-2"></div>
-  <div class="ambient-glow ambient-glow-3"></div>
-
   <!-- Scroll Progress Indicator -->
   <div id="scroll-progress"></div>
 
@@ -317,15 +313,9 @@
        ========================================================================= -->
   <section id="cgi" class="project-section">
     <div id="work"></div>
-    <div class="section-header reveal-on-scroll">
-      <span class="section-num">01 / 3D-MODELING &amp; CGI</span>
-      <div class="section-title-wrap">
-        <h2 class="section-title">3D &amp; <em>CGI</em></h2>
-      </div>
-      <p class="section-intro-text">
-          Was als autodidaktische Leidenschaft begann, ist heute mein stärkstes Werkzeug: In Blender Cycles erschaffe ich surreale, atmosphärische Environments mit starker emotionaler Wirkung und Naturverbundenheit.
-        </p>
-    </div>
+    <portfolio-text tag="01 / 3D-MODELING &amp; CGI" title="3D &amp; <em>CGI</em>" level="2" extra-classes="section-header reveal-on-scroll">
+  Was als autodidaktische Leidenschaft begann, ist heute mein stärkstes Werkzeug: In Blender Cycles erschaffe ich surreale, atmosphärische Environments mit starker emotionaler Wirkung und Naturverbundenheit.
+</portfolio-text>
 
     <!-- 3D Showcase 03: 3D Render Gallery (Horizontal Parallax Swipe Showcase) -->
     <div class="cgi-parallax-container reveal-on-scroll">
@@ -353,260 +343,163 @@
       <div class="cgi-parallax-viewport" id="cgi-parallax-viewport">
         <div class="cgi-parallax-track" id="cgi-parallax-track">
           <!-- Card 01: Memento Mori -->
-          <div class="cgi-parallax-card"
-               data-cinema-trigger 
-               data-cinema-type="image" 
-               data-cinema-src="assets/images/full/3D_Memento_moriendum_esse.webp" 
-               data-cinema-title="Memento moriendum esse" 
-               data-cinema-meta="3D Stillleben & Philosophische Lichtkomposition"
-               data-cinema-gallery="cgi-renders">
-            <div class="cgi-parallax-img-wrap">
-              <img decoding="async" class="cgi-parallax-media" src="assets/images/lg/3D_Memento_moriendum_esse.webp" srcset="assets/images/sm/3D_Memento_moriendum_esse.webp 600w, assets/images/md/3D_Memento_moriendum_esse.webp 1200w, assets/images/lg/3D_Memento_moriendum_esse.webp 2400w" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt="Memento moriendum esse" loading="lazy">
-            </div>
-            <div class="cgi-parallax-card-info">
-              <span class="cgi-card-num">01 / STILLLEBEN</span>
-              <h4 class="cgi-card-name">Memento moriendum esse</h4>
-              <p class="cgi-card-sub">Dramatisches 3D Stillleben & Kerzenlicht</p>
-            </div>
-          </div>
+          <cgi-card 
+            type="image" 
+            image-id="3D_Memento_moriendum_esse.webp" 
+            title="Memento moriendum esse" 
+            meta="3D Stillleben & Philosophische Lichtkomposition" 
+            alt="Memento moriendum esse" 
+            num="01 / STILLLEBEN" 
+            name="Memento moriendum esse" 
+            sub="Dramatisches 3D Stillleben & Kerzenlicht">
+          </cgi-card>
 
           <!-- Card 02: Lunar Odyssey -->
-          <div class="cgi-parallax-card"
-               data-cinema-trigger 
-               data-cinema-type="image" 
-               data-cinema-src="assets/images/full/3D_Mond.webp" 
-               data-cinema-title="Lunar Odyssey — Mondlandschaft & Astronaut" 
-               data-cinema-meta="Sci-Fi Environment & Oberflächentexturen"
-               data-cinema-gallery="cgi-renders">
-            <div class="cgi-parallax-img-wrap">
-              <img decoding="async" class="cgi-parallax-media" src="assets/images/lg/3D_Mond.webp" srcset="assets/images/sm/3D_Mond.webp 600w, assets/images/md/3D_Mond.webp 1200w, assets/images/lg/3D_Mond.webp 2400w" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt="3D Mondlandschaft" loading="lazy">
-            </div>
-            <div class="cgi-parallax-card-info">
-              <span class="cgi-card-num">02 / ENVIRONMENT</span>
-              <h4 class="cgi-card-name">Lunar Odyssey</h4>
-              <p class="cgi-card-sub">Mondlandschaft & Astronaut</p>
-            </div>
-          </div>
+          <cgi-card 
+            type="image" 
+            image-id="3D_Mond.webp" 
+            title="Lunar Odyssey — Mondlandschaft & Astronaut" 
+            meta="Sci-Fi Environment & Oberflächentexturen" 
+            alt="3D Mondlandschaft" 
+            num="02 / ENVIRONMENT" 
+            name="Lunar Odyssey" 
+            sub="Mondlandschaft & Astronaut">
+          </cgi-card>
 
           <!-- Card 03: Klassische Statue (Video) -->
-          <div class="cgi-parallax-card"
-               data-cinema-trigger 
-               data-cinema-type="video" 
-               data-cinema-src="assets/videos/3d_statue.mp4" 
-               data-cinema-title="Klassische Statue — Form & Beleuchtung" 
-               data-cinema-meta="3D Shading & Lichtreflexion"
-               data-cinema-gallery="cgi-renders">
-            <div class="cgi-parallax-img-wrap seamless-video-wrap">
-              <video class="cgi-parallax-media proxy-video" preload="auto" muted loop playsinline poster="assets/images/md/3D_Statue_2.webp">
-                <source src="assets/videos/3d_statue_teaser.mp4" type="video/mp4">
-              </video>
-              <video class="cgi-parallax-media full-video" preload="none" muted loop playsinline style="opacity: 0;">
-                <source src="assets/videos/3d_statue.mp4" type="video/mp4">
-              </video>
-            </div>
-            <div class="cgi-parallax-card-info">
-              <span class="cgi-card-num">03 / MOTION</span>
-              <h4 class="cgi-card-name">Klassische Statue I</h4>
-              <p class="cgi-card-sub">Licht- & Materialinteraktion</p>
-            </div>
-          </div>
+          <cgi-card 
+            type="video" 
+            video-src="assets/videos/3d_statue.mp4" 
+            teaser-src="assets/videos/3d_statue_teaser.mp4" 
+            poster-src="assets/images/md/3D_Statue_2.webp" 
+            title="Klassische Statue — Form & Beleuchtung" 
+            meta="3D Shading & Lichtreflexion" 
+            num="03 / MOTION" 
+            name="Klassische Statue I" 
+            sub="Licht- & Materialinteraktion">
+          </cgi-card>
 
           <!-- Card 04: Statue 2 -->
-          <div class="cgi-parallax-card"
-               data-cinema-trigger 
-               data-cinema-type="image" 
-               data-cinema-src="assets/images/full/3D_Statue_2.webp" 
-               data-cinema-title="Skulpturale Plastik II — Form & Kontur" 
-               data-cinema-meta="Chiaroscuro Beleuchtung & Marmor-Textur"
-               data-cinema-gallery="cgi-renders">
-            <div class="cgi-parallax-img-wrap">
-              <img decoding="async" class="cgi-parallax-media" src="assets/images/lg/3D_Statue_2.webp" srcset="assets/images/sm/3D_Statue_2.webp 600w, assets/images/md/3D_Statue_2.webp 1200w, assets/images/lg/3D_Statue_2.webp 2400w" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt="3D Statue 2" loading="lazy">
-            </div>
-            <div class="cgi-parallax-card-info">
-              <span class="cgi-card-num">04 / SKULPTUR</span>
-              <h4 class="cgi-card-name">Skulptur II</h4>
-              <p class="cgi-card-sub">Form- & Schattenstudie</p>
-            </div>
-          </div>
+          <cgi-card 
+            type="image" 
+            image-id="3D_Statue_2.webp" 
+            title="Skulpturale Plastik II — Form & Kontur" 
+            meta="Chiaroscuro Beleuchtung & Marmor-Textur" 
+            alt="3D Statue 2" 
+            num="04 / SKULPTUR" 
+            name="Skulptur II" 
+            sub="Form- & Schattenstudie">
+          </cgi-card>
 
           <!-- Card 05: Versunkene Statue -->
-          <div class="cgi-parallax-card"
-               data-cinema-trigger 
-               data-cinema-type="image" 
-               data-cinema-src="assets/images/full/3d_fersunkene_Statue.webp" 
-               data-cinema-title="Versunkene Antike — Unterwasser & Kaustiken" 
-               data-cinema-meta="Unterwasser-Lichtbrechung & volumetrische Strahlen"
-               data-cinema-gallery="cgi-renders">
-            <div class="cgi-parallax-img-wrap">
-              <img decoding="async" class="cgi-parallax-media" src="assets/images/lg/3d_fersunkene_Statue.webp" srcset="assets/images/sm/3d_fersunkene_Statue.webp 600w, assets/images/md/3d_fersunkene_Statue.webp 1200w, assets/images/lg/3d_fersunkene_Statue.webp 2400w" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt="Versunkene Statue" loading="lazy">
-            </div>
-            <div class="cgi-parallax-card-info">
-              <span class="cgi-card-num">05 / OPTIK</span>
-              <h4 class="cgi-card-name">Versunkene Antike</h4>
-              <p class="cgi-card-sub">Unterwasser-Kaustiken & Licht</p>
-            </div>
-          </div>
+          <cgi-card 
+            type="image" 
+            image-id="3d_fersunkene_Statue.webp" 
+            title="Versunkene Antike — Unterwasser & Kaustiken" 
+            meta="Unterwasser-Lichtbrechung & volumetrische Strahlen" 
+            alt="Versunkene Statue" 
+            num="05 / OPTIK" 
+            name="Versunkene Antike" 
+            sub="Unterwasser-Kaustiken & Licht">
+          </cgi-card>
 
           <!-- Card 06: Ruinen Auge -->
-          <div class="cgi-parallax-card"
-               data-cinema-trigger 
-               data-cinema-type="image" 
-               data-cinema-src="assets/images/full/3D_Ruinen_Auge.webp" 
-               data-cinema-title="Surreale Ruinen — Das wachende Auge" 
-               data-cinema-meta="Surreale Raumarchitektur & mystische Beleuchtung"
-               data-cinema-gallery="cgi-renders">
-            <div class="cgi-parallax-img-wrap">
-              <img decoding="async" class="cgi-parallax-media" src="assets/images/lg/3D_Ruinen_Auge.webp" srcset="assets/images/sm/3D_Ruinen_Auge.webp 600w, assets/images/md/3D_Ruinen_Auge.webp 1200w, assets/images/lg/3D_Ruinen_Auge.webp 2400w" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt="Surreale Ruinen Auge" loading="lazy">
-            </div>
-            <div class="cgi-parallax-card-info">
-              <span class="cgi-card-num">06 / SURREALISMUS</span>
-              <h4 class="cgi-card-name">Surreales Auge</h4>
-              <p class="cgi-card-sub">Ruinen & Symbolische Lichtkomposition</p>
-            </div>
-          </div>
+          <cgi-card 
+            type="image" 
+            image-id="3D_Ruinen_Auge.webp" 
+            title="Surreale Ruinen — Das wachende Auge" 
+            meta="Surreale Raumarchitektur & mystische Beleuchtung" 
+            alt="Surreale Ruinen Auge" 
+            num="06 / SURREALISMUS" 
+            name="Surreales Auge" 
+            sub="Ruinen & Symbolische Lichtkomposition">
+          </cgi-card>
 
           <!-- Card 07: Ruinen -->
-          <div class="cgi-parallax-card"
-               data-cinema-trigger 
-               data-cinema-type="image" 
-               data-cinema-src="assets/images/full/3D_Ruinen.webp" 
-               data-cinema-title="Ruinen der Antike — Landschaft & Licht" 
-               data-cinema-meta="Atmosphärische Umweltinszenierung"
-               data-cinema-gallery="cgi-renders">
-            <div class="cgi-parallax-img-wrap">
-              <img decoding="async" class="cgi-parallax-media" src="assets/images/lg/3D_Ruinen.webp" srcset="assets/images/sm/3D_Ruinen.webp 600w, assets/images/md/3D_Ruinen.webp 1200w, assets/images/lg/3D_Ruinen.webp 2400w" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt="3D Ruinen" loading="lazy">
-            </div>
-            <div class="cgi-parallax-card-info">
-              <span class="cgi-card-num">07 / LANDSCHAFT</span>
-              <h4 class="cgi-card-name">Ruinen der Antike</h4>
-              <p class="cgi-card-sub">Atmospheric Environment</p>
-            </div>
-          </div>
+          <cgi-card 
+            type="image" 
+            image-id="3D_Ruinen.webp" 
+            title="Ruinen der Antike — Landschaft & Licht" 
+            meta="Atmosphärische Umweltinszenierung" 
+            alt="3D Ruinen" 
+            num="07 / LANDSCHAFT" 
+            name="Ruinen der Antike" 
+            sub="Atmospheric Environment">
+          </cgi-card>
 
           <!-- Card 08: Surreale Geometrie -->
-          <div class="cgi-parallax-card"
-               data-cinema-trigger 
-               data-cinema-type="image" 
-               data-cinema-src="assets/images/full/3D_Sureal.webp" 
-               data-cinema-title="Surreale Dimensionen — Geometrie & Schwebezustand" 
-               data-cinema-meta="Abstrakte Komposition & Raumillusion"
-               data-cinema-gallery="cgi-renders">
-            <div class="cgi-parallax-img-wrap">
-              <img decoding="async" class="cgi-parallax-media" src="assets/images/lg/3D_Sureal.webp" srcset="assets/images/sm/3D_Sureal.webp 600w, assets/images/md/3D_Sureal.webp 1200w, assets/images/lg/3D_Sureal.webp 2400w" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt="Surreale Dimensionen" loading="lazy">
-            </div>
-            <div class="cgi-parallax-card-info">
-              <span class="cgi-card-num">08 / ABSTRAKTION</span>
-              <h4 class="cgi-card-name">Surreale Geometrie</h4>
-              <p class="cgi-card-sub">Schwebezustand & Abstrakter Raum</p>
-            </div>
-          </div>
+          <cgi-card 
+            type="image" 
+            image-id="3D_Sureal.webp" 
+            title="Surreale Dimensionen — Geometrie & Schwebezustand" 
+            meta="Abstrakte Komposition & Raumillusion" 
+            alt="Surreale Dimensionen" 
+            num="08 / ABSTRAKTION" 
+            name="Surreale Geometrie" 
+            sub="Schwebezustand & Abstrakter Raum">
+          </cgi-card>
 
           <!-- Card 09: Ente (Subsurface Scattering) -->
-          <div class="cgi-parallax-card"
-               data-cinema-trigger 
-               data-cinema-type="image" 
-               data-cinema-src="assets/images/full/3D_Ente.webp" 
-               data-cinema-title="Kreatur & Licht — Subsurface Scattering Stillleben" 
-               data-cinema-meta="Organisches Shading & Transluzenz"
-               data-cinema-gallery="cgi-renders">
-            <div class="cgi-parallax-img-wrap">
-              <img decoding="async" class="cgi-parallax-media" src="assets/images/lg/3D_Ente.webp" srcset="assets/images/sm/3D_Ente.webp 600w, assets/images/md/3D_Ente.webp 1200w, assets/images/lg/3D_Ente.webp 2400w" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt="3D Ente Stillleben" loading="lazy">
-            </div>
-            <div class="cgi-parallax-card-info">
-              <span class="cgi-card-num">09 / MATERIAL</span>
-              <h4 class="cgi-card-name">Subsurface Scattering</h4>
-              <p class="cgi-card-sub">Transluzenz & Organisches Shading</p>
-            </div>
-          </div>
+          <cgi-card 
+            type="image" 
+            image-id="3D_Ente.webp" 
+            title="Kreatur & Licht — Subsurface Scattering Stillleben" 
+            meta="Organisches Shading & Transluzenz" 
+            alt="3D Ente Stillleben" 
+            num="09 / MATERIAL" 
+            name="Subsurface Scattering" 
+            sub="Transluzenz & Organisches Shading">
+          </cgi-card>
 
           <!-- Card 10: Waterbucket -->
-          <div class="cgi-parallax-card"
-               data-cinema-trigger 
-               data-cinema-type="image" 
-               data-cinema-src="assets/images/full/3D_Watherbucket-2.webp" 
-               data-cinema-title="Wasserrefraktion — Optik & Fluid-Studie" 
-               data-cinema-meta="Brechungsindex & Oberflächenspannung"
-               data-cinema-gallery="cgi-renders">
-            <div class="cgi-parallax-img-wrap">
-              <img decoding="async" class="cgi-parallax-media" src="assets/images/lg/3D_Watherbucket-2.webp" srcset="assets/images/sm/3D_Watherbucket-2.webp 600w, assets/images/md/3D_Watherbucket-2.webp 1200w, assets/images/lg/3D_Watherbucket-2.webp 2400w" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt="Wasserrefraktion" loading="lazy">
-            </div>
-            <div class="cgi-parallax-card-info">
-              <span class="cgi-card-num">10 / FLUID</span>
-              <h4 class="cgi-card-name">Refraktion & Fluid</h4>
-              <p class="cgi-card-sub">Wasseroptik & Oberflächenspannung</p>
-            </div>
-          </div>
+          <cgi-card 
+            type="image" 
+            image-id="3D_Watherbucket-2.webp" 
+            title="Wasserrefraktion — Optik & Fluid-Studie" 
+            meta="Brechungsindex & Oberflächenspannung" 
+            alt="Wasserrefraktion" 
+            num="10 / FLUID" 
+            name="Refraktion & Fluid" 
+            sub="Wasseroptik & Oberflächenspannung">
+          </cgi-card>
 
           <!-- Card 11: Schattenwolf Zimmer -->
-          <div class="cgi-parallax-card"
-               data-cinema-trigger 
-               data-cinema-type="image" 
-               data-cinema-src="assets/images/full/3D_Schattenwolf_Zimmer.webp" 
-               data-cinema-title="Schattenwolf Zimmer — 3D Rekonstruktion" 
-               data-cinema-meta="Blender 3D Environment & Interior Lighting"
-               data-cinema-gallery="cgi-renders">
-            <div class="cgi-parallax-img-wrap">
-              <img decoding="async" class="cgi-parallax-media" src="assets/images/lg/3D_Schattenwolf_Zimmer.webp" srcset="assets/images/sm/3D_Schattenwolf_Zimmer.webp 600w, assets/images/md/3D_Schattenwolf_Zimmer.webp 1200w, assets/images/lg/3D_Schattenwolf_Zimmer.webp 2400w" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt="3D Schattenwolf Zimmer" loading="lazy">
-            </div>
-            <div class="cgi-parallax-card-info">
-              <span class="cgi-card-num">11 / INTERIOR</span>
-              <h4 class="cgi-card-name">Virtueller Setbau</h4>
-              <p class="cgi-card-sub">Interior-Atmosphäre & Beleuchtung</p>
-            </div>
-          </div>
+          <cgi-card 
+            type="image" 
+            image-id="3D_Schattenwolf_Zimmer.webp" 
+            title="Schattenwolf Zimmer — 3D Rekonstruktion" 
+            meta="Blender 3D Environment & Interior Lighting" 
+            alt="3D Schattenwolf Zimmer" 
+            num="11 / INTERIOR" 
+            name="Virtueller Setbau" 
+            sub="Interior-Atmosphäre & Beleuchtung">
+          </cgi-card>
 
           <!-- Card 12: Pferd Sculpting -->
-          <div class="cgi-parallax-card"
-               data-cinema-trigger 
-               data-cinema-type="image" 
-               data-cinema-src="assets/images/full/3D_Pferd.webp" 
-               data-cinema-title="Dynamische Skulptur — Pferd" 
-               data-cinema-meta="Anatomische Formstudie"
-               data-cinema-gallery="cgi-renders">
-            <div class="cgi-parallax-img-wrap">
-              <img decoding="async" class="cgi-parallax-media" src="assets/images/lg/3D_Pferd.webp" srcset="assets/images/sm/3D_Pferd.webp 600w, assets/images/md/3D_Pferd.webp 1200w, assets/images/lg/3D_Pferd.webp 2400w" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" alt="3D Pferd" loading="lazy">
-            </div>
-            <div class="cgi-parallax-card-info">
-              <span class="cgi-card-num">12 / ANATOMIE</span>
-              <h4 class="cgi-card-name">Dynamische Skulptur</h4>
-              <p class="cgi-card-sub">Form & Anatomie</p>
-            </div>
-          </div>
+          <cgi-card 
+            type="image" 
+            image-id="3D_Pferd.webp" 
+            title="Dynamische Skulptur — Pferd" 
+            meta="Anatomische Formstudie" 
+            alt="3D Pferd" 
+            num="12 / ANATOMIE" 
+            name="Dynamische Skulptur" 
+            sub="Form & Anatomie">
+          </cgi-card>
 
           <!-- Card 13: Blender Timelapse (Video) -->
-          <div class="cgi-parallax-card cgi-parallax-card-wide"
-               data-cinema-trigger 
-               data-cinema-type="video" 
-               data-cinema-src="assets/videos/Blender_Zeitraffer_web.mp4" 
-               data-cinema-title="Blender Modeling Timelapse" 
-               data-cinema-meta="Making-of & Work in Progress &bull; 1080p Web"
-               data-cinema-gallery="cgi-renders">
-            <div class="cgi-parallax-img-wrap seamless-video-wrap">
-              <video class="cgi-parallax-media proxy-video" preload="auto" muted loop playsinline>
-                <source src="assets/videos/Blender_Zeitraffer_teaser.mp4" type="video/mp4">
-              </video>
-              <video class="cgi-parallax-media full-video" preload="none" muted loop playsinline style="opacity: 0;">
-                <source src="assets/videos/Blender_Zeitraffer_web.mp4" type="video/mp4">
-              </video>
-            </div>
-            <button class="video-audio-toggle is-muted cgi-audio-toggle" type="button" aria-label="Ton einschalten" title="Ton einschalten">
-              <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
-                <line x1="23" y1="9" x2="17" y2="15"></line>
-                <line x1="17" y1="9" x2="23" y2="15"></line>
-              </svg>
-              <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
-                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-              </svg>
-            </button>
-            <div class="cgi-parallax-card-info">
-              <span class="cgi-card-num">13 / MAKING-OF</span>
-              <h4 class="cgi-card-name">Modeling Timelapse</h4>
-              <p class="cgi-card-sub">Vom Mesh zum Master-Artwork</p>
-            </div>
-          </div>
+          <cgi-card 
+            type="video" 
+            wide 
+            audio 
+            video-src="assets/videos/Blender_Zeitraffer_web.mp4" 
+            teaser-src="assets/videos/Blender_Zeitraffer_teaser.mp4" 
+            title="Blender Modeling Timelapse" 
+            meta="Making-of & Work in Progress &bull; 1080p Web" 
+            num="13 / MAKING-OF" 
+            name="Modeling Timelapse" 
+            sub="Vom Mesh zum Master-Artwork">
+          </cgi-card>
         </div>
       </div>
 
@@ -620,13 +513,11 @@
 
     <!-- 3D Showcase 01: BMW 700 Coupé -->
     <div class="cgi-subproject" id="project-bmw">
-      <div class="cgi-subproject-header reveal-on-scroll">
-        <span class="cgi-project-label">Uni-Projekt (2026) &bull; 4. Semester &bull; 3ds Max &bull; Arnold Render</span>
-        <h3 class="cgi-subproject-title">BMW 700 Coupé</h3>
-        <p class="cgi-subproject-desc">
+      <portfolio-text tag="Uni-Projekt (2026) &bull; 4. Semester &bull; 3ds Max &bull; Arnold Render" title="BMW 700 Coupé" extra-classes="cgi-subproject-header reveal-on-scroll">
+  
           Für ein Uni-Projekt entstand diese Blueprint-Rekonstruktion eines BMW 700. Ziel war professionelles Modeling ohne externe 3D-Assets. Zudem war es mein erstes Projekt in 3ds Max mit Arnold Render.
-        </p>
-      </div>
+        
+</portfolio-text>
 
       <div class="bmw-stage">
         <!-- Big Hero Video Player for BMW 700 -->
@@ -682,65 +573,59 @@
           </button>
 
           <div class="stills-strip reveal-on-scroll delay-3">
-            <div class="still-card" 
-                 data-cinema-trigger data-cinema-type="image" 
-                 data-cinema-src="assets/images/full/BMW_700_Blueprint.webp"
-                 data-cinema-title="BMW 700 — Bauplan &amp; Technische Zeichnung" 
-                 data-cinema-meta="Orthografische Konstruktionsreferenz des 1960er Coupés"
-                 data-cinema-gallery="bmw-sketches">
-              <img decoding="async" class="still-img" src="assets/images/sm/BMW_700_Blueprint.webp" alt="BMW 700 Blueprint Bauplan" loading="lazy" srcset="assets/images/sm/BMW_700_Blueprint.webp 480w, assets/images/md/BMW_700_Blueprint.webp 960w, assets/images/lg/BMW_700_Blueprint.webp 1131w" sizes="(max-width: 768px) 75vw, 340px">
-              <div class="still-caption">Phase 01 &bull; Bauplan Blueprint</div>
-            </div>
+            <still-card 
+             has-lg image-id="BMW_700_Blueprint.webp" 
+             title="BMW 700 — Bauplan &amp; Technische Zeichnung" 
+             meta="Orthografische Konstruktionsreferenz des 1960er Coupés" 
+             gallery="bmw-sketches" 
+             alt="BMW 700 Blueprint Bauplan" 
+             caption="Phase 01 &bull; Bauplan Blueprint">
+           </still-card>
 
-            <div class="still-card" 
-                 data-cinema-trigger data-cinema-type="image" 
-                 data-cinema-src="assets/images/full/BMW_Rekonstruktion.webp"
-                 data-cinema-title="BMW 700 — Geometrische Rekonstruktion" 
-                 data-cinema-meta="Polygon-Topologie &amp; Karosserielinien in Blender"
-                 data-cinema-gallery="bmw-sketches">
-              <img decoding="async" class="still-img" src="assets/images/sm/BMW_Rekonstruktion.webp" alt="BMW 700 Rekonstruktion" loading="lazy" srcset="assets/images/sm/BMW_Rekonstruktion.webp 480w, assets/images/md/BMW_Rekonstruktion.webp 960w, assets/images/lg/BMW_Rekonstruktion.webp 1800w" sizes="(max-width: 768px) 75vw, 340px">
-              <div class="still-caption">Phase 02 &bull; 3D-Rekonstruktion</div>
-            </div>
+            <still-card 
+             has-lg image-id="BMW_Rekonstruktion.webp" 
+             title="BMW 700 — Geometrische Rekonstruktion" 
+             meta="Polygon-Topologie &amp; Karosserielinien in Blender" 
+             gallery="bmw-sketches" 
+             alt="BMW 700 Rekonstruktion" 
+             caption="Phase 02 &bull; 3D-Rekonstruktion">
+           </still-card>
 
-            <div class="still-card" 
-                 data-cinema-trigger data-cinema-type="image" 
-                 data-cinema-src="assets/images/full/BMW_Model.webp"
-                 data-cinema-title="BMW 700 — Detail-Modeling &amp; Mesh" 
-                 data-cinema-meta="Hard-Surface Sub-D Modeling &amp; Sickenverlauf"
-                 data-cinema-gallery="bmw-sketches">
-              <img decoding="async" class="still-img" src="assets/images/sm/BMW_Model.webp" alt="BMW 700 3D Model" loading="lazy" srcset="assets/images/sm/BMW_Model.webp 480w, assets/images/md/BMW_Model.webp 960w, assets/images/lg/BMW_Model.webp 1800w" sizes="(max-width: 768px) 75vw, 340px">
-              <div class="still-caption">Phase 03 &bull; Detail-Modeling</div>
-            </div>
+            <still-card 
+             has-lg image-id="BMW_Model.webp" 
+             title="BMW 700 — Detail-Modeling &amp; Mesh" 
+             meta="Hard-Surface Sub-D Modeling &amp; Sickenverlauf" 
+             gallery="bmw-sketches" 
+             alt="BMW 700 3D Model" 
+             caption="Phase 03 &bull; Detail-Modeling">
+           </still-card>
 
-            <div class="still-card" 
-                 data-cinema-trigger data-cinema-type="image" 
-                 data-cinema-src="assets/images/full/BMW_Shading.webp"
-                 data-cinema-title="BMW 700 — Material-Shading &amp; Lackierung" 
-                 data-cinema-meta="Cycles Material-Nodes, Metallic Flakes &amp; Chrom"
-                 data-cinema-gallery="bmw-sketches">
-              <img decoding="async" class="still-img" src="assets/images/sm/BMW_Shading.webp" alt="BMW 700 Material Shading" loading="lazy" srcset="assets/images/sm/BMW_Shading.webp 480w, assets/images/md/BMW_Shading.webp 960w, assets/images/lg/BMW_Shading.webp 1800w" sizes="(max-width: 768px) 75vw, 340px">
-              <div class="still-caption">Phase 04 &bull; Material-Shading</div>
-            </div>
+            <still-card 
+             has-lg image-id="BMW_Shading.webp" 
+             title="BMW 700 — Material-Shading &amp; Lackierung" 
+             meta="Cycles Material-Nodes, Metallic Flakes &amp; Chrom" 
+             gallery="bmw-sketches" 
+             alt="BMW 700 Material Shading" 
+             caption="Phase 04 &bull; Material-Shading">
+           </still-card>
 
-            <div class="still-card" 
-                 data-cinema-trigger data-cinema-type="image" 
-                 data-cinema-src="assets/images/full/BMW_Environment.webp"
-                 data-cinema-title="BMW 700 — Studio-Lighting &amp; Environment" 
-                 data-cinema-meta="Szenischer Aufbau, Bodenreflexionen &amp; Light-Rigs"
-                 data-cinema-gallery="bmw-sketches">
-              <img decoding="async" class="still-img" src="assets/images/sm/BMW_Environment.webp" alt="BMW 700 Studio Environment" loading="lazy" srcset="assets/images/sm/BMW_Environment.webp 480w, assets/images/md/BMW_Environment.webp 960w, assets/images/lg/BMW_Environment.webp 1800w" sizes="(max-width: 768px) 75vw, 340px">
-              <div class="still-caption">Phase 05 &bull; Studio &amp; Lighting</div>
-            </div>
+            <still-card 
+             has-lg image-id="BMW_Environment.webp" 
+             title="BMW 700 — Studio-Lighting &amp; Environment" 
+             meta="Szenischer Aufbau, Bodenreflexionen &amp; Light-Rigs" 
+             gallery="bmw-sketches" 
+             alt="BMW 700 Studio Environment" 
+             caption="Phase 05 &bull; Studio &amp; Lighting">
+           </still-card>
 
-            <div class="still-card" 
-                 data-cinema-trigger data-cinema-type="image" 
-                 data-cinema-src="assets/images/full/BMW_Davinci_Schnitt.webp"
-                 data-cinema-title="BMW 700 — Postproduktion &amp; Schnitt" 
-                 data-cinema-meta="DaVinci Resolve Schnitt, Color Grading &amp; Mastercut"
-                 data-cinema-gallery="bmw-sketches">
-              <img decoding="async" class="still-img" src="assets/images/sm/BMW_Davinci_Schnitt.webp" alt="BMW 700 DaVinci Resolve Schnitt" loading="lazy" srcset="assets/images/sm/BMW_Davinci_Schnitt.webp 480w, assets/images/md/BMW_Davinci_Schnitt.webp 960w, assets/images/lg/BMW_Davinci_Schnitt.webp 1800w" sizes="(max-width: 768px) 75vw, 340px">
-              <div class="still-caption">Phase 06 &bull; Grading &amp; Montage</div>
-            </div>
+            <still-card 
+             has-lg image-id="BMW_Davinci_Schnitt.webp" 
+             title="BMW 700 — Postproduktion &amp; Schnitt" 
+             meta="DaVinci Resolve Schnitt, Color Grading &amp; Mastercut" 
+             gallery="bmw-sketches" 
+             alt="BMW 700 DaVinci Resolve Schnitt" 
+             caption="Phase 06 &bull; Grading &amp; Montage">
+           </still-card>
           </div>
 
           <button class="strip-arrow strip-arrow-next" type="button" aria-label="Nächste Skizzen" title="Weiter">
@@ -754,14 +639,12 @@
 
     <!-- 3D Showcase 02: Historische Kaserne 3D-Rekonstruktion -->
     <div class="cgi-subproject" id="project-kaserne">
-      <div class="cgi-subproject-header reveal-on-scroll">
-        <span class="cgi-project-label">Rauminstallation mit Licht &bull; 12. Klasse (2024) &bull; Kaserne Regensburg</span>
-        <h3 class="cgi-subproject-title">Historische Kaserne</h3>
-        <p class="cgi-subproject-desc">
+      <portfolio-text tag="Rauminstallation mit Licht &bull; 12. Klasse (2024) &bull; Kaserne Regensburg" title="Historische Kaserne" extra-classes="cgi-subproject-header reveal-on-scroll">
+  
           Um eine Rauminstallation mit Licht für ein Projekt in der 12. Klasse (Anfang 2024) präzise zu planen, habe ich diesen Raum der historischen Kaserne in Regensburg in mühevoller Handarbeit maßstabsgetreu nachgebaut. 
           Das Konzept gipfelt in einem leuchtenden Baum, der das natürliche Spiel von Licht simuliert, welches im Wald durch das Blätterdach fällt.
-        </p>
-      </div>
+        
+</portfolio-text>
 
     <!-- Showcase 1: Historische Kaserne 3D-Rekonstruktion -->
     <div class="cgi-feature-grid reveal-on-scroll">
@@ -797,24 +680,16 @@
         </div>
       </div>
 
-      <div class="cgi-content-col hide-on-mobile">
-        <span class="cgi-project-label">Rauminstallation &bull; Konzeptkunst</span>
-        <h3 class="cgi-heading">Historische Kaserne</h3>
-        <p class="cgi-desc">
-          Der Raum der historischen Kaserne Regensburg wurde für eine interaktive Lichtinstallation maßstabsgetreu rekonstruiert. Der leuchtende Baum erzeugt das Gefühl von Sonnenlicht im Wald.
-        </p>
-      </div>
+      <portfolio-text tag="Rauminstallation &bull; Konzeptkunst" title="Historische Kaserne" extra-classes="cgi-content-col hide-on-mobile">
+  Der Raum der historischen Kaserne Regensburg wurde für eine interaktive Lichtinstallation maßstabsgetreu rekonstruiert. Der leuchtende Baum erzeugt das Gefühl von Sonnenlicht im Wald.
+</portfolio-text>
     </div>
 
     <!-- Kaserne Interactive Real / 3D Comparison Slider -->
     <div class="kaserne-compare-container reveal-on-scroll">
-      <div class="kaserne-compare-info cgi-content-col">
-        <span class="cgi-project-label">Fotoreferenz vs. 3D-Rekonstruktion</span>
-        <h3 class="cgi-heading kaserne-compare-title">Real / 3D</h3>
-        <p class="cgi-desc kaserne-compare-desc">
-          Interaktiver Direktvergleich zwischen der originalen Archiv-Fotografie und der 3D-Rekonstruktion in Blender.
-        </p>
-      </div>
+      <portfolio-text tag="Fotoreferenz vs. 3D-Rekonstruktion" title="Real / 3D" extra-classes="kaserne-compare-info cgi-content-col">
+  Interaktiver Direktvergleich zwischen der originalen Archiv-Fotografie und der 3D-Rekonstruktion in Blender.
+</portfolio-text>
 
       <div class="kaserne-compare-slider-wrap">
         <div class="kaserne-compare-slider" id="kaserne-compare-slider">
@@ -871,75 +746,68 @@
       </button>
 
       <div class="stills-strip reveal-on-scroll delay-3">
-        <div class="still-card" 
-             data-cinema-trigger data-cinema-type="image" 
-             data-cinema-src="assets/images/full/kasserne_in_progres_in_blender.webp" 
-             data-cinema-title="Kaserne Phase 01 — Blender Viewport WIP" 
-             data-cinema-meta="Wireframe- und Modellierungsphase in Blender"
-             data-cinema-gallery="kaserne-stages">
-          <img decoding="async" class="still-img" src="assets/images/sm/kasserne_in_progres_in_blender.webp" alt="Kaserne Viewport" loading="lazy" srcset="assets/images/sm/kasserne_in_progres_in_blender.webp 480w, assets/images/md/kasserne_in_progres_in_blender.webp 960w" sizes="(max-width: 768px) 75vw, 340px">
-          <div class="still-caption">Phase 01 &bull; Viewport WIP</div>
-        </div>
+        <still-card 
+             image-id="kasserne_in_progres_in_blender.webp" 
+             title="Kaserne Phase 01 — Blender Viewport WIP" 
+             meta="Wireframe- und Modellierungsphase in Blender" 
+             gallery="kaserne-stages" 
+             alt="Kaserne Viewport" 
+             caption="Phase 01 &bull; Viewport WIP">
+           </still-card>
 
-        <div class="still-card" 
-             data-cinema-trigger data-cinema-type="image" 
-             data-cinema-src="assets/images/full/Kasserne_nachbau_lehr.webp" 
-             data-cinema-title="Kaserne Phase 02 — Geometrischer Rohbau" 
-             data-cinema-meta="Untexturierte Geometrie & Kubatur"
-             data-cinema-gallery="kaserne-stages">
-          <img decoding="async" class="still-img" src="assets/images/sm/Kasserne_nachbau_lehr.webp" alt="Kaserne Rohbau" loading="lazy" srcset="assets/images/sm/Kasserne_nachbau_lehr.webp 480w, assets/images/md/Kasserne_nachbau_lehr.webp 960w" sizes="(max-width: 768px) 75vw, 340px">
-          <div class="still-caption">Phase 02 &bull; Geometrie Rohbau</div>
-        </div>
+        <still-card 
+             image-id="Kasserne_nachbau_lehr.webp" 
+             title="Kaserne Phase 02 — Geometrischer Rohbau" 
+             meta="Untexturierte Geometrie & Kubatur" 
+             gallery="kaserne-stages" 
+             alt="Kaserne Rohbau" 
+             caption="Phase 02 &bull; Geometrie Rohbau">
+           </still-card>
 
-        <div class="still-card" 
-             data-cinema-trigger data-cinema-type="image" 
-             data-cinema-src="assets/images/full/Kaserne_mit_auto.webp" 
-             data-cinema-title="Kaserne Phase 03 — Szenenaufbau mit historischem Fahrzeug" 
-             data-cinema-meta="Set Dressing & Fahrzeugplatzierung"
-             data-cinema-gallery="kaserne-stages">
-          <img decoding="async" class="still-img" src="assets/images/sm/Kaserne_mit_auto.webp" alt="Kaserne mit Auto" loading="lazy" srcset="assets/images/sm/Kaserne_mit_auto.webp 480w, assets/images/md/Kaserne_mit_auto.webp 960w" sizes="(max-width: 768px) 75vw, 340px">
-          <div class="still-caption">Phase 03 &bull; Szenenaufbau</div>
-        </div>
+        <still-card 
+             image-id="Kaserne_mit_auto.webp" 
+             title="Kaserne Phase 03 — Szenenaufbau mit historischem Fahrzeug" 
+             meta="Set Dressing & Fahrzeugplatzierung" 
+             gallery="kaserne-stages" 
+             alt="Kaserne mit Auto" 
+             caption="Phase 03 &bull; Szenenaufbau">
+           </still-card>
 
-        <div class="still-card" 
-             data-cinema-trigger data-cinema-type="image" 
-             data-cinema-src="assets/images/full/Kaserne_mit_Wasser.webp" 
-             data-cinema-title="Kaserne Phase 04 — Wasserflächen & Reflexionen" 
-             data-cinema-meta="Wasseroberflächen & Lichtspiegelungen"
-             data-cinema-gallery="kaserne-stages">
-          <img decoding="async" class="still-img" src="assets/images/sm/Kaserne_mit_Wasser.webp" alt="Kaserne Wasser" loading="lazy" srcset="assets/images/sm/Kaserne_mit_Wasser.webp 480w, assets/images/md/Kaserne_mit_Wasser.webp 960w" sizes="(max-width: 768px) 75vw, 340px">
-          <div class="still-caption">Phase 04 &bull; Wasserreflexionen</div>
-        </div>
+        <still-card 
+             image-id="Kaserne_mit_Wasser.webp" 
+             title="Kaserne Phase 04 — Wasserflächen & Reflexionen" 
+             meta="Wasseroberflächen & Lichtspiegelungen" 
+             gallery="kaserne-stages" 
+             alt="Kaserne Wasser" 
+             caption="Phase 04 &bull; Wasserreflexionen">
+           </still-card>
 
-        <div class="still-card" 
-             data-cinema-trigger data-cinema-type="image" 
-             data-cinema-src="assets/images/full/Voll_eingerichtet_hinten_kasserne.webp" 
-             data-cinema-title="Kaserne Phase 05 — Innenhof & Detailreichtum" 
-             data-cinema-meta="Hofgestaltung, Vegetation & Requisiten"
-             data-cinema-gallery="kaserne-stages">
-          <img decoding="async" class="still-img" src="assets/images/sm/Voll_eingerichtet_hinten_kasserne.webp" alt="Kaserne Innenhof" loading="lazy" srcset="assets/images/sm/Voll_eingerichtet_hinten_kasserne.webp 480w, assets/images/md/Voll_eingerichtet_hinten_kasserne.webp 960w" sizes="(max-width: 768px) 75vw, 340px">
-          <div class="still-caption">Phase 05 &bull; Hofdetails</div>
-        </div>
+        <still-card 
+             image-id="Voll_eingerichtet_hinten_kasserne.webp" 
+             title="Kaserne Phase 05 — Innenhof & Detailreichtum" 
+             meta="Hofgestaltung, Vegetation & Requisiten" 
+             gallery="kaserne-stages" 
+             alt="Kaserne Innenhof" 
+             caption="Phase 05 &bull; Hofdetails">
+           </still-card>
 
-        <div class="still-card" 
-             data-cinema-trigger data-cinema-type="image" 
-             data-cinema-src="assets/images/full/Kaserne_nacher.webp" 
-             data-cinema-title="Kaserne Phase 06 — Finale Szenerie" 
-             data-cinema-meta="Vollausbau & Umgebungsfinish"
-             data-cinema-gallery="kaserne-stages">
-          <img decoding="async" class="still-img" src="assets/images/sm/Kaserne_nacher.webp" alt="Kaserne Finale Szenerie" loading="lazy" srcset="assets/images/sm/Kaserne_nacher.webp 480w, assets/images/md/Kaserne_nacher.webp 960w" sizes="(max-width: 768px) 75vw, 340px">
-          <div class="still-caption">Phase 06 &bull; Szenerie Finish</div>
-        </div>
+        <still-card 
+             image-id="Kaserne_nacher.webp" 
+             title="Kaserne Phase 06 — Finale Szenerie" 
+             meta="Vollausbau & Umgebungsfinish" 
+             gallery="kaserne-stages" 
+             alt="Kaserne Finale Szenerie" 
+             caption="Phase 06 &bull; Szenerie Finish">
+           </still-card>
 
-        <div class="still-card" 
-             data-cinema-trigger data-cinema-type="image" 
-             data-cinema-src="assets/images/full/3D_nachbau_Kaserne.webp" 
-             data-cinema-title="Kaserne Phase 07 — Architektur Master-Render" 
-             data-cinema-meta="Gesamtansicht &amp; High-End Cycles Rendering"
-             data-cinema-gallery="kaserne-stages">
-          <img decoding="async" class="still-img" src="assets/images/sm/3D_nachbau_Kaserne.webp" alt="Kaserne Master Render" loading="lazy" srcset="assets/images/sm/3D_nachbau_Kaserne.webp 480w, assets/images/md/3D_nachbau_Kaserne.webp 960w" sizes="(max-width: 768px) 75vw, 340px">
-          <div class="still-caption">Phase 07 &bull; Master-Render</div>
-        </div>
+        <still-card 
+             image-id="3D_nachbau_Kaserne.webp" 
+             title="Kaserne Phase 07 — Architektur Master-Render" 
+             meta="Gesamtansicht &amp; High-End Cycles Rendering" 
+             gallery="kaserne-stages" 
+             alt="Kaserne Master Render" 
+             caption="Phase 07 &bull; Master-Render">
+           </still-card>
       </div>
 
       <button class="strip-arrow strip-arrow-next" type="button" aria-label="Nächste Phasen" title="Weiter">
@@ -958,8 +826,107 @@
   <section id="film" class="project-section">
     <div class="film-parallax-stage" id="film-parallax-stage">
       <div class="film-sticky-container">
-        <!-- Parallax Video Track (4 Fullscreen Panels stacked in sticky viewport) -->
-        <div class="film-parallax-track">
+        <div class="film-vignette-overlay" aria-hidden="true"></div>
+        <!-- Pinned UI / Text Overlay (stays fixed during scroll through the 4 films) -->
+        <div class="film-sticky-overlay" aria-live="polite">
+
+          <!-- Pinned Center Stage: ONLY the Film Title in the Center -->
+          <!-- Pinned Stage: Film Title on the Left, Dynamic Divider, Date and Duration -->
+          <div class="film-center-stage" aria-live="polite">
+            <!-- Pinned Titles Area -->
+            <div class="film-titles-area">
+              <h3 class="film-center-title is-active" data-film-index="0">Schattenwolf</h3>
+              <h3 class="film-center-title" data-film-index="1">1 Tag als Bergmann</h3>
+              <h3 class="film-center-title" data-film-index="2">Inszenierter Kurzfilm</h3>
+              <h3 class="film-center-title" data-film-index="3">Offline statt hochgeladen</h3>
+            </div>
+
+            <!-- Single Dynamic Divider Line: matches active title length and animates width on film switch -->
+            <div class="film-title-divider" id="film-dynamic-divider" aria-hidden="true"></div>
+
+            <!-- Pinned Metadata Area -->
+            <div class="film-metas-area">
+              <div class="film-title-meta is-active" data-film-index="0">
+                <span class="film-meta-date">2026</span>
+                <span class="film-meta-sep" aria-hidden="true">&bull;</span>
+                <span class="film-meta-duration">0:46 Min.</span>
+              </div>
+              <div class="film-title-meta" data-film-index="1">
+                <span class="film-meta-date">2026</span>
+                <span class="film-meta-sep" aria-hidden="true">&bull;</span>
+                <span class="film-meta-duration">5:48 Min.</span>
+              </div>
+              <div class="film-title-meta" data-film-index="2">
+                <span class="film-meta-date">2025</span>
+                <span class="film-meta-sep" aria-hidden="true">&bull;</span>
+                <span class="film-meta-duration">2:45 Min.</span>
+              </div>
+              <div class="film-title-meta" data-film-index="3">
+                <span class="film-meta-date">2025</span>
+                <span class="film-meta-sep" aria-hidden="true">&bull;</span>
+                <span class="film-meta-duration">4:36 Min.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Status Bar: Dot Indicators, Center "MEHR ERFAHREN" Text & Controls -->
+          <div class="film-sticky-bottom">
+            <div class="film-dots" role="tablist" aria-label="Filmauswahl">
+              <button class="film-dot is-active" data-dot-index="0" role="tab" aria-selected="true" aria-label="Schattenwolf ansehen"></button>
+              <button class="film-dot" data-dot-index="1" role="tab" aria-selected="false" aria-label="1 Tag als Bergmann ansehen"></button>
+              <button class="film-dot" data-dot-index="2" role="tab" aria-selected="false" aria-label="Inszenierter Kurzfilm ansehen"></button>
+              <button class="film-dot" data-dot-index="3" role="tab" aria-selected="false" aria-label="Offline statt hochgeladen ansehen"></button>
+            </div>
+
+            <!-- Center: Clickable text "MEHR ERFAHREN" morphing to "ZURÜCK" on opening -->
+            <button class="film-more-text-btn" id="film-more-trigger" type="button" aria-expanded="false" aria-controls="film-info-drawer" aria-label="Mehr Details zum Film erfahren">
+              <span class="film-more-text-wrap">
+                <span class="film-more-text-label film-more-text-label--more">MEHR ERFAHREN</span>
+                <span class="film-more-text-label film-more-text-label--back">ZURÜCK</span>
+              </span>
+            </button>
+
+            <div class="film-sticky-bottom-right">
+              <div class="film-sticky-actions">
+                <!-- Global Audio Toggle for the active video (Symbol only) -->
+                <button class="video-audio-toggle is-muted film-audio-btn film-icon-btn" id="film-global-audio-btn" type="button" aria-label="Ton einschalten" title="Ton einschalten">
+                  <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                    <line x1="23" y1="9" x2="17" y2="15"></line>
+                    <line x1="17" y1="9" x2="23" y2="15"></line>
+                  </svg>
+                  <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                  </svg>
+                </button>
+
+                <!-- Fullscreen Cinema Mode Trigger for the active video (Symbol only) -->
+                <button class="film-cinema-btn film-icon-btn" id="film-cinema-open-btn" type="button" aria-label="Aktuellen Film im Vollbild ansehen" title="Vollbild">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <polyline points="9 21 3 21 3 15"></polyline>
+                    <line x1="21" y1="3" x2="14" y2="10"></line>
+                    <line x1="3" y1="21" x2="10" y2="14"></line>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Vertical Scroll Indicator -->
+              <div class="film-scroll-hint film-scroll-hint--vertical" aria-label="Scroll-Hinweis">
+                <span class="film-hint-text">Scroll</span>
+                <div class="film-scroll-indicator-bar">
+                  <div class="film-scroll-indicator-line"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Consecutive Video Track (4 Fullscreen Panels attached one after another) -->
+      <div class="film-parallax-track" id="film-parallax-track">
           <!-- Panel 0: Schattenwolf -->
           <section class="film-video-panel is-active" data-panel-index="0" aria-label="Schattenwolf Video-Bühne">
             <div class="film-video-wrap seamless-video-wrap">
@@ -1010,147 +977,181 @@
         </div>
 
         <!-- Unified Global Dark Mask: Stationary over all videos to eliminate bright transition seams -->
-        <div class="film-vignette-overlay" aria-hidden="true"></div>
+        
 
-        <!-- Pinned UI / Text Overlay (stays fixed during scroll through the 4 films) -->
-        <div class="film-sticky-overlay" aria-live="polite">
+        <!-- =========================================================================
+             FILM INFO DRAWER / FROSTED BLUR MODAL (Slides up from bottom inside stage)
+             ========================================================================= -->
+        
 
-          <!-- Dynamic Text Stage: Cards stay anchored at the exact same location on screen -->
-          <div class="film-text-stage">
-            <!-- Card 0: Schattenwolf -->
-            <article class="film-text-card is-active" data-film-index="0"
-                     data-video-src="assets/videos/Schattenwolf_web.mp4"
-                     data-video-title="Schattenwolf — Stop-Motion Kurzfilm"
-                     data-video-meta="Gruppenprojekt (4 Personen) &bull; Kamera &amp; Set: Tobias Schreiber"
-                     data-label="Stop-Motion">
-              <span class="film-tag-year">Gruppenprojekt (4 Personen) &bull; Stop-Motion</span>
-              <h3 class="film-title">Schattenwolf</h3>
-              <p class="film-synopsis">
-                Ein handwerklich animierter Stop-Motion-Kurzfilm, der in einer Vierergruppe entstand. 
-                Als Verantwortlicher für Kamera und Set lag mein Fokus auf dem detailreichen Miniatur-Setbau 
-                sowie der präzisen Low-Key-Ausleuchtung für eine dichte, düstere Atmosphäre.
-              </p>
-              <div class="film-credits">
-                <span><strong>Produktion:</strong> 4-köpfiges Team</span>
-                <span><strong>Meine Rolle:</strong> Kamera &amp; Set</span>
-                <span><strong>Framerate:</strong> 12 fps</span>
-              </div>
-              <div class="film-card-footer">
-                <button class="film-stills-trigger-btn" type="button" id="film-stills-toggle" aria-label="Produktions-Phasen & Stills anzeigen">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                    <polyline points="21 15 16 10 5 21"></polyline>
-                  </svg>
-                  <span>6 Produktions-Stills &amp; Phasen ansehen</span>
-                </button>
-              </div>
-            </article>
-
-            <!-- Card 1: 1 Tag als Bergmann -->
-            <article class="film-text-card" data-film-index="1"
-                     data-video-src="assets/videos/Bergmann_web.mp4"
-                     data-video-title="1 Tag als Bergmann — Reportage"
-                     data-video-meta="Gruppenprojekt (4 Personen) &bull; Kamera (Schulterrig): Tobias Schreiber"
-                     data-label="Reportage">
-              <span class="film-tag-year">Reportage &bull; Graphitmine Passau</span>
-              <h3 class="film-title">1 Tag als Bergmann</h3>
-              <p class="film-synopsis">
-                Um den rauen Alltag und die Gefahren des Bergbaus hautnah zu dokumentieren, begleiteten wir als 4-köpfiges Team echte Arbeiter 200 Meter tief in die Graphitmine in Passau. Unter extremen Bedingungen – kalt, nass, matschig und staubig – fing ich die klaustrophobische Atmosphäre dynamisch mit der Kamera auf dem Schulterrig ein.
-              </p>
-              <div class="film-credits">
-                <span><strong>Produktion:</strong> 4-köpfiges Team</span>
-                <span><strong>Meine Rolle:</strong> Kamera (Schulterrig)</span>
-                <span><strong>Drehort:</strong> 200m unter Tage</span>
-              </div>
-            </article>
-
-            <!-- Card 2: Inszenierter Kurzfilm -->
-            <article class="film-text-card" data-film-index="2"
-                     data-video-src="assets/videos/kurzfilm_web.mp4"
-                     data-start-time="8"
-                     data-video-title="Kurzfilm — Fiktionales Werk"
-                     data-video-meta="Gruppenprojekt (4 Personen) &bull; Alle Positionen geteilt"
-                     data-label="Fiktion">
-              <span class="film-tag-year">Psychologischer Kurzfilm &bull; Fiktion</span>
-              <h3 class="film-title">Inszenierter Kurzfilm</h3>
-              <p class="film-synopsis">
-                Ein düsterer, depressiver Kurzfilm, der das moderne Thema "Ghosting" metaphorisch aufgreift: Eine junge Frau wird darin unaufhörlich von einem alten Telefon terrorisiert. In diesem 4-köpfigen Teamprojekt haben wir sämtliche Aufgaben vor und hinter der Kamera gemeinschaftlich übernommen und aufgeteilt.
-              </p>
-              <div class="film-credits">
-                <span><strong>Produktion:</strong> 4-köpfiges Team</span>
-                <span><strong>Meine Rolle:</strong> Geteilte Positionen (Allrounder)</span>
-                <span><strong>Thema:</strong> Ghosting / Psychologie</span>
-              </div>
-            </article>
-
-            <!-- Card 3: Offline statt hochgeladen -->
-            <article class="film-text-card" data-film-index="3"
-                     data-video-src="assets/videos/Offline_Interview_web.mp4"
-                     data-start-time="4"
-                     data-video-title="Offline statt Hochgeladen — Interview &amp; Reportage"
-                     data-video-meta="Gruppenprojekt (4 Personen) &bull; Licht &amp; 2. Kamera: Tobias Schreiber"
-                     data-label="Reportage">
-              <span class="film-tag-year">Portrait &bull; Dokumentation</span>
-              <h3 class="film-title">Offline statt hochgeladen</h3>
-              <p class="film-synopsis">
-                Ein filmisches Portrait über meinen Nachbarn Florian Ganselmeier – studierter Informatiker, der heute als Dudelsackbauer, Bienenhüter, Baumkletterer und Landhaus-Bewirtschafter lebt. In diesem 4er-Teamprojekt beleuchten wir seinen ungewöhnlichen Werdegang. Am Set war ich für die Lichtgestaltung und die 2. Kamera verantwortlich.
-              </p>
-              <div class="film-credits">
-                <span><strong>Produktion:</strong> 4-köpfiges Team</span>
-                <span><strong>Meine Rolle:</strong> Licht &amp; 2. Kamera</span>
-                <span><strong>Thematik:</strong> Lebensentwurf / Portrait</span>
-              </div>
-            </article>
-          </div>
-
-          <!-- Bottom Status Bar: Dot Indicators & Controls -->
-          <div class="film-sticky-bottom">
-            <div class="film-dots" role="tablist" aria-label="Filmauswahl">
-              <button class="film-dot is-active" data-dot-index="0" role="tab" aria-selected="true" aria-label="Schattenwolf ansehen"></button>
-              <button class="film-dot" data-dot-index="1" role="tab" aria-selected="false" aria-label="1 Tag als Bergmann ansehen"></button>
-              <button class="film-dot" data-dot-index="2" role="tab" aria-selected="false" aria-label="Inszenierter Kurzfilm ansehen"></button>
-              <button class="film-dot" data-dot-index="3" role="tab" aria-selected="false" aria-label="Offline statt hochgeladen ansehen"></button>
+        <div id="film-info-drawer" class="film-info-drawer" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Filminformationen">
+          <div class="film-info-drawer__backdrop" id="film-info-drawer-backdrop" aria-hidden="true"></div>
+          <div class="film-info-container" id="film-info-drawer-sheet">
+            <!-- Top Header Row (Left-aligned badge, zero X close button) -->
+            <div class="film-info-drawer__header">
+              <div class="film-info-drawer__badge" id="film-drawer-badge">01 / STOP-MOTION</div>
             </div>
 
-            <div class="film-sticky-bottom-right">
-              <div class="film-sticky-actions">
-                <!-- Global Audio Toggle for the active video (Symbol only) -->
-                <button class="video-audio-toggle is-muted film-audio-btn film-icon-btn" id="film-global-audio-btn" type="button" aria-label="Ton einschalten" title="Ton einschalten">
-                  <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
-                    <line x1="23" y1="9" x2="17" y2="15"></line>
-                    <line x1="17" y1="9" x2="23" y2="15"></line>
-                  </svg>
-                  <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
-                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                  </svg>
-                </button>
-
-                <!-- Fullscreen Cinema Mode Trigger for the active video (Symbol only) -->
-                <button class="film-cinema-btn film-icon-btn" id="film-cinema-open-btn" type="button" aria-label="Aktuellen Film im Vollbild ansehen" title="Vollbild">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="15 3 21 3 21 9"></polyline>
-                    <polyline points="9 21 3 21 3 15"></polyline>
-                    <line x1="21" y1="3" x2="14" y2="10"></line>
-                    <line x1="3" y1="21" x2="10" y2="14"></line>
-                  </svg>
-                </button>
-              </div>
-
-              <!-- Vertical Scroll Indicator -->
-              <div class="film-scroll-hint film-scroll-hint--vertical" aria-label="Scroll-Hinweis">
-                <span class="film-hint-text">Scroll</span>
-                <div class="film-scroll-indicator-bar">
-                  <div class="film-scroll-indicator-line"></div>
+            <!-- 4 Film Info Content Panels -->
+            <div class="film-info-drawer__body">
+              <!-- Panel 0: Schattenwolf -->
+              <article class="film-text-card film-info-content is-active" data-film-index="0"
+                       data-video-src="assets/videos/Schattenwolf_web.mp4"
+                       data-video-title="Schattenwolf — Stop-Motion Kurzfilm"
+                       data-video-meta="Gruppenprojekt (4 Personen) &bull; Kamera &amp; Set: Tobias Schreiber"
+                       data-label="Stop-Motion">
+                <span class="film-info-tag">Gruppenprojekt (4 Personen) &bull; Stop-Motion</span>
+                <h3 class="film-info-title">Schattenwolf</h3>
+                <div class="film-info-divider" aria-hidden="true"></div>
+                <p class="film-info-synopsis">
+                  Ein handwerklich animierter Stop-Motion-Kurzfilm, der in einer Vierergruppe entstand. 
+                  Als Verantwortlicher für Kamera und Set lag mein Fokus auf dem detailreichen Miniatur-Setbau 
+                  sowie der präzisen Low-Key-Ausleuchtung für eine dichte, düstere Atmosphäre.
+                </p>
+                <div class="film-info-credits">
+                  <div class="film-credit-item">
+                    <span class="film-credit-label">Produktion</span>
+                    <span class="film-credit-val">4-köpfiges Team</span>
+                  </div>
+                  <div class="film-credit-item">
+                    <span class="film-credit-label">Meine Rolle</span>
+                    <span class="film-credit-val">Kamera &amp; Set</span>
+                  </div>
+                  <div class="film-credit-item">
+                    <span class="film-credit-label">Framerate</span>
+                    <span class="film-credit-val">12 fps</span>
+                  </div>
                 </div>
-              </div>
+                <div class="film-info-actions">
+                  <button class="film-stills-trigger-btn" type="button" id="film-stills-toggle" aria-label="Produktions-Phasen & Stills anzeigen">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                      <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                      <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                    <span>6 Produktions-Stills &amp; Phasen ansehen</span>
+                  </button>
+                  <button class="film-info-cinema-btn" type="button" data-cinema-film-index="0" aria-label="Schattenwolf im Vollbild abspielen">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    <span>Vollbild ansehen</span>
+                  </button>
+                </div>
+              </article>
+
+              <!-- Panel 1: 1 Tag als Bergmann -->
+              <article class="film-text-card film-info-content" data-film-index="1"
+                       data-video-src="assets/videos/Bergmann_web.mp4"
+                       data-video-title="1 Tag als Bergmann — Reportage"
+                       data-video-meta="Gruppenprojekt (4 Personen) &bull; Kamera (Schulterrig): Tobias Schreiber"
+                       data-label="Reportage">
+                <span class="film-info-tag">Reportage &bull; Graphitmine Passau</span>
+                <h3 class="film-info-title">1 Tag als Bergmann</h3>
+                <div class="film-info-divider" aria-hidden="true"></div>
+                <p class="film-info-synopsis">
+                  Um den rauen Alltag und die Gefahren des Bergbaus hautnah zu dokumentieren, begleiteten wir als 4-köpfiges Team echte Arbeiter 200 Meter tief in die Graphitmine in Passau. Unter extremen Bedingungen – kalt, nass, matschig und staubig – fing ich die klaustrophobische Atmosphäre dynamisch mit der Kamera auf dem Schulterrig ein.
+                </p>
+                <div class="film-info-credits">
+                  <div class="film-credit-item">
+                    <span class="film-credit-label">Produktion</span>
+                    <span class="film-credit-val">4-köpfiges Team</span>
+                  </div>
+                  <div class="film-credit-item">
+                    <span class="film-credit-label">Meine Rolle</span>
+                    <span class="film-credit-val">Kamera (Schulterrig)</span>
+                  </div>
+                  <div class="film-credit-item">
+                    <span class="film-credit-label">Drehort</span>
+                    <span class="film-credit-val">200m unter Tage</span>
+                  </div>
+                </div>
+                <div class="film-info-actions">
+                  <button class="film-info-cinema-btn" type="button" data-cinema-film-index="1" aria-label="1 Tag als Bergmann im Vollbild abspielen">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    <span>Vollbild ansehen</span>
+                  </button>
+                </div>
+              </article>
+
+              <!-- Panel 2: Inszenierter Kurzfilm -->
+              <article class="film-text-card film-info-content" data-film-index="2"
+                       data-video-src="assets/videos/kurzfilm_web.mp4"
+                       data-start-time="8"
+                       data-video-title="Kurzfilm — Fiktionales Werk"
+                       data-video-meta="Gruppenprojekt (4 Personen) &bull; Alle Positionen geteilt"
+                       data-label="Fiktion">
+                <span class="film-info-tag">Psychologischer Kurzfilm &bull; Fiktion</span>
+                <h3 class="film-info-title">Inszenierter Kurzfilm</h3>
+                <div class="film-info-divider" aria-hidden="true"></div>
+                <p class="film-info-synopsis">
+                  Ein düsterer, depressiver Kurzfilm, der das moderne Thema &bdquo;Ghosting&ldquo; metaphorisch aufgreift: Eine junge Frau wird darin unaufhörlich von einem alten Telefon terrorisiert. In diesem 4-köpfigen Teamprojekt haben wir sämtliche Aufgaben vor und hinter der Kamera gemeinschaftlich übernommen und aufgeteilt.
+                </p>
+                <div class="film-info-credits">
+                  <div class="film-credit-item">
+                    <span class="film-credit-label">Produktion</span>
+                    <span class="film-credit-val">4-köpfiges Team</span>
+                  </div>
+                  <div class="film-credit-item">
+                    <span class="film-credit-label">Meine Rolle</span>
+                    <span class="film-credit-val">Geteilte Positionen (Allrounder)</span>
+                  </div>
+                  <div class="film-credit-item">
+                    <span class="film-credit-label">Thema</span>
+                    <span class="film-credit-val">Ghosting / Psychologie</span>
+                  </div>
+                </div>
+                <div class="film-info-actions">
+                  <button class="film-info-cinema-btn" type="button" data-cinema-film-index="2" aria-label="Kurzfilm im Vollbild abspielen">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    <span>Vollbild ansehen</span>
+                  </button>
+                </div>
+              </article>
+
+              <!-- Panel 3: Offline statt hochgeladen -->
+              <article class="film-text-card film-info-content" data-film-index="3"
+                       data-video-src="assets/videos/Offline_Interview_web.mp4"
+                       data-start-time="4"
+                       data-video-title="Offline statt Hochgeladen — Interview &amp; Reportage"
+                       data-video-meta="Gruppenprojekt (4 Personen) &bull; Licht &amp; 2. Kamera: Tobias Schreiber"
+                       data-label="Reportage">
+                <span class="film-info-tag">Portrait &bull; Dokumentation</span>
+                <h3 class="film-info-title">Offline statt hochgeladen</h3>
+                <div class="film-info-divider" aria-hidden="true"></div>
+                <p class="film-info-synopsis">
+                  Ein filmisches Portrait über meinen Nachbarn Florian Ganselmeier – studierter Informatiker, der heute als Dudelsackbauer, Bienenhüter, Baumkletterer und Landhaus-Bewirtschafter lebt. In diesem 4er-Teamprojekt beleuchten wir seinen ungewöhnlichen Werdegang. Am Set war ich für die Lichtgestaltung und die 2. Kamera verantwortlich.
+                </p>
+                <div class="film-info-credits">
+                  <div class="film-credit-item">
+                    <span class="film-credit-label">Produktion</span>
+                    <span class="film-credit-val">4-köpfiges Team</span>
+                  </div>
+                  <div class="film-credit-item">
+                    <span class="film-credit-label">Meine Rolle</span>
+                    <span class="film-credit-val">Licht &amp; 2. Kamera</span>
+                  </div>
+                  <div class="film-credit-item">
+                    <span class="film-credit-label">Thematik</span>
+                    <span class="film-credit-val">Lebensentwurf / Portrait</span>
+                  </div>
+                </div>
+                <div class="film-info-actions">
+                  <button class="film-info-cinema-btn" type="button" data-cinema-film-index="3" aria-label="Offline statt hochgeladen im Vollbild abspielen">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    <span>Vollbild ansehen</span>
+                  </button>
+                </div>
+              </article>
             </div>
           </div>
         </div>
-      </div>
 
       <!-- Hidden Lightbox Trigger Registry for Schattenwolf Stills -->
       <div class="film-stills-gallery-hidden" style="display: none;" aria-hidden="true">
@@ -1192,209 +1193,148 @@
        SECTION 03: FOTOGRAFIE & LICHTFÜHRUNG (Porträts, Stillleben, Makro, Keramik)
        ========================================================================= -->
   <section id="fotografie" class="project-section">
-    <div class="section-header reveal-on-scroll">
-      <span class="section-num">03 / FOTOGRAFIE &amp; LICHTFÜHRUNG</span>
-      <div class="section-title-wrap">
-        <h2 class="section-title">Licht &amp; <em>Fotografie</em></h2>
-      </div>
-      <p class="section-intro-text">
-        Präzise Lichtführung, haptische Texturen und analog inspirierte Bildkompositionen. 
-        Kombinierte Arbeiten aus Charakterporträts, organischen Makrostrukturen und filmischer Set-Fotografie.
-      </p>
-    </div>
 
     <!-- ==================== GEMEINSAME FOTOGRAFIE-GALERIE ==================== -->
     <div class="photo-unified-gallery">
       <div class="photo-compact-grid">
         <!-- 01: Porträt I (Querformat — Groß: 2 Spalten × 2 Zeilen) -->
-        <div class="photo-card photo-card--large-landscape"
-             data-cinema-trigger data-cinema-type="image"
-             data-cinema-src="assets/images/full/Portraet_1.webp"
-             data-cinema-title="Porträt I — Charakterstudie"
-             data-cinema-meta="Studiobeleuchtung &amp; Chiaroscuro • 85mm f/1.8"
-             data-cinema-gallery="photo-gallery">
-          <img decoding="async" class="photo-card-img" src="assets/images/md/Portraet_1.webp" alt="Porträt 1" loading="lazy" srcset="assets/images/sm/Portraet_1.webp 480w, assets/images/md/Portraet_1.webp 960w, assets/images/lg/Portraet_1.webp 1800w" sizes="(max-width: 600px) 100vw, (max-width: 1024px) 100vw, 50vw">
-          <div class="photo-card-overlay">
-            <div class="photo-card-info">
-              <h4>Porträt I</h4>
-              <p>Studiobeleuchtung &amp; Chiaroscuro</p>
-            </div>
-          </div>
-        </div>
+        <photo-card 
+             card-class="photo-card--large-landscape" 
+             image-id="Portraet_1.webp" 
+             title="Porträt I — Charakterstudie" 
+             meta="Studiobeleuchtung &amp; Chiaroscuro • 85mm f/1.8" 
+             alt="Porträt 1" 
+             name="Porträt I" 
+             sub="Studiobeleuchtung &amp; Chiaroscuro">
+           </photo-card>
+
+        <!-- 02: Section Text Card (2 Spalten × 2 Zeilen rechts neben Porträt I) -->
+        <portfolio-text 
+          tag="03 / FOTOGRAFIE &amp; LICHTFÜHRUNG" 
+          title="Licht &amp; <em>Fotografie</em>" 
+          level="2" 
+          class="photo-text-card"
+          extra-classes="photo-grid-text-block">
+          Präzise Lichtführung, haptische Texturen und analog inspirierte Bildkompositionen. Kombinierte Arbeiten aus Charakterporträts, organischen Makrostrukturen und filmischer Set-Fotografie.
+        </portfolio-text>
 
         <!-- 02: Porträt II (Hochformat — 1 Spalte × 2 Zeilen: 2 Querformat-Bilder daneben sind genau so hoch) -->
-        <div class="photo-card photo-card--tall"
-             data-cinema-trigger data-cinema-type="image"
-             data-cinema-src="assets/images/full/Portraet_2.webp"
-             data-cinema-title="Porträt II — Dramatisches Streiflicht"
-             data-cinema-meta="Low-Key Charakterporträt"
-             data-cinema-gallery="photo-gallery">
-          <img decoding="async" class="photo-card-img" src="assets/images/md/Portraet_2.webp" alt="Porträt 2" loading="lazy" srcset="assets/images/sm/Portraet_2.webp 480w, assets/images/md/Portraet_2.webp 960w, assets/images/lg/Portraet_2.webp 1800w" sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 25vw">
-          <div class="photo-card-overlay">
-            <div class="photo-card-info">
-              <h4>Porträt II</h4>
-              <p>Dramatisches Streiflicht</p>
-            </div>
-          </div>
-        </div>
+        <photo-card 
+             card-class="photo-card--tall" 
+             image-id="Portraet_2.webp" 
+             title="Porträt II — Dramatisches Streiflicht" 
+             meta="Low-Key Charakterporträt" 
+             alt="Porträt 2" 
+             name="Porträt II" 
+             sub="Dramatisches Streiflicht">
+           </photo-card>
 
         <!-- 03: Food Stillleben I (Hochformat — 1 Spalte × 2 Zeilen) -->
-        <div class="photo-card photo-card--tall"
-             data-cinema-trigger data-cinema-type="image"
-             data-cinema-src="assets/images/full/Bild_Essen_1.webp"
-             data-cinema-title="Food Stillleben I — Haptik &amp; Licht"
-             data-cinema-meta="Editorial Food &amp; Texture Photography"
-             data-cinema-gallery="photo-gallery">
-          <img decoding="async" class="photo-card-img" src="assets/images/md/Bild_Essen_1.webp" alt="Food Stillleben 1" loading="lazy" srcset="assets/images/sm/Bild_Essen_1.webp 480w, assets/images/md/Bild_Essen_1.webp 960w, assets/images/lg/Bild_Essen_1.webp 1800w" sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 25vw">
-          <div class="photo-card-overlay">
-            <div class="photo-card-info">
-              <h4>Stillleben I</h4>
-              <p>Haptik &amp; Lichtinszenierung</p>
-            </div>
-          </div>
-        </div>
+        <photo-card 
+             card-class="photo-card--tall" 
+             image-id="Bild_Essen_1.webp" 
+             title="Food Stillleben I — Haptik &amp; Licht" 
+             meta="Editorial Food &amp; Texture Photography" 
+             alt="Food Stillleben 1" 
+             name="Stillleben I" 
+             sub="Haptik &amp; Lichtinszenierung">
+           </photo-card>
 
         <!-- 04: Porträt III (Querformat — Kompakt: 1 Spalte × 1 Zeile, 3:2 Querformat) -->
-        <div class="photo-card photo-card--landscape-sm"
-             data-cinema-trigger data-cinema-type="image"
-             data-cinema-src="assets/images/full/Portraet_3.webp"
-             data-cinema-title="Porträt III — Natürliche Lichtführung"
-             data-cinema-meta="Intime Porträtstudie"
-             data-cinema-gallery="photo-gallery">
-          <img decoding="async" class="photo-card-img" src="assets/images/md/Portraet_3.webp" alt="Porträt 3" loading="lazy" srcset="assets/images/sm/Portraet_3.webp 480w, assets/images/md/Portraet_3.webp 960w, assets/images/lg/Portraet_3.webp 1800w" sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 25vw">
-          <div class="photo-card-overlay">
-            <div class="photo-card-info">
-              <h4>Porträt III</h4>
-              <p>Natürliche Lichtführung</p>
-            </div>
-          </div>
-        </div>
+        <photo-card 
+             card-class="photo-card--landscape-sm" 
+             image-id="Portraet_3.webp" 
+             title="Porträt III — Natürliche Lichtführung" 
+             meta="Intime Porträtstudie" 
+             alt="Porträt 3" 
+             name="Porträt III" 
+             sub="Natürliche Lichtführung">
+           </photo-card>
 
         <!-- 05: Porträt IV (Querformat — Kompakt: 1 Spalte × 1 Zeile, 3:2 Querformat) -->
-        <div class="photo-card photo-card--landscape-sm"
-             data-cinema-trigger data-cinema-type="image"
-             data-cinema-src="assets/images/full/Portraet_4.webp"
-             data-cinema-title="Porträt IV — Monochromie &amp; Tiefe"
-             data-cinema-meta="Editorial Porträtfotografie"
-             data-cinema-gallery="photo-gallery">
-          <img decoding="async" class="photo-card-img" src="assets/images/md/Portraet_4.webp" alt="Porträt 4" loading="lazy" srcset="assets/images/sm/Portraet_4.webp 480w, assets/images/md/Portraet_4.webp 960w, assets/images/lg/Portraet_4.webp 1800w" sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 25vw">
-          <div class="photo-card-overlay">
-            <div class="photo-card-info">
-              <h4>Porträt IV</h4>
-              <p>Monochromie &amp; Tiefe</p>
-            </div>
-          </div>
-        </div>
+        <photo-card 
+             card-class="photo-card--landscape-sm" 
+             image-id="Portraet_4.webp" 
+             title="Porträt IV — Monochromie &amp; Tiefe" 
+             meta="Editorial Porträtfotografie" 
+             alt="Porträt 4" 
+             name="Porträt IV" 
+             sub="Monochromie &amp; Tiefe">
+           </photo-card>
 
         <!-- 06: Iris Makro (Querformat — Groß: 2 Spalten × 2 Zeilen) -->
-        <div class="photo-card photo-card--large-landscape"
-             data-cinema-trigger data-cinema-type="image"
-             data-cinema-src="assets/images/full/Bild_Mein_Auge.webp"
-             data-cinema-title="Iris Makro — Anatomie &amp; Licht"
-             data-cinema-meta="Extrem-Makrofotografie &amp; Organische Textur"
-             data-cinema-gallery="photo-gallery">
-          <img decoding="async" class="photo-card-img" src="assets/images/md/Bild_Mein_Auge.webp" alt="Iris Makro Auge" loading="lazy" srcset="assets/images/sm/Bild_Mein_Auge.webp 480w, assets/images/md/Bild_Mein_Auge.webp 960w, assets/images/lg/Bild_Mein_Auge.webp 1800w" sizes="(max-width: 600px) 100vw, (max-width: 1024px) 100vw, 50vw">
-          <div class="photo-card-overlay">
-            <div class="photo-card-info">
-              <h4>Menschliche Anatomie</h4>
-              <p>Makrostruktur &amp; Spektralreflexe</p>
-            </div>
-          </div>
-        </div>
+        <photo-card 
+             card-class="photo-card--large-landscape" 
+             image-id="Bild_Mein_Auge.webp" 
+             title="Iris Makro — Anatomie &amp; Licht" 
+             meta="Extrem-Makrofotografie &amp; Organische Textur" 
+             alt="Iris Makro Auge" 
+             name="Menschliche Anatomie" 
+             sub="Makrostruktur &amp; Spektralreflexe">
+           </photo-card>
 
         <!-- 07: Architektur Dom Innen (Hochformat — 1 Spalte × 2 Zeilen) -->
-        <div class="photo-card photo-card--tall"
-             data-cinema-trigger data-cinema-type="image"
-             data-cinema-src="assets/images/full/Achitektur_Dom_innen.webp"
-             data-cinema-title="Architektur — Dom Innen"
-             data-cinema-meta="Architekturfotografie"
-             data-cinema-gallery="photo-gallery">
-          <img decoding="async" class="photo-card-img" src="assets/images/md/Achitektur_Dom_innen.webp" alt="Architektur Dom Innen" loading="lazy" srcset="assets/images/sm/Achitektur_Dom_innen.webp 480w, assets/images/md/Achitektur_Dom_innen.webp 960w, assets/images/lg/Achitektur_Dom_innen.webp 1800w" sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 25vw">
-          <div class="photo-card-overlay">
-            <div class="photo-card-info">
-              <h4>Architektur Dom</h4>
-              <p>Innenraum &amp; Licht</p>
-            </div>
-          </div>
-        </div>
+        <photo-card 
+             card-class="photo-card--tall" 
+             image-id="Achitektur_Dom_innen.webp" 
+             title="Architektur — Dom Innen" 
+             meta="Architekturfotografie" 
+             alt="Architektur Dom Innen" 
+             name="Architektur Dom" 
+             sub="Innenraum &amp; Licht">
+           </photo-card>
 
         <!-- 08: Food Stillleben II (Hochformat — 1 Spalte × 2 Zeilen) -->
-        <div class="photo-card photo-card--tall"
-             data-cinema-trigger data-cinema-type="image"
-             data-cinema-src="assets/images/full/Bild_Essen_2.webp"
-             data-cinema-title="Food Stillleben II — Kontraste &amp; Details"
-             data-cinema-meta="Detailkomposition &amp; Ausleuchtung"
-             data-cinema-gallery="photo-gallery">
-          <img decoding="async" class="photo-card-img" src="assets/images/md/Bild_Essen_2.webp" alt="Food Stillleben 2" loading="lazy" srcset="assets/images/sm/Bild_Essen_2.webp 480w, assets/images/md/Bild_Essen_2.webp 960w, assets/images/lg/Bild_Essen_2.webp 1800w" sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 25vw">
-          <div class="photo-card-overlay">
-            <div class="photo-card-info">
-              <h4>Stillleben II</h4>
-              <p>Kontraste &amp; Details</p>
-            </div>
-          </div>
-        </div>
+        <photo-card 
+             card-class="photo-card--tall" 
+             image-id="Bild_Essen_2.webp" 
+             title="Food Stillleben II — Kontraste &amp; Details" 
+             meta="Detailkomposition &amp; Ausleuchtung" 
+             alt="Food Stillleben 2" 
+             name="Stillleben II" 
+             sub="Kontraste &amp; Details">
+           </photo-card>
 
         <!-- 09: Food Stillleben III (Hochformat — 1 Spalte × 2 Zeilen) -->
-        <div class="photo-card photo-card--tall hide-on-desktop hide-on-mobile"
-             data-cinema-trigger data-cinema-type="image"
-             data-cinema-src="assets/images/full/Bild_Essen_3.webp"
-             data-cinema-title="Food Stillleben III — Bildtiefe &amp; Farbharmonie"
-             data-cinema-meta="Editorial Farbkomposition"
-             data-cinema-gallery="photo-gallery">
-          <img decoding="async" class="photo-card-img" src="assets/images/md/Bild_Essen_3.webp" alt="Food Stillleben 3" loading="lazy" srcset="assets/images/sm/Bild_Essen_3.webp 480w, assets/images/md/Bild_Essen_3.webp 960w, assets/images/lg/Bild_Essen_3.webp 1800w" sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 25vw">
-          <div class="photo-card-overlay">
-            <div class="photo-card-info">
-              <h4>Stillleben III</h4>
-              <p>Bildtiefe &amp; Farbharmonie</p>
-            </div>
-          </div>
-        </div>
+        <photo-card 
+             card-class="photo-card--tall hide-on-desktop hide-on-mobile" 
+             image-id="Bild_Essen_3.webp" 
+             title="Food Stillleben III — Bildtiefe &amp; Farbharmonie" 
+             meta="Editorial Farbkomposition" 
+             alt="Food Stillleben 3" 
+             name="Stillleben III" 
+             sub="Bildtiefe &amp; Farbharmonie">
+           </photo-card>
 
         <!-- 10: Porträt V (Querformat — Kompakt: 1 Spalte × 1 Zeile, 3:2 Querformat) -->
-        <div class="photo-card photo-card--landscape-sm"
-             data-cinema-trigger data-cinema-type="image"
-             data-cinema-src="assets/images/full/Portraet_5.webp"
-             data-cinema-title="Porträt V — Schatten &amp; Kontur"
-             data-cinema-meta="Experimentelle Porträtbelichtung"
-             data-cinema-gallery="photo-gallery">
-          <img decoding="async" class="photo-card-img" src="assets/images/md/Portraet_5.webp" alt="Porträt 5" loading="lazy" srcset="assets/images/sm/Portraet_5.webp 480w, assets/images/md/Portraet_5.webp 960w, assets/images/lg/Portraet_5.webp 1800w" sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 25vw">
-          <div class="photo-card-overlay">
-            <div class="photo-card-info">
-              <h4>Porträt V</h4>
-              <p>Schatten &amp; Kontur</p>
-            </div>
-          </div>
-        </div>
+        <photo-card 
+             card-class="photo-card--landscape-sm" 
+             image-id="Portraet_5.webp" 
+             title="Porträt V — Schatten &amp; Kontur" 
+             meta="Experimentelle Porträtbelichtung" 
+             alt="Porträt 5" 
+             name="Porträt V" 
+             sub="Schatten &amp; Kontur">
+           </photo-card>
 
         <!-- 11: Blumen Retro (Querformat — Kompakt: 1 Spalte × 1 Zeile, 3:2 Querformat) -->
-        <div class="photo-card photo-card--landscape-sm"
-             data-cinema-trigger data-cinema-type="image"
-             data-cinema-src="assets/images/full/Blumen_Retro.webp"
-             data-cinema-title="Blumen Retro"
-             data-cinema-meta="Naturfotografie &amp; Retro-Ästhetik"
-             data-cinema-gallery="photo-gallery">
-          <img decoding="async" class="photo-card-img" src="assets/images/md/Blumen_Retro.webp" alt="Blumen Retro" loading="lazy" srcset="assets/images/sm/Blumen_Retro.webp 480w, assets/images/md/Blumen_Retro.webp 960w, assets/images/lg/Blumen_Retro.webp 1800w" sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 25vw">
-          <div class="photo-card-overlay">
-            <div class="photo-card-info">
-              <h4>Blumen</h4>
-              <p>Retro-Ästhetik</p>
-            </div>
-          </div>
-        </div>
+        <photo-card 
+             card-class="photo-card--landscape-sm" 
+             image-id="Blumen_Retro.webp" 
+             title="Blumen Retro" 
+             meta="Naturfotografie &amp; Retro-Ästhetik" 
+             alt="Blumen Retro" 
+             name="Blumen" 
+             sub="Retro-Ästhetik">
+           </photo-card>
       </div>
     </div>
 
     <!-- ==================== KERAMIKRING-SERIE ==================== -->
     <div id="photo-chapter-ceramic" class="photo-chapter ceramic-split-layout">
-      <div class="photo-chapter-header ceramic-text-col">
-        <div class="photo-chapter-meta">
-          <span class="photo-chapter-specs">Portrait &bull; Handwerk</span>
-        </div>
-        <h3 class="photo-chapter-title">Keramikring — <em>Die Werkstatt</em></h3>
-        <p class="photo-chapter-desc">
-          Eine Bilderserie aus dem Studium über eine Keramikerin bei der Arbeit. Die staubige Werkstatt erzählt durch viele Details eigene Geschichten des handwerklichen Schaffens.
-        </p>
-      </div>
+      <portfolio-text tag="Portrait &bull; Handwerk" title="Keramikring — <em>Die Werkstatt</em>" extra-classes="photo-chapter-header ceramic-text-col">
+  Eine Bilderserie aus dem Studium über eine Keramikerin bei der Arbeit. Die staubige Werkstatt erzählt durch viele Details eigene Geschichten des handwerklichen Schaffens.
+</portfolio-text>
 
       <!-- Horizontal Contact Sheet Strip -->
       <div class="ceramic-strip-wrap">
@@ -1405,122 +1345,96 @@
         </button>
 
         <div class="ceramic-strip" id="ceramic-strip">
-          <div class="ceramic-frame"
-               data-cinema-trigger data-cinema-type="image" 
-               data-cinema-src="assets/images/full/keramik_Tobias_Schreiber_020725-0001.webp" 
-               data-cinema-title="Keramikring — Studie 01" 
-               data-cinema-meta="Dokumentarische Fotografie &amp; Handwerk" 
-               data-cinema-gallery="photo-ceramic">
-            <img decoding="async" class="ceramic-img" src="assets/images/md/keramik_Tobias_Schreiber_020725-0001.webp" alt="Keramikring Studie 01" loading="lazy" srcset="assets/images/sm/keramik_Tobias_Schreiber_020725-0001.webp 480w, assets/images/md/keramik_Tobias_Schreiber_020725-0001.webp 960w" sizes="(max-width: 600px) 75vw, 320px">
-          </div>
+          <ceramic-frame 
+             image-id="keramik_Tobias_Schreiber_020725-0001.webp" 
+             title="Keramikring — Studie 01" 
+             meta="Dokumentarische Fotografie &amp; Handwerk" 
+             alt="Keramikring Studie 01">
+           </ceramic-frame>
 
-          <div class="ceramic-frame"
-               data-cinema-trigger data-cinema-type="image" 
-               data-cinema-src="assets/images/full/keramik_Tobias_Schreiber_020725-0002.webp" 
-               data-cinema-title="Keramikring — Studie 02" 
-               data-cinema-meta="Dokumentarische Fotografie &amp; Handwerk" 
-               data-cinema-gallery="photo-ceramic">
-            <img decoding="async" class="ceramic-img" src="assets/images/md/keramik_Tobias_Schreiber_020725-0002.webp" alt="Keramikring Studie 02" loading="lazy" srcset="assets/images/sm/keramik_Tobias_Schreiber_020725-0002.webp 480w, assets/images/md/keramik_Tobias_Schreiber_020725-0002.webp 960w" sizes="(max-width: 600px) 75vw, 320px">
-          </div>
+          <ceramic-frame 
+             image-id="keramik_Tobias_Schreiber_020725-0002.webp" 
+             title="Keramikring — Studie 02" 
+             meta="Dokumentarische Fotografie &amp; Handwerk" 
+             alt="Keramikring Studie 02">
+           </ceramic-frame>
 
-          <div class="ceramic-frame"
-               data-cinema-trigger data-cinema-type="image" 
-               data-cinema-src="assets/images/full/keramik_Tobias_Schreiber_020725-0003.webp" 
-               data-cinema-title="Keramikring — Studie 03" 
-               data-cinema-meta="Dokumentarische Fotografie &amp; Handwerk" 
-               data-cinema-gallery="photo-ceramic">
-            <img decoding="async" class="ceramic-img" src="assets/images/md/keramik_Tobias_Schreiber_020725-0003.webp" alt="Keramikring Studie 03" loading="lazy" srcset="assets/images/sm/keramik_Tobias_Schreiber_020725-0003.webp 480w, assets/images/md/keramik_Tobias_Schreiber_020725-0003.webp 960w" sizes="(max-width: 600px) 75vw, 320px">
-          </div>
+          <ceramic-frame 
+             image-id="keramik_Tobias_Schreiber_020725-0003.webp" 
+             title="Keramikring — Studie 03" 
+             meta="Dokumentarische Fotografie &amp; Handwerk" 
+             alt="Keramikring Studie 03">
+           </ceramic-frame>
 
-          <div class="ceramic-frame"
-               data-cinema-trigger data-cinema-type="image" 
-               data-cinema-src="assets/images/full/keramik_Tobias_Schreiber_020725-0004.webp" 
-               data-cinema-title="Keramikring — Studie 04" 
-               data-cinema-meta="Dokumentarische Fotografie &amp; Handwerk" 
-               data-cinema-gallery="photo-ceramic">
-            <img decoding="async" class="ceramic-img" src="assets/images/md/keramik_Tobias_Schreiber_020725-0004.webp" alt="Keramikring Studie 04" loading="lazy" srcset="assets/images/sm/keramik_Tobias_Schreiber_020725-0004.webp 480w, assets/images/md/keramik_Tobias_Schreiber_020725-0004.webp 960w" sizes="(max-width: 600px) 75vw, 320px">
-          </div>
+          <ceramic-frame 
+             image-id="keramik_Tobias_Schreiber_020725-0004.webp" 
+             title="Keramikring — Studie 04" 
+             meta="Dokumentarische Fotografie &amp; Handwerk" 
+             alt="Keramikring Studie 04">
+           </ceramic-frame>
 
-          <div class="ceramic-frame"
-               data-cinema-trigger data-cinema-type="image" 
-               data-cinema-src="assets/images/full/keramik_Tobias_Schreiber_020725-0005.webp" 
-               data-cinema-title="Keramikring — Studie 05" 
-               data-cinema-meta="Dokumentarische Fotografie &amp; Handwerk" 
-               data-cinema-gallery="photo-ceramic">
-            <img decoding="async" class="ceramic-img" src="assets/images/md/keramik_Tobias_Schreiber_020725-0005.webp" alt="Keramikring Studie 05" loading="lazy" srcset="assets/images/sm/keramik_Tobias_Schreiber_020725-0005.webp 480w, assets/images/md/keramik_Tobias_Schreiber_020725-0005.webp 960w" sizes="(max-width: 600px) 75vw, 320px">
-          </div>
+          <ceramic-frame 
+             image-id="keramik_Tobias_Schreiber_020725-0005.webp" 
+             title="Keramikring — Studie 05" 
+             meta="Dokumentarische Fotografie &amp; Handwerk" 
+             alt="Keramikring Studie 05">
+           </ceramic-frame>
 
-          <div class="ceramic-frame"
-               data-cinema-trigger data-cinema-type="image" 
-               data-cinema-src="assets/images/full/keramik_Tobias_Schreiber_020725-0006.webp" 
-               data-cinema-title="Keramikring — Studie 06" 
-               data-cinema-meta="Dokumentarische Fotografie &amp; Handwerk" 
-               data-cinema-gallery="photo-ceramic">
-            <img decoding="async" class="ceramic-img" src="assets/images/md/keramik_Tobias_Schreiber_020725-0006.webp" alt="Keramikring Studie 06" loading="lazy" srcset="assets/images/sm/keramik_Tobias_Schreiber_020725-0006.webp 480w, assets/images/md/keramik_Tobias_Schreiber_020725-0006.webp 960w" sizes="(max-width: 600px) 75vw, 320px">
-          </div>
+          <ceramic-frame 
+             image-id="keramik_Tobias_Schreiber_020725-0006.webp" 
+             title="Keramikring — Studie 06" 
+             meta="Dokumentarische Fotografie &amp; Handwerk" 
+             alt="Keramikring Studie 06">
+           </ceramic-frame>
 
-          <div class="ceramic-frame"
-               data-cinema-trigger data-cinema-type="image" 
-               data-cinema-src="assets/images/full/keramik_Tobias_Schreiber_020725-0007.webp" 
-               data-cinema-title="Keramikring — Studie 07" 
-               data-cinema-meta="Dokumentarische Fotografie &amp; Handwerk" 
-               data-cinema-gallery="photo-ceramic">
-            <img decoding="async" class="ceramic-img" src="assets/images/md/keramik_Tobias_Schreiber_020725-0007.webp" alt="Keramikring Studie 07" loading="lazy" srcset="assets/images/sm/keramik_Tobias_Schreiber_020725-0007.webp 480w, assets/images/md/keramik_Tobias_Schreiber_020725-0007.webp 960w" sizes="(max-width: 600px) 75vw, 320px">
-          </div>
+          <ceramic-frame 
+             image-id="keramik_Tobias_Schreiber_020725-0007.webp" 
+             title="Keramikring — Studie 07" 
+             meta="Dokumentarische Fotografie &amp; Handwerk" 
+             alt="Keramikring Studie 07">
+           </ceramic-frame>
 
-          <div class="ceramic-frame"
-               data-cinema-trigger data-cinema-type="image" 
-               data-cinema-src="assets/images/full/keramik_Tobias_Schreiber_020725-0008.webp" 
-               data-cinema-title="Keramikring — Studie 08" 
-               data-cinema-meta="Dokumentarische Fotografie &amp; Handwerk" 
-               data-cinema-gallery="photo-ceramic">
-            <img decoding="async" class="ceramic-img" src="assets/images/md/keramik_Tobias_Schreiber_020725-0008.webp" alt="Keramikring Studie 08" loading="lazy" srcset="assets/images/sm/keramik_Tobias_Schreiber_020725-0008.webp 480w, assets/images/md/keramik_Tobias_Schreiber_020725-0008.webp 960w" sizes="(max-width: 600px) 75vw, 320px">
-          </div>
+          <ceramic-frame 
+             image-id="keramik_Tobias_Schreiber_020725-0008.webp" 
+             title="Keramikring — Studie 08" 
+             meta="Dokumentarische Fotografie &amp; Handwerk" 
+             alt="Keramikring Studie 08">
+           </ceramic-frame>
 
-          <div class="ceramic-frame"
-               data-cinema-trigger data-cinema-type="image" 
-               data-cinema-src="assets/images/full/keramik_Tobias_Schreiber_020725-0009.webp" 
-               data-cinema-title="Keramikring — Studie 09" 
-               data-cinema-meta="Dokumentarische Fotografie &amp; Handwerk" 
-               data-cinema-gallery="photo-ceramic">
-            <img decoding="async" class="ceramic-img" src="assets/images/md/keramik_Tobias_Schreiber_020725-0009.webp" alt="Keramikring Studie 09" loading="lazy" srcset="assets/images/sm/keramik_Tobias_Schreiber_020725-0009.webp 480w, assets/images/md/keramik_Tobias_Schreiber_020725-0009.webp 960w" sizes="(max-width: 600px) 75vw, 320px">
-          </div>
+          <ceramic-frame 
+             image-id="keramik_Tobias_Schreiber_020725-0009.webp" 
+             title="Keramikring — Studie 09" 
+             meta="Dokumentarische Fotografie &amp; Handwerk" 
+             alt="Keramikring Studie 09">
+           </ceramic-frame>
 
-          <div class="ceramic-frame"
-               data-cinema-trigger data-cinema-type="image" 
-               data-cinema-src="assets/images/full/keramik_Tobias_Schreiber_020725-00010.webp" 
-               data-cinema-title="Keramikring — Studie 10" 
-               data-cinema-meta="Dokumentarische Fotografie &amp; Handwerk" 
-               data-cinema-gallery="photo-ceramic">
-            <img decoding="async" class="ceramic-img" src="assets/images/md/keramik_Tobias_Schreiber_020725-00010.webp" alt="Keramikring Studie 10" loading="lazy" srcset="assets/images/sm/keramik_Tobias_Schreiber_020725-00010.webp 480w, assets/images/md/keramik_Tobias_Schreiber_020725-00010.webp 960w" sizes="(max-width: 600px) 75vw, 320px">
-          </div>
+          <ceramic-frame 
+             image-id="keramik_Tobias_Schreiber_020725-00010.webp" 
+             title="Keramikring — Studie 10" 
+             meta="Dokumentarische Fotografie &amp; Handwerk" 
+             alt="Keramikring Studie 10">
+           </ceramic-frame>
 
-          <div class="ceramic-frame"
-               data-cinema-trigger data-cinema-type="image" 
-               data-cinema-src="assets/images/full/keramik_Tobias_Schreiber_020725-00011.webp" 
-               data-cinema-title="Keramikring — Studie 11" 
-               data-cinema-meta="Dokumentarische Fotografie &amp; Handwerk" 
-               data-cinema-gallery="photo-ceramic">
-            <img decoding="async" class="ceramic-img" src="assets/images/md/keramik_Tobias_Schreiber_020725-00011.webp" alt="Keramikring Studie 11" loading="lazy" srcset="assets/images/sm/keramik_Tobias_Schreiber_020725-00011.webp 480w, assets/images/md/keramik_Tobias_Schreiber_020725-00011.webp 960w" sizes="(max-width: 600px) 75vw, 320px">
-          </div>
+          <ceramic-frame 
+             image-id="keramik_Tobias_Schreiber_020725-00011.webp" 
+             title="Keramikring — Studie 11" 
+             meta="Dokumentarische Fotografie &amp; Handwerk" 
+             alt="Keramikring Studie 11">
+           </ceramic-frame>
 
-          <div class="ceramic-frame"
-               data-cinema-trigger data-cinema-type="image" 
-               data-cinema-src="assets/images/full/keramik_Tobias_Schreiber_020725-00012.webp" 
-               data-cinema-title="Keramikring — Studie 12" 
-               data-cinema-meta="Dokumentarische Fotografie &amp; Handwerk" 
-               data-cinema-gallery="photo-ceramic">
-            <img decoding="async" class="ceramic-img" src="assets/images/md/keramik_Tobias_Schreiber_020725-00012.webp" alt="Keramikring Studie 12" loading="lazy" srcset="assets/images/sm/keramik_Tobias_Schreiber_020725-00012.webp 480w, assets/images/md/keramik_Tobias_Schreiber_020725-00012.webp 960w" sizes="(max-width: 600px) 75vw, 320px">
-          </div>
+          <ceramic-frame 
+             image-id="keramik_Tobias_Schreiber_020725-00012.webp" 
+             title="Keramikring — Studie 12" 
+             meta="Dokumentarische Fotografie &amp; Handwerk" 
+             alt="Keramikring Studie 12">
+           </ceramic-frame>
 
-          <div class="ceramic-frame"
-               data-cinema-trigger data-cinema-type="image" 
-               data-cinema-src="assets/images/full/keramik_Tobias_Schreiber_020725-00013.webp" 
-               data-cinema-title="Keramikring — Studie 13" 
-               data-cinema-meta="Dokumentarische Fotografie &amp; Handwerk" 
-               data-cinema-gallery="photo-ceramic">
-            <img decoding="async" class="ceramic-img" src="assets/images/md/keramik_Tobias_Schreiber_020725-00013.webp" alt="Keramikring Studie 13" loading="lazy" srcset="assets/images/sm/keramik_Tobias_Schreiber_020725-00013.webp 480w, assets/images/md/keramik_Tobias_Schreiber_020725-00013.webp 960w" sizes="(max-width: 600px) 75vw, 320px">
-          </div>
+          <ceramic-frame 
+             image-id="keramik_Tobias_Schreiber_020725-00013.webp" 
+             title="Keramikring — Studie 13" 
+             meta="Dokumentarische Fotografie &amp; Handwerk" 
+             alt="Keramikring Studie 13">
+           </ceramic-frame>
         </div>
 
         <button class="strip-arrow strip-arrow-next" id="ceramic-btn-next" type="button" aria-label="Nächste Keramikstudie" title="Weiter">
@@ -1543,18 +1457,11 @@
   <section id="kunst" class="project-section art-section">
     <div class="kunst-feature-hero reveal-on-scroll">
       <!-- Editorial Text Column (Left) -->
-      <div class="kunst-feature-content">
-        <span class="section-num">04 / GESTALTUNG &amp; KUNST (FOS ABITUR)</span>
-        <div class="section-title-wrap" style="justify-content: flex-start; gap: 0.8rem 1.4rem;">
-          <h2 class="section-title">Akademische <em>Kunst</em></h2>
-          <span class="section-category">Zeichnen &bull; Malen &bull; Plastische Gestaltung</span>
-        </div>
-        <p class="section-intro-text" style="margin-top: 0;">
-          Während meines Fachabiturs (11. und 12. Klasse) im Zweig Gestaltung legte ich das Fundament meiner kreativen Arbeit. 
+      <portfolio-text tag="04 / GESTALTUNG &amp; KUNST (FOS ABITUR)" title="Akademische <em>Kunst</em>" level="2" extra-classes="kunst-feature-content">
+  Während meines Fachabiturs (11. und 12. Klasse) im Zweig Gestaltung legte ich das Fundament meiner kreativen Arbeit. 
           Hier erlernte ich intensiv das Zeichnen, Malen, Skizzieren sowie den Umgang mit plastischen Gestaltungsmitteln. 
           Diese Zeit an der FOS war nicht nur mein Einstieg in die handwerkliche Kunst, sondern prägte auch meine allerersten Berührungspunkte mit Fotografie, Film und digitalem Design.
-        </p>
-      </div>
+</portfolio-text>
 
       <!-- Media Column (Right) -->
       <div class="kunst-feature-media-wrap"
@@ -1595,172 +1502,157 @@
           <!-- Primary Loop Group (12 cards = 2 full sets) -->
           <div class="kunst-ticker-group">
             <!-- Card 01: Sprungpose -->
-            <div class="kunst-ticker-card" id="kunst-sketch-1"
-                 data-cinema-trigger data-cinema-type="image" 
-                 data-cinema-src="assets/images/full/skizze_1.webp" 
-                 data-cinema-title="Akademische Kunst — Dynamische Sprungpose" 
-                 data-cinema-meta="Figürliche Zeichenstudie &bull; Kinetische Energie &amp; Muskelspannung"
-                 data-cinema-gallery="akademische-kunst">
-              <div class="kunst-ticker-img-box">
-                <img decoding="async" class="kunst-ticker-img" src="assets/images/md/skizze_1.webp" alt="Dynamische Sprungpose" loading="lazy">
-              </div>
-            </div>
+            <kunst-card 
+             card-id="kunst-sketch-1" 
+             image-id="skizze_1.webp" 
+             title="Akademische Kunst — Dynamische Sprungpose" 
+             meta="Figürliche Zeichenstudie &bull; Kinetische Energie &amp; Muskelspannung" 
+             alt="Dynamische Sprungpose">
+           </kunst-card>
 
             <!-- Card 02: Torsionspose -->
-            <div class="kunst-ticker-card" id="kunst-sketch-2"
-                 data-cinema-trigger data-cinema-type="image" 
-                 data-cinema-src="assets/images/full/skizze_2.webp" 
-                 data-cinema-title="Akademische Kunst — Schreitende Torsionspose" 
-                 data-cinema-meta="Figürliche Zeichenstudie &bull; Körperachse &amp; Torsion"
-                 data-cinema-gallery="akademische-kunst">
-              <div class="kunst-ticker-img-box">
-                <img decoding="async" class="kunst-ticker-img" src="assets/images/md/skizze_2.webp" alt="Schreitende Torsionspose" loading="lazy">
-              </div>
-            </div>
+            <kunst-card 
+             card-id="kunst-sketch-2" 
+             image-id="skizze_2.webp" 
+             title="Akademische Kunst — Schreitende Torsionspose" 
+             meta="Figürliche Zeichenstudie &bull; Körperachse &amp; Torsion" 
+             alt="Schreitende Torsionspose">
+           </kunst-card>
 
             <!-- Card 03: Ausfallschritt -->
-            <div class="kunst-ticker-card" id="kunst-sketch-3"
-                 data-cinema-trigger data-cinema-type="image" 
-                 data-cinema-src="assets/images/full/skizze_3.webp" 
-                 data-cinema-title="Akademische Kunst — Ausfallschritt &amp; Balance" 
-                 data-cinema-meta="Figürliche Zeichenstudie &bull; Statik &amp; Muskeltonus"
-                 data-cinema-gallery="akademische-kunst">
-              <div class="kunst-ticker-img-box">
-                <img decoding="async" class="kunst-ticker-img" src="assets/images/md/skizze_3.webp" alt="Ausfallschritt und Balance" loading="lazy">
-              </div>
-            </div>
+            <kunst-card 
+             card-id="kunst-sketch-3" 
+             image-id="skizze_3.webp" 
+             title="Akademische Kunst — Ausfallschritt &amp; Balance" 
+             meta="Figürliche Zeichenstudie &bull; Statik &amp; Muskeltonus" 
+             alt="Ausfallschritt und Balance">
+           </kunst-card>
 
             <!-- Card 04: Hockende Figur -->
-            <div class="kunst-ticker-card" id="kunst-sketch-4"
-                 data-cinema-trigger data-cinema-type="image" 
-                 data-cinema-src="assets/images/full/skizze_4.webp" 
-                 data-cinema-title="Akademische Kunst — Hockende Figur &amp; Kontur" 
-                 data-cinema-meta="Figürliche Zeichenstudie &bull; Raumverkürzung &amp; Kompression"
-                 data-cinema-gallery="akademische-kunst">
-              <div class="kunst-ticker-img-box">
-                <img decoding="async" class="kunst-ticker-img" src="assets/images/md/skizze_4.webp" alt="Hockende Figur" loading="lazy">
-              </div>
-            </div>
+            <kunst-card 
+             card-id="kunst-sketch-4" 
+             image-id="skizze_4.webp" 
+             title="Akademische Kunst — Hockende Figur &amp; Kontur" 
+             meta="Figürliche Zeichenstudie &bull; Raumverkürzung &amp; Kompression" 
+             alt="Hockende Figur">
+           </kunst-card>
 
             <!-- Card 05: Kontrapost -->
-            <div class="kunst-ticker-card" id="kunst-sketch-5"
-                 data-cinema-trigger data-cinema-type="image" 
-                 data-cinema-src="assets/images/full/skizze_5.webp" 
-                 data-cinema-title="Akademische Kunst — Kontrapost &amp; Standmotiv" 
-                 data-cinema-meta="Figürliche Zeichenstudie &bull; Standbein &amp; Spielbein"
-                 data-cinema-gallery="akademische-kunst">
-              <div class="kunst-ticker-img-box">
-                <img decoding="async" class="kunst-ticker-img" src="assets/images/md/skizze_5.webp" alt="Kontrapost und Standmotiv" loading="lazy">
-              </div>
-            </div>
+            <kunst-card 
+             card-id="kunst-sketch-5" 
+             image-id="skizze_5.webp" 
+             title="Akademische Kunst — Kontrapost &amp; Standmotiv" 
+             meta="Figürliche Zeichenstudie &bull; Standbein &amp; Spielbein" 
+             alt="Kontrapost und Standmotiv">
+           </kunst-card>
 
             <!-- Repeat 01 -->
-            <div class="kunst-ticker-card" data-clone-of="kunst-sketch-1">
-              <div class="kunst-ticker-img-box">
-                <img decoding="async" class="kunst-ticker-img" src="assets/images/md/skizze_1.webp" alt="Dynamische Sprungpose" loading="lazy">
-              </div>
-            </div>
+            <kunst-card 
+             clone-of="kunst-sketch-1" 
+             image-id="skizze_1.webp" 
+             alt="Dynamische Sprungpose">
+           </kunst-card>
 
             <!-- Repeat 02 -->
-            <div class="kunst-ticker-card" data-clone-of="kunst-sketch-2">
-              <div class="kunst-ticker-img-box">
-                <img decoding="async" class="kunst-ticker-img" src="assets/images/md/skizze_2.webp" alt="Schreitende Torsionspose" loading="lazy">
-              </div>
-            </div>
+            <kunst-card 
+             clone-of="kunst-sketch-2" 
+             image-id="skizze_2.webp" 
+             alt="Schreitende Torsionspose">
+           </kunst-card>
 
             <!-- Repeat 03 -->
-            <div class="kunst-ticker-card" data-clone-of="kunst-sketch-3">
-              <div class="kunst-ticker-img-box">
-                <img decoding="async" class="kunst-ticker-img" src="assets/images/md/skizze_3.webp" alt="Ausfallschritt und Balance" loading="lazy">
-              </div>
-            </div>
+            <kunst-card 
+             clone-of="kunst-sketch-3" 
+             image-id="skizze_3.webp" 
+             alt="Ausfallschritt und Balance">
+           </kunst-card>
 
             <!-- Repeat 04 -->
-            <div class="kunst-ticker-card" data-clone-of="kunst-sketch-4">
-              <div class="kunst-ticker-img-box">
-                <img decoding="async" class="kunst-ticker-img" src="assets/images/md/skizze_4.webp" alt="Hockende Figur" loading="lazy">
-              </div>
-            </div>
+            <kunst-card 
+             clone-of="kunst-sketch-4" 
+             image-id="skizze_4.webp" 
+             alt="Hockende Figur">
+           </kunst-card>
 
             <!-- Repeat 05 -->
-            <div class="kunst-ticker-card" data-clone-of="kunst-sketch-5">
-              <div class="kunst-ticker-img-box">
-                <img decoding="async" class="kunst-ticker-img" src="assets/images/md/skizze_5.webp" alt="Kontrapost und Standmotiv" loading="lazy">
-              </div>
-            </div>
+            <kunst-card 
+             clone-of="kunst-sketch-5" 
+             image-id="skizze_5.webp" 
+             alt="Kontrapost und Standmotiv">
+           </kunst-card>
           </div>
 
           <!-- Cloned Loop Group for Seamless Infinite Scroll -->
           <div class="kunst-ticker-group" aria-hidden="true">
             <!-- Clone 01 -->
-            <div class="kunst-ticker-card" data-clone-of="kunst-sketch-1">
-              <div class="kunst-ticker-img-box">
-                <img decoding="async" class="kunst-ticker-img" src="assets/images/md/skizze_1.webp" alt="Dynamische Sprungpose" loading="lazy">
-              </div>
-            </div>
+            <kunst-card 
+             clone-of="kunst-sketch-1" 
+             image-id="skizze_1.webp" 
+             alt="Dynamische Sprungpose">
+           </kunst-card>
 
             <!-- Clone 02 -->
-            <div class="kunst-ticker-card" data-clone-of="kunst-sketch-2">
-              <div class="kunst-ticker-img-box">
-                <img decoding="async" class="kunst-ticker-img" src="assets/images/md/skizze_2.webp" alt="Schreitende Torsionspose" loading="lazy">
-              </div>
-            </div>
+            <kunst-card 
+             clone-of="kunst-sketch-2" 
+             image-id="skizze_2.webp" 
+             alt="Schreitende Torsionspose">
+           </kunst-card>
 
             <!-- Clone 03 -->
-            <div class="kunst-ticker-card" data-clone-of="kunst-sketch-3">
-              <div class="kunst-ticker-img-box">
-                <img decoding="async" class="kunst-ticker-img" src="assets/images/md/skizze_3.webp" alt="Ausfallschritt und Balance" loading="lazy">
-              </div>
-            </div>
+            <kunst-card 
+             clone-of="kunst-sketch-3" 
+             image-id="skizze_3.webp" 
+             alt="Ausfallschritt und Balance">
+           </kunst-card>
 
             <!-- Clone 04 -->
-            <div class="kunst-ticker-card" data-clone-of="kunst-sketch-4">
-              <div class="kunst-ticker-img-box">
-                <img decoding="async" class="kunst-ticker-img" src="assets/images/md/skizze_4.webp" alt="Hockende Figur" loading="lazy">
-              </div>
-            </div>
+            <kunst-card 
+             clone-of="kunst-sketch-4" 
+             image-id="skizze_4.webp" 
+             alt="Hockende Figur">
+           </kunst-card>
 
             <!-- Clone 05 -->
-            <div class="kunst-ticker-card" data-clone-of="kunst-sketch-5">
-              <div class="kunst-ticker-img-box">
-                <img decoding="async" class="kunst-ticker-img" src="assets/images/md/skizze_5.webp" alt="Kontrapost und Standmotiv" loading="lazy">
-              </div>
-            </div>
+            <kunst-card 
+             clone-of="kunst-sketch-5" 
+             image-id="skizze_5.webp" 
+             alt="Kontrapost und Standmotiv">
+           </kunst-card>
 
             <!-- Clone 06 -->
-            <div class="kunst-ticker-card" data-clone-of="kunst-sketch-1">
-              <div class="kunst-ticker-img-box">
-                <img decoding="async" class="kunst-ticker-img" src="assets/images/md/skizze_1.webp" alt="Dynamische Sprungpose" loading="lazy">
-              </div>
-            </div>
+            <kunst-card 
+             clone-of="kunst-sketch-1" 
+             image-id="skizze_1.webp" 
+             alt="Dynamische Sprungpose">
+           </kunst-card>
 
             <!-- Clone 07 -->
-            <div class="kunst-ticker-card" data-clone-of="kunst-sketch-2">
-              <div class="kunst-ticker-img-box">
-                <img decoding="async" class="kunst-ticker-img" src="assets/images/md/skizze_2.webp" alt="Schreitende Torsionspose" loading="lazy">
-              </div>
-            </div>
+            <kunst-card 
+             clone-of="kunst-sketch-2" 
+             image-id="skizze_2.webp" 
+             alt="Schreitende Torsionspose">
+           </kunst-card>
 
             <!-- Clone 08 -->
-            <div class="kunst-ticker-card" data-clone-of="kunst-sketch-3">
-              <div class="kunst-ticker-img-box">
-                <img decoding="async" class="kunst-ticker-img" src="assets/images/md/skizze_3.webp" alt="Ausfallschritt und Balance" loading="lazy">
-              </div>
-            </div>
+            <kunst-card 
+             clone-of="kunst-sketch-3" 
+             image-id="skizze_3.webp" 
+             alt="Ausfallschritt und Balance">
+           </kunst-card>
 
             <!-- Clone 09 -->
-            <div class="kunst-ticker-card" data-clone-of="kunst-sketch-4">
-              <div class="kunst-ticker-img-box">
-                <img decoding="async" class="kunst-ticker-img" src="assets/images/md/skizze_4.webp" alt="Hockende Figur" loading="lazy">
-              </div>
-            </div>
+            <kunst-card 
+             clone-of="kunst-sketch-4" 
+             image-id="skizze_4.webp" 
+             alt="Hockende Figur">
+           </kunst-card>
 
             <!-- Clone 10 -->
-            <div class="kunst-ticker-card" data-clone-of="kunst-sketch-5">
-              <div class="kunst-ticker-img-box">
-                <img decoding="async" class="kunst-ticker-img" src="assets/images/md/skizze_5.webp" alt="Kontrapost und Standmotiv" loading="lazy">
-              </div>
-            </div>
+            <kunst-card 
+             clone-of="kunst-sketch-5" 
+             image-id="skizze_5.webp" 
+             alt="Kontrapost und Standmotiv">
+           </kunst-card>
           </div>
         </div>
       </div>
@@ -1772,17 +1664,6 @@
        ========================================================================= -->
   <section id="uni" class="project-section uni-sticky-section">
     <div id="uni-sticky-wrapper" class="uni-sticky-wrapper">
-      
-      <div class="section-header reveal-on-scroll">
-        <span class="section-num">05 / HOCHSCHULARBEITEN & EDITORIAL</span>
-        <div class="section-title-wrap">
-          <h2 class="section-title">Akademische <em>Werke</em></h2>
-        </div>
-        <p class="section-intro-text">
-          Konzeptionelle und typografische Arbeiten.
-        </p>
-      </div>
-
       <div class="uni-projects-container uni-split-layout">
       <!-- CONTROLS & PROJECT SELECTOR WITH EDGE NAVIGATION PADDLES -->
       <div class="uni-controls-wrapper">
@@ -1802,12 +1683,7 @@
             </div>
             <button id="doc-control-item-1--button" class="control-item-open" aria-expanded="true" type="button">
               <span class="control-item-label typography-all-access-pass-pv-item-label">
-                <svg class="plus-icon" version="1.1" width="24px" height="24px" viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="12" cy="12" r="11.3" style="stroke: currentColor; fill: none;"></circle>
-                  <g transform="translate(7 7)" style="stroke: none; fill: currentColor;">
-                    <path d="m9 4h-3v-3c0-0.553-0.447-1-1-1s-1 0.447-1 1v3h-3c-0.553 0-1 0.447-1 1s0.447 1 1 1h3v3c0 0.553 0.447 1 1 1s1-0.447 1-1v-3h3c0.553 0 1-0.447 1-1s-0.447-1-1-1"></path>
-                  </g>
-                </svg>
+                <span class="mobile-nav-count" style="font-family: var(--font-mono); font-size: 0.85rem; letter-spacing: 0.1em; opacity: 0.6; margin-right: 0.8rem;">[01]</span>
                 <span class="control-label-text">Selbst Layout</span>
               </span>
             </button>
@@ -1838,12 +1714,7 @@
             </div>
             <button id="doc-control-item-2--button" class="control-item-open" aria-expanded="false" type="button">
               <span class="control-item-label typography-all-access-pass-pv-item-label">
-                <svg class="plus-icon" version="1.1" width="24px" height="24px" viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="12" cy="12" r="11.3" style="stroke: currentColor; fill: none;"></circle>
-                  <g transform="translate(7 7)" style="stroke: none; fill: currentColor;">
-                    <path d="m9 4h-3v-3c0-0.553-0.447-1-1-1s-1 0.447-1 1v3h-3c-0.553 0-1 0.447-1 1s0.447 1 1 1h3v3c0 0.553 0.447 1 1 1s1-0.447 1-1v-3h3c0.553 0 1-0.447 1-1s-0.447-1-1-1"></path>
-                  </g>
-                </svg>
+                <span class="mobile-nav-count" style="font-family: var(--font-mono); font-size: 0.85rem; letter-spacing: 0.1em; opacity: 0.6; margin-right: 0.8rem;">[02]</span>
                 <span class="control-label-text">In Nomine Teufel</span>
               </span>
             </button>
@@ -1874,12 +1745,7 @@
             </div>
             <button id="doc-control-item-3--button" class="control-item-open" aria-expanded="false" type="button">
               <span class="control-item-label typography-all-access-pass-pv-item-label">
-                <svg class="plus-icon" version="1.1" width="24px" height="24px" viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="12" cy="12" r="11.3" style="stroke: currentColor; fill: none;"></circle>
-                  <g transform="translate(7 7)" style="stroke: none; fill: currentColor;">
-                    <path d="m9 4h-3v-3c0-0.553-0.447-1-1-1s-1 0.447-1 1v3h-3c-0.553 0-1 0.447-1 1s0.447 1 1 1h3v3c0 0.553 0.447 1 1 1s1-0.447 1-1v-3h3c0.553 0 1-0.447 1-1s-0.447-1-1-1"></path>
-                  </g>
-                </svg>
+                <span class="mobile-nav-count" style="font-family: var(--font-mono); font-size: 0.85rem; letter-spacing: 0.1em; opacity: 0.6; margin-right: 0.8rem;">[03]</span>
                 <span class="control-label-text">Landschaftsstudie</span>
               </span>
             </button>
@@ -1910,12 +1776,7 @@
             </div>
             <button id="doc-control-item-4--button" class="control-item-open" aria-expanded="false" type="button">
               <span class="control-item-label typography-all-access-pass-pv-item-label">
-                <svg class="plus-icon" version="1.1" width="24px" height="24px" viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="12" cy="12" r="11.3" style="stroke: currentColor; fill: none;"></circle>
-                  <g transform="translate(7 7)" style="stroke: none; fill: currentColor;">
-                    <path d="m9 4h-3v-3c0-0.553-0.447-1-1-1s-1 0.447-1 1v3h-3c-0.553 0-1 0.447-1 1s0.447 1 1 1h3v3c0 0.553 0.447 1 1 1s1-0.447 1-1v-3h3c0.553 0 1-0.447 1-1s-0.447-1-1-1"></path>
-                  </g>
-                </svg>
+                <span class="mobile-nav-count" style="font-family: var(--font-mono); font-size: 0.85rem; letter-spacing: 0.1em; opacity: 0.6; margin-right: 0.8rem;">[04]</span>
                 <span class="control-label-text">MagicFlow</span>
               </span>
             </button>
@@ -1980,20 +1841,19 @@
         <div class="work__dots" id="doc-work-dots" aria-label="Choose a slide"></div>
       </div>
     </div>
+    </div>
   </section>
     
   <!-- =========================================================================
        THD APP Redesign Section (Part of UNI-PROJEKTE visually)
        ========================================================================= -->
-  <section id="thd-app" class="project-section thd-app-section reveal-on-scroll">
+  <section id="thd-app" class="project-section thd-app-section light-mode-section reveal-on-scroll">
     <div class="thd-app-grid">
-      <div class="thd-app-info">
-        <span class="control-item-badge">UI/UX &amp; PWA Development</span>
-        <h3 class="thd-app-title">THD APP Redesign</h3>
-        <p class="thd-app-desc">
-          Im Rahmen einer Uniaufgabe wurde die alte, unübersichtliche App der THD grundlegend neu gestaltet. 
+      <div class="thd-app-info uni-text-block">
+        <portfolio-text tag="UI/UX &amp; PWA Development" title="THD APP Redesign" extra-classes="">
+  Im Rahmen einer Uniaufgabe wurde die alte, unübersichtliche App der THD grundlegend neu gestaltet. 
           Der Fokus lag auf einer intuitiveren Nutzerführung, moderner Ästhetik und der technischen Umsetzung als performante Progressive Web App (PWA).
-        </p>
+</portfolio-text>
         <a href="https://tobiasjschreiber.github.io/THD-APP/" target="_blank" class="contact-email-link" style="margin-top: 2rem;">
           App im Vollbild öffnen
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
@@ -2167,95 +2027,30 @@
   <!-- =========================================================================
        SECTION 06: ABOUT & PROFILE (Medientechnik)
        ========================================================================= -->
-  <section id="about" class="project-section">
+  <section id="about" class="project-section light-mode-section">
     <div id="approach"></div>
     <div class="about-section-inner">
-      <div class="reveal-on-scroll">
-        <span class="section-num">06 / PROFIL & PHILOSOPHIE</span>
-        <h2 class="about-statement">
-          „Medientechnik bedeutet für mich, <em>technische Präzision</em> in poetische Bilder zu übersetzen.“
-        </h2>
-        
+      <div class="about-visual-col reveal-on-scroll">
         <!-- Portrait Tobias Schreiber -->
         <div class="about-portrait-wrap" 
-             style="margin-top: 3rem; max-width: 440px; aspect-ratio: 4/5; border-radius: 4px; overflow: hidden; position: relative; cursor: pointer; box-shadow: 0 25px 60px -15px rgba(0,0,0,0.9);"
              data-cinema-trigger 
              data-cinema-type="image" 
              data-cinema-src="assets/images/full/Ich.webp" 
              data-cinema-title="Tobias Schreiber — Portrait" 
              data-cinema-meta="Medientechnik Student &bull; Digital Creator">
-          <img decoding="async" src="assets/images/md/Ich.webp" alt="Tobias Schreiber Portrait" style="width: 100%; height: 100%; object-fit: cover; filter: brightness(0.92); transition: transform 0.6s ease;" loading="lazy" srcset="assets/images/sm/Ich.webp 480w, assets/images/md/Ich.webp 960w, assets/images/lg/Ich.webp 1800w" sizes="(max-width: 768px) 100vw, 50vw">
-          <div class="media-hover-overlay">
-            <div class="media-hover-info">
-              <h4>Tobias Schreiber</h4>
-              <p>Portrait ansehen</p>
-            </div>
-          </div>
+          <img decoding="async" src="assets/images/md/Ich.webp" alt="Tobias Schreiber Portrait" loading="lazy" srcset="assets/images/sm/Ich.webp 480w, assets/images/md/Ich.webp 960w, assets/images/lg/Ich.webp 1800w" sizes="(max-width: 768px) 100vw, 50vw">
         </div>
       </div>
 
       <div class="about-text-col reveal-on-scroll delay-1">
-        <div class="competencies-tabs-container">
-          <div class="competencies-nav" role="tablist" aria-label="Kompetenzen">
-            <button type="button" class="competency-tab" role="tab" id="comp-tab-3d" aria-controls="comp-panel-3d" aria-expanded="false" data-category="3d">
-              <span class="comp-tab-title">3D &amp; CGI</span>
-              <span class="comp-tab-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-              </span>
-            </button>
+        <span class="section-num">06 / PROFIL &amp; PHILOSOPHIE</span>
+        <h2 class="about-statement" data-highlight-text data-highlight-scroll-start="top 90%" data-highlight-scroll-end="top 48%">
+          „Medientechnik bedeutet für mich, <em>technische Präzision</em> in poetische Bilder zu übersetzen.“
+        </h2>
 
-            <button type="button" class="competency-tab" role="tab" id="comp-tab-foto" aria-controls="comp-panel-foto" aria-expanded="false" data-category="foto">
-              <span class="comp-tab-title">FOTOGRAFIE</span>
-              <span class="comp-tab-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-              </span>
-            </button>
-
-            <button type="button" class="competency-tab" role="tab" id="comp-tab-film" aria-controls="comp-panel-film" aria-expanded="false" data-category="film">
-              <span class="comp-tab-title">FILM</span>
-              <span class="comp-tab-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-              </span>
-            </button>
-
-            <button type="button" class="competency-tab" role="tab" id="comp-tab-kunst" aria-controls="comp-panel-kunst" aria-expanded="false" data-category="kunst">
-              <span class="comp-tab-title">KUNST</span>
-              <span class="comp-tab-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-              </span>
-            </button>
-          </div>
-
-          <div class="competencies-drawer" id="competencies-drawer">
-            <div class="competencies-drawer-inner">
-              <div class="competency-panel" id="comp-panel-3d" role="tabpanel" aria-labelledby="comp-tab-3d" data-category="3d">
-                <p>Blender, Cycles, Gestaltung surrealer Environments, 3D-Rekonstruktionen, Procedural Materials &amp; Shading.</p>
-              </div>
-              <div class="competency-panel" id="comp-panel-foto" role="tabpanel" aria-labelledby="comp-panel-foto" data-category="foto">
-                <p>Dokumentarische Reportagen, Portraitfotografie, Handwerks-Dokus, Lichtsetzung im Studio &amp; Bildretusche.</p>
-              </div>
-              <div class="competency-panel" id="comp-panel-film" role="tabpanel" aria-labelledby="comp-tab-film" data-category="film">
-                <p>Kameraführung (Schulterrig &amp; Set), szenische Low-Key-Ausleuchtung, Stop-Motion-Animation, DaVinci Resolve.</p>
-              </div>
-              <div class="competency-panel" id="comp-panel-kunst" role="tabpanel" aria-labelledby="comp-tab-kunst" data-category="kunst">
-                <p>Rauminstallationen mit Licht, akademisches Zeichnen, plastische Gestaltungsmittel &amp; experimentelles Layout.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <p class="about-bio">
+        <p class="about-bio" data-highlight-text data-highlight-scroll-start="top 72%" data-highlight-scroll-end="top 28%">
           Ich bin Tobias Schreiber (*2005), Medientechnik-Student und 3D-Artist. Mich fasziniert das Zusammenspiel aus haptischem Handwerk und digitaler Raumgenerierung – sei es bei Lichtinstallationen, CGI-Welten oder als Kameramann.
         </p>
-
-        <div class="about-cv-wrap">
-          <a href="#" class="cv-download-btn" style="display: inline-flex; align-items: center; gap: 0.6rem; color: #d8d8d8; background: rgba(255,255,255,0.05); padding: 0.75rem 1.5rem; border-radius: 50px; text-decoration: none; font-size: 0.95rem; border: none; box-shadow: none; transition: background 0.3s ease, color 0.3s ease;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            Lebenslauf / CV (PDF)
-          </a>
-        </div>
-
-
       </div>
     </div>
   </section>
@@ -2265,7 +2060,7 @@
   <!-- =========================================================================
        SECTION 08: CONTACT & FOOTER
        ========================================================================= -->
-  <footer id="kontakt" class="contact-section">
+  <footer id="kontakt" class="contact-section light-mode-section">
     <div class="reveal-on-scroll">
       <div class="contact-pre">Gemeinsame Visionen verwirklichen</div>
       <a href="mailto:tobiasjschreiber@gmail.com" class="contact-huge-link">
@@ -2301,6 +2096,8 @@
       <span>&copy; 2026 Alle Rechte vorbehalten</span>
     </div>
   </footer>
+
+  
 
   <!-- =========================================================================
        GLOBAL CINEMA LIGHTBOX / MEDIA MODAL (Pure Ambient Blur)
@@ -2406,10 +2203,12 @@
   </script>
 
   <!-- JavaScript Modules -->
-  <script src="js/three.min.js" defer></script>
   <script src="js/lenis.min.js" defer></script>
-  <script src="js/photo-reflector-test.js?v=27" defer></script>
-  <script src="js/main.js?v=639253565776927805" defer></script>
+  <script src="js/main.js?v=107" defer></script>
+  <script src="js/portfolio-text.js"></script>
+  <script src="js/cgi-card.js"></script>
+  <script src="js/still-card.js"></script>
+  <script src="js/media-cards.js"></script>
 </body>
 </html>
 

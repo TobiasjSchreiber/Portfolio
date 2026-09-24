@@ -60,6 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
       glow2: 'rgba(215, 140, 50, 0.14)',
       glow3: 'rgba(185, 90, 45, 0.12)'
     },
+    'thd-app': {
+      glow1: 'rgba(225, 215, 200, 0.14)',
+      glow2: 'rgba(215, 185, 145, 0.13)',
+      glow3: 'rgba(150, 140, 130, 0.10)'
+    },
     about: {
       glow1: 'rgba(225, 215, 200, 0.14)',
       glow2: 'rgba(215, 185, 145, 0.13)',
@@ -75,12 +80,20 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentAmbientTheme = 'hero';
   let ambientTargetScroll = window.scrollY || 0;
 
+  const LIGHT_SECTIONS = ['thd-app', 'about', 'kontakt'];
+
   function setAmbientTheme(themeKey) {
     if (!themeKey || !AMBIENT_THEMES[themeKey]) return;
     if (currentAmbientTheme === themeKey) return;
     currentAmbientTheme = themeKey;
 
     document.body.setAttribute('data-ambient-theme', themeKey);
+    if (LIGHT_SECTIONS.includes(themeKey)) {
+      document.body.classList.add('light-theme-active');
+    } else {
+      document.body.classList.remove('light-theme-active');
+    }
+
     const theme = AMBIENT_THEMES[themeKey];
     if (theme) {
       document.documentElement.style.setProperty('--glow-1', theme.glow1);
@@ -419,9 +432,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroSection = document.getElementById('hero');
   let isNavHeaderVisible = false;
 
+  function updateNavTheme() {
+    const firstLightSection = document.getElementById('thd-app') || document.querySelector('.light-mode-section');
+    if (!firstLightSection) return;
+    const secRect = firstLightSection.getBoundingClientRect();
+    const navRect = navHeader ? navHeader.getBoundingClientRect() : { top: 22 };
+    if (secRect.top <= (navRect.top + 2)) {
+      document.body.classList.add('light-theme-active');
+    } else {
+      document.body.classList.remove('light-theme-active');
+    }
+  }
+
   function updateNavHeaderVisibility(scrollPos) {
+    updateNavTheme();
     if (!navHeader) return;
-    if (document.body.classList.contains('cinema-modal-open') || (cinemaModal && cinemaModal.classList.contains('open'))) {
+    if (document.body.classList.contains('cinema-modal-open') || document.body.classList.contains('film-drawer-open') || (cinemaModal && cinemaModal.classList.contains('open'))) {
       isNavHeaderVisible = false;
       navHeader.classList.remove('is-visible');
       return;
@@ -995,8 +1021,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const focalY = Math.min(260, Math.max(140, windowH * 0.30));
       let dominantId = null;
 
-      // Find the section that currently intersects the focal line
-      for (let i = 0; i < trackedSections.length; i++) {
+      // Find the section that currently intersects the focal line (bottom-to-top to give overlap precedence to higher DOM nodes)
+      for (let i = trackedSections.length - 1; i >= 0; i--) {
         const sec = trackedSections[i];
         const rect = sec.getBoundingClientRect();
         if (rect.top <= focalY && rect.bottom > focalY) {
@@ -1068,18 +1094,22 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Scroll Reveal Animations (Replays smoothly on scrolling up and down without top-edge feedback loops)
-    const revealElements = document.querySelectorAll('.reveal-on-scroll');
-    if ('IntersectionObserver' in window && revealElements.length > 0) {
+    // Scroll Reveal Animations (Replays smoothly on scrolling up and down in both directions)
+    const initScrollRevealObserver = () => {
+      if (!('IntersectionObserver' in window)) {
+        document.querySelectorAll('.reveal-on-scroll').forEach(el => el.classList.add('is-visible'));
+        return;
+      }
+
       const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting || entry.boundingClientRect.bottom < 0) {
+          if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
           } else {
-            // ONLY re-arm if the element has scrolled completely BELOW the bottom of the viewport!
-            // NEVER remove is-visible when an element is at or above the top edge, preventing infinite transform feedback loops.
-            const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 800;
-            if (entry.boundingClientRect.top >= viewportHeight - 20) {
+            // Re-arm when element has scrolled fully outside viewport (above or below)
+            const vh = window.innerHeight || document.documentElement.clientHeight || 800;
+            const rect = entry.boundingClientRect;
+            if (rect.bottom < -40 || rect.top > vh + 40) {
               entry.target.classList.remove('is-visible');
             }
           }
@@ -1087,11 +1117,28 @@ document.addEventListener('DOMContentLoaded', () => {
       }, {
         root: null,
         threshold: 0.05,
-        rootMargin: '0px 0px -30px 0px'
+        rootMargin: '0px 0px -20px 0px'
       });
 
-      revealElements.forEach((el) => revealObserver.observe(el));
-    }
+      document.querySelectorAll('.reveal-on-scroll').forEach((el) => revealObserver.observe(el));
+
+      // Observe dynamically added elements (e.g. from Web Components like <portfolio-text>)
+      const mo = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          mutation.addedNodes.forEach((node) => {
+            if (node.nodeType === 1) {
+              if (node.classList && node.classList.contains('reveal-on-scroll')) {
+                revealObserver.observe(node);
+              }
+              node.querySelectorAll?.('.reveal-on-scroll')?.forEach((el) => revealObserver.observe(el));
+            }
+          });
+        });
+      });
+      mo.observe(document.body, { childList: true, subtree: true });
+    };
+
+    initScrollRevealObserver();
 
     // --------------------------------------------------------------------------
     // Dynamic Scroll Depth & Multiplane Parallax Engine (Silky 60-120fps)
@@ -1624,7 +1671,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const stage = document.getElementById('film-parallax-stage');
     if (!stage) return () => {};
 
-    const cards = Array.from(stage.querySelectorAll('.film-text-card'));
+    const centerTitles = Array.from(stage.querySelectorAll('.film-center-title'));
+    const centerMetas = Array.from(stage.querySelectorAll('.film-title-meta'));
+    const dynamicDivider = document.getElementById('film-dynamic-divider') || stage.querySelector('.film-title-divider');
+
+    function updateDynamicDividerWidth(index) {
+      if (!dynamicDivider || centerTitles.length === 0) return;
+      const targetIdx = (typeof index === 'number' && index >= 0) ? index : (activeFilmIndex >= 0 ? activeFilmIndex : 0);
+      const targetTitle = centerTitles[targetIdx] || centerTitles[0];
+      if (!targetTitle) return;
+
+      const rect = targetTitle.getBoundingClientRect();
+      const textWidth = rect.width || targetTitle.offsetWidth || 56;
+      if (textWidth > 0) {
+        dynamicDivider.style.width = `${Math.round(textWidth)}px`;
+      }
+    }
+    const drawer = document.getElementById('film-info-drawer');
+    const drawerSheet = document.getElementById('film-info-drawer-sheet');
+    const drawerCloseBtn = document.getElementById('film-info-drawer-close');
+    const drawerBackdrop = document.getElementById('film-info-drawer-backdrop');
+    const moreTriggerBtn = document.getElementById('film-more-trigger');
+    const drawerBadge = document.getElementById('film-drawer-badge');
+    const drawerPanels = drawer ? Array.from(drawer.querySelectorAll('.film-info-content')) : [];
+    const cards = drawerPanels.length ? drawerPanels : Array.from(stage.querySelectorAll('.film-text-card'));
     const panels = Array.from(stage.querySelectorAll('.film-video-panel'));
     const dots = Array.from(stage.querySelectorAll('.film-dot'));
     const counter = document.getElementById('film-sticky-counter');
@@ -1632,7 +1702,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const globalAudioBtn = document.getElementById('film-global-audio-btn');
     const cinemaOpenBtn = document.getElementById('film-cinema-open-btn');
     const stillsToggle = document.getElementById('film-stills-toggle');
+    const filmOverlay = stage.querySelector('.film-sticky-overlay');
+    const filmVignette = stage.querySelector('.film-vignette-overlay');
     let activeFilmIndex = -1;
+    let filmOverlayVisible = false;
 
     // Configure custom start times: Spielfilm (Kurzfilm) ab Sekunde 8, Interview ab Sekunde 4
     panels.forEach((p, idx) => {
@@ -1667,11 +1740,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function syncActiveFilmUI(newIndex) {
-      if (newIndex === activeFilmIndex || newIndex < 0 || newIndex >= cards.length) return;
+      if (newIndex === activeFilmIndex || newIndex < 0 || newIndex >= (cards.length || centerTitles.length)) return;
       activeFilmIndex = newIndex;
 
-      // 1. Text Cards transition
-      cards.forEach((card, idx) => {
+      // 1. Center Title transition
+      centerTitles.forEach((t, idx) => {
+        if (idx === activeFilmIndex) {
+          t.classList.add('is-active');
+        } else {
+          t.classList.remove('is-active');
+        }
+      });
+
+      // 1b. Center Meta transition
+      centerMetas.forEach((m, idx) => {
+        if (idx === activeFilmIndex) {
+          m.classList.add('is-active');
+        } else {
+          m.classList.remove('is-active');
+        }
+      });
+
+      // 1c. Dynamic Divider Width: expands/contracts to match active title width
+      updateDynamicDividerWidth(activeFilmIndex);
+
+      // 2. Drawer Panels transition
+      drawerPanels.forEach((card, idx) => {
         if (idx === activeFilmIndex) {
           card.classList.add('is-active');
         } else {
@@ -1679,7 +1773,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      // 2. Dots
+      // 3. Drawer Category Badge
+      if (drawerBadge) {
+        const activeCard = cards[activeFilmIndex];
+        const catLabel = (activeCard ? activeCard.getAttribute('data-label') : '') || 'FILM';
+        drawerBadge.textContent = `0${activeFilmIndex + 1} / ${catLabel.toUpperCase()}`;
+      }
+
+      // 4. Dots
       dots.forEach((dot, idx) => {
         if (idx === activeFilmIndex) {
           dot.classList.add('is-active');
@@ -1690,7 +1791,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      // 3. Counter & Category Label
+      // 5. Counter & Category Label
       if (counter) {
         counter.textContent = `0${activeFilmIndex + 1} / 04`;
       }
@@ -1699,7 +1800,7 @@ document.addEventListener('DOMContentLoaded', () => {
         label.textContent = activeCard.getAttribute('data-label') || '';
       }
 
-      // 4. Panel active classes
+      // 6. Panel active classes
       panels.forEach((p, idx) => {
         if (idx === activeFilmIndex) {
           p.classList.add('is-active');
@@ -1708,7 +1809,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      // 5. Update Cinema Open Button data attributes for modal lightbox
+      // 7. Update Cinema Open Button data attributes for modal lightbox
       if (cinemaOpenBtn && activeCard) {
         cinemaOpenBtn.setAttribute('data-cinema-trigger', '');
         cinemaOpenBtn.setAttribute('data-cinema-type', 'video');
@@ -1718,7 +1819,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cinemaOpenBtn.setAttribute('data-start-time', activeCard.getAttribute('data-start-time') || '0');
       }
 
-      // 6. Audio toggle state for active video
+      // 8. Audio toggle state for active video
       const activeVideo = document.getElementById(`film-video-${activeFilmIndex}`);
       if (activeVideo && globalAudioBtn) {
         if (activeVideo.muted) {
@@ -1736,67 +1837,38 @@ document.addEventListener('DOMContentLoaded', () => {
     let snapTimeout = null;
     let isProgrammaticSnap = false;
 
-    // Smoothstep Hermite curve for smooth entry and exit between resting plateaus
-    function getTransitionStep(t, i) {
-      if (t <= i) return 0;
-      if (t >= i + 1) return 1;
-      const f = t - i;
-      // 22% of each step is a pure resting plateau (where only ONE video is visible)
-      // 56% is the smooth parallax transition
-      if (f <= 0.22) return 0;
-      if (f >= 0.78) return 1;
-      const u = (f - 0.22) / 0.56;
-      return u * u * (3 - 2 * u);
-    }
-
-    // Optical Sliding Curtain Parallax with Rest Plateaus & Magnetic Snap
+    // Contiguous Video Stream with Pinned Sticky UI Overlay
     function updateFilmParallax() {
       const stageRect = stage.getBoundingClientRect();
       const windowH = window.innerHeight;
 
-      // Pre-roll window: 350px before entering or after leaving the film stage
+      // Pre-roll window: check if user is near or inside the film section
       const isNearFilmStage = (stageRect.top <= windowH + 350 && stageRect.bottom >= -350);
       if (!isNearFilmStage) {
-        // User is outside the film section range: strictly pause all 4 film videos
+        // User is outside the film section: pause all 4 film videos
         panels.forEach((p) => {
           const v = p.querySelector('video');
           if (v && !v.paused) v.pause();
         });
-
-        // Set stable edge transforms when scrolled far away
-        if (stageRect.top > windowH + 350) {
-          if (panels[0]) {
-            panels[0].style.transform = 'translate3d(0, 0%, 0)';
-            panels[0].style.opacity = '1';
-          }
-          for (let i = 1; i < panels.length; i++) {
-            if (panels[i]) panels[i].style.transform = 'translate3d(0, 100%, 0)';
-          }
-        } else if (stageRect.bottom < -350) {
-          for (let i = 0; i < panels.length - 1; i++) {
-            if (panels[i]) panels[i].style.transform = 'translate3d(0, -100%, 0)';
-          }
-          const last = panels[panels.length - 1];
-          if (last) {
-            last.style.transform = 'translate3d(0, 0%, 0)';
-            last.style.opacity = '1';
-          }
-        }
         return;
       }
 
-      // Total distance the stage can scroll while pinned
+      // Total distance the stage can scroll while pinned (300vh for 4 videos)
       const totalScrollable = stageRect.height - windowH;
       if (totalScrollable <= 0) return;
 
       // Scrolled distance into the stage
       const scrolledInto = -stageRect.top;
       
-      // Normalize progress across the 3 transitions (0.0 to 3.0)
+      // Progress across the 4 videos: 0.0 to 3.0
+      // 0.0 = Video 0
+      // 1.0 = Video 1
+      // 2.0 = Video 2
+      // 3.0 = Video 3
       const rawProgress = (scrolledInto / totalScrollable) * 3;
       const progress = Math.max(0, Math.min(3, rawProgress));
 
-      // Active film determination based on resting and crossover points
+      // Active film index based on which video is predominantly in view
       let activeIdx = 0;
       if (progress >= 2.5) {
         activeIdx = 3;
@@ -1808,158 +1880,25 @@ document.addEventListener('DOMContentLoaded', () => {
         activeIdx = 0;
       }
 
-      const s01 = getTransitionStep(progress, 0); // Transition 0 -> 1
-      const s12 = getTransitionStep(progress, 1); // Transition 1 -> 2
-      const s23 = getTransitionStep(progress, 2); // Transition 2 -> 3
-
-      // Panel 0: Schattenwolf
-      const p0 = panels[0];
-      if (p0) {
-        const vids0 = p0.querySelectorAll('video');
-        const wrap0 = p0.querySelector('.film-video-wrap');
-        if (progress < 1.0) {
-          p0.style.transform = `translate3d(0, ${(-s01 * 35).toFixed(2)}%, 0)`;
-          p0.style.opacity = `${(1 - s01 * 0.45).toFixed(2)}`;
-          if (wrap0) wrap0.style.transform = `translate3d(0, ${(s01 * 15).toFixed(2)}%, 0)`;
-          vids0.forEach(v => { if (v.paused) v.play().catch(()=>{}); });
+      // Play visible videos, pause offscreen ones
+      panels.forEach((p, idx) => {
+        const vids = p.querySelectorAll('video');
+        if (Math.abs(progress - idx) < 0.75) {
+          vids.forEach(v => {
+            v.style.transform = '';
+            if (v.paused) v.play().catch(()=>{});
+          });
         } else {
-          p0.style.transform = 'translate3d(0, -100%, 0)';
-          vids0.forEach(v => { if (!v.paused) v.pause(); });
+          vids.forEach(v => {
+            v.style.transform = '';
+            if (!v.paused) v.pause();
+          });
         }
-      }
-
-      // Panel 1: 1 Tag als Bergmann
-      const p1 = panels[1];
-      if (p1) {
-        const vids1 = p1.querySelectorAll('video');
-        const wrap1 = p1.querySelector('.film-video-wrap');
-        if (progress < 0.15) {
-          p1.style.transform = 'translate3d(0, 100%, 0)';
-          vids1.forEach(v => { if (!v.paused) v.pause(); });
-        } else if (progress <= 1.0) {
-          // Pre-roll (from 0.15) & Arriving over Panel 0
-          p1.style.transform = `translate3d(0, ${((1 - s01) * 100).toFixed(2)}%, 0)`;
-          p1.style.opacity = '1';
-          if (wrap1) wrap1.style.transform = `translate3d(0, ${((1 - s01) * -15).toFixed(2)}%, 0)`;
-          vids1.forEach(v => { if (v.paused) v.play().catch(()=>{}); });
-        } else if (progress < 2.0) {
-          // Resting then departing under Panel 2
-          p1.style.transform = `translate3d(0, ${(-s12 * 35).toFixed(2)}%, 0)`;
-          p1.style.opacity = `${(1 - s12 * 0.45).toFixed(2)}`;
-          if (wrap1) wrap1.style.transform = `translate3d(0, ${(s12 * 15).toFixed(2)}%, 0)`;
-          vids1.forEach(v => { if (v.paused) v.play().catch(()=>{}); });
-        } else {
-          p1.style.transform = 'translate3d(0, -100%, 0)';
-          vids1.forEach(v => { if (!v.paused) v.pause(); });
-        }
-      }
-
-      // Panel 2: Inszenierter Kurzfilm (Spielfilm startet ab Sekunde 8)
-      const p2 = panels[2];
-      if (p2) {
-        const vids2 = p2.querySelectorAll('video');
-        const wrap2 = p2.querySelector('.film-video-wrap');
-        if (progress < 1.15) {
-          p2.style.transform = 'translate3d(0, 100%, 0)';
-          vids2.forEach(v => { if (!v.paused) v.pause(); });
-          if (progress < 1.0 && vids2[1] && vids2[1].currentTime < 8) {
-            vids2[1].currentTime = 8;
-          }
-        } else if (progress <= 2.0) {
-          // Pre-roll (from 1.15) & Arriving over Panel 1
-          p2.style.transform = `translate3d(0, ${((1 - s12) * 100).toFixed(2)}%, 0)`;
-          p2.style.opacity = '1';
-          if (wrap2) wrap2.style.transform = `translate3d(0, ${((1 - s12) * -15).toFixed(2)}%, 0)`;
-          if (vids2[1]) {
-            if (vids2[1].currentTime < 8) vids2[1].currentTime = 8;
-            vids2.forEach(v => { if (v.paused) v.play().catch(()=>{}); });
-          }
-        } else if (progress < 3.0) {
-          // Resting then departing under Panel 3
-          p2.style.transform = `translate3d(0, ${(-s23 * 35).toFixed(2)}%, 0)`;
-          p2.style.opacity = `${(1 - s23 * 0.45).toFixed(2)}`;
-          if (wrap2) wrap2.style.transform = `translate3d(0, ${(s23 * 15).toFixed(2)}%, 0)`;
-          vids2.forEach(v => { if (v.paused) v.play().catch(()=>{}); });
-        } else {
-          p2.style.transform = 'translate3d(0, -100%, 0)';
-          vids2.forEach(v => { if (!v.paused) v.pause(); });
-        }
-      }
-
-      // Panel 3: Offline statt hochgeladen (Interview startet ab Sekunde 4)
-      const p3 = panels[3];
-      if (p3) {
-        const vids3 = p3.querySelectorAll('video');
-        const wrap3 = p3.querySelector('.film-video-wrap');
-        if (progress < 2.15) {
-          p3.style.transform = 'translate3d(0, 100%, 0)';
-          vids3.forEach(v => { if (!v.paused) v.pause(); });
-          if (progress < 2.0 && vids3[1] && vids3[1].currentTime < 4) {
-            vids3[1].currentTime = 4;
-          }
-        } else {
-          // Pre-roll (from 2.15) & Arriving over Panel 2 and resting
-          p3.style.transform = `translate3d(0, ${((1 - s23) * 100).toFixed(2)}%, 0)`;
-          p3.style.opacity = '1';
-          if (wrap3) wrap3.style.transform = `translate3d(0, ${((1 - s23) * -15).toFixed(2)}%, 0)`;
-          if (vids3[1]) {
-            if (vids3[1].currentTime < 4) vids3[1].currentTime = 4;
-            vids3.forEach(v => { if (v.paused) v.play().catch(()=>{}); });
-          }
-        }
-      }
+      });
 
       syncActiveFilmUI(activeIdx);
-
-      // Magnetic Snapping (Einrasten bei Pause an einem der 4 Ruhepunkte)
-      if (!isProgrammaticSnap) {
-        clearTimeout(snapTimeout);
-        snapTimeout = setTimeout(checkAndSnapToRestingPoint, 200);
-      }
-    }
-
-    // Helper: Snaps smoothly to nearest video resting position when user finishes scrolling
-    function checkAndSnapToRestingPoint() {
-      const stageRect = stage.getBoundingClientRect();
-      const windowH = window.innerHeight;
-      const totalScrollable = stageRect.height - windowH;
-      if (totalScrollable <= 0) return;
-
-      // Only snap if currently inside the film showcase section
-      // (avoid snapping if user scrolled past into adjacent sections)
-      if (stageRect.top > 60 || stageRect.bottom < windowH - 60) {
-        return;
-      }
-
-      const scrolledInto = -stageRect.top;
-      const rawProgress = (scrolledInto / totalScrollable) * 3;
-      const progress = Math.max(0, Math.min(3, rawProgress));
-
-      // Calculate nearest resting index: 0, 1, 2, 3
-      const nearestIdx = Math.round(progress);
-
-      const stageTop = stage.getBoundingClientRect().top + (window.scrollY || window.pageYOffset || 0);
-      const targetScroll = stageTop + (nearestIdx / 3) * totalScrollable;
-      const currentScroll = window.scrollY || window.pageYOffset || (lenis ? lenis.scroll : 0) || 0;
-
-      // Only perform magnetic snap if not already at the resting point
-      const scrollDiff = Math.abs(currentScroll - targetScroll);
-      if (scrollDiff > 14) {
-        isProgrammaticSnap = true;
-        if (typeof lenis !== 'undefined' && lenis) {
-          lenis.scrollTo(targetScroll, {
-            duration: 0.65,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            onComplete: () => {
-              isProgrammaticSnap = false;
-            }
-          });
-          // Fallback reset in case onComplete isn't fired
-          setTimeout(() => { isProgrammaticSnap = false; }, 750);
-        } else {
-          window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-          setTimeout(() => { isProgrammaticSnap = false; }, 500);
-        }
+      if (typeof checkFilmUiLuminance === 'function') {
+        checkFilmUiLuminance();
       }
     }
 
@@ -2011,13 +1950,157 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Stills Lightbox Trigger listener (Schattenwolf)
-    const schattenwolfStill1 = document.getElementById('schattenwolf-still-1');
-    if (stillsToggle && schattenwolfStill1) {
-      stillsToggle.addEventListener('click', (e) => {
+    // --------------------------------------------------------------------------
+    // Film Info Frosted Blur Drawer Handlers (Slides up from bottom like FAB)
+    // --------------------------------------------------------------------------
+    let isDrawerOpen = false;
+
+    function openFilmDrawer() {
+      if (!drawer || isDrawerOpen) return;
+      isDrawerOpen = true;
+
+      // Close mobile navigation overlay if currently open to prevent dual open states
+      const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+      const mobileNavFabBtn = document.getElementById('mobile-nav-fab');
+      if (document.body.classList.contains('mobile-nav-open') || (mobileNavOverlay && mobileNavOverlay.classList.contains('is-open'))) {
+        document.body.classList.remove('mobile-nav-open');
+        if (mobileNavFabBtn) {
+          mobileNavFabBtn.classList.remove('is-open');
+          mobileNavFabBtn.setAttribute('aria-expanded', 'false');
+          mobileNavFabBtn.setAttribute('aria-label', 'Menü öffnen');
+        }
+        if (mobileNavOverlay) {
+          mobileNavOverlay.classList.remove('is-open');
+          mobileNavOverlay.setAttribute('aria-hidden', 'true');
+        }
+        document.body.style.overflow = '';
+      }
+
+      drawer.classList.add('is-open');
+      drawer.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('film-drawer-open');
+
+      // Ensure the correct drawer panel is visible for the current film
+      const currentIdx = Math.max(0, activeFilmIndex);
+      console.log('[FilmDrawer] Opening drawer, activeFilmIndex:', activeFilmIndex, 'currentIdx:', currentIdx, 'drawerPanels.length:', drawerPanels.length);
+      drawerPanels.forEach((card, idx) => {
+        if (idx === currentIdx) {
+          card.classList.add('is-active');
+        } else {
+          card.classList.remove('is-active');
+        }
+      });
+      if (drawerBadge) {
+        const activeCard = cards[currentIdx];
+        const catLabel = (activeCard ? activeCard.getAttribute('data-label') : '') || 'FILM';
+        drawerBadge.textContent = `0${currentIdx + 1} / ${catLabel.toUpperCase()}`;
+      }
+
+      // Scroll drawer to top so content is visible
+      drawer.scrollTop = 0;
+
+      if (moreTriggerBtn) {
+        moreTriggerBtn.classList.add('is-active');
+        moreTriggerBtn.setAttribute('aria-expanded', 'true');
+        moreTriggerBtn.setAttribute('aria-label', 'Filmdetails schließen');
+      }
+
+      const bottomBar = stage.querySelector('.film-sticky-bottom');
+      if (bottomBar) {
+        bottomBar.classList.remove('is-inverted');
+      }
+
+      if (typeof lenis !== 'undefined' && lenis) {
+        lenis.stop();
+      }
+    }
+
+    function closeFilmDrawer() {
+      if (!drawer || !isDrawerOpen) return;
+      isDrawerOpen = false;
+
+      drawer.classList.remove('is-open');
+      drawer.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('film-drawer-open');
+
+      if (moreTriggerBtn) {
+        moreTriggerBtn.classList.remove('is-active');
+        moreTriggerBtn.setAttribute('aria-expanded', 'false');
+        moreTriggerBtn.setAttribute('aria-label', 'Mehr Details zum Film erfahren');
+      }
+
+      if (typeof lenis !== 'undefined' && lenis) {
+        lenis.start();
+      }
+    }
+
+    if (moreTriggerBtn) {
+      moreTriggerBtn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
+        if (isDrawerOpen) {
+          closeFilmDrawer();
+        } else {
+          openFilmDrawer();
+        }
+      });
+    }
+
+    if (drawerBackdrop) {
+      drawerBackdrop.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeFilmDrawer();
+      });
+    }
+
+    if (drawer) {
+      drawer.addEventListener('click', (e) => {
+        if (e.target === drawer) {
+          closeFilmDrawer();
+        }
+      });
+      drawer.addEventListener('wheel', (e) => {
+        e.stopPropagation();
+      }, { passive: true });
+      drawer.addEventListener('touchmove', (e) => {
+        e.stopPropagation();
+      }, { passive: true });
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isDrawerOpen) {
+        closeFilmDrawer();
+      }
+    });
+
+    // Stills Lightbox Trigger listener (Schattenwolf)
+    const schattenwolfStill1 = document.getElementById('schattenwolf-still-1');
+    const drawerStillsToggle = document.getElementById('film-stills-toggle');
+    if (drawerStillsToggle && schattenwolfStill1) {
+      drawerStillsToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeFilmDrawer();
         schattenwolfStill1.click();
+      });
+    }
+
+    // Cinema buttons inside drawer
+    if (drawer) {
+      const drawerCinemaBtns = drawer.querySelectorAll('.film-info-cinema-btn');
+      drawerCinemaBtns.forEach((cBtn) => {
+        cBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const targetIdx = parseInt(cBtn.getAttribute('data-cinema-film-index'), 10);
+          if (!isNaN(targetIdx) && targetIdx !== activeFilmIndex) {
+            syncActiveFilmUI(targetIdx);
+          }
+          closeFilmDrawer();
+          if (cinemaOpenBtn) {
+            cinemaOpenBtn.click();
+          }
+        });
       });
     }
 
@@ -2039,15 +2122,179 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
+    // --------------------------------------------------------------------------
+    // Dynamic Luminance Threshold Contrast Engine for Film UI Elements
+    // ("UI elements are white, except when background is very bright -> negative/dark")
+    // --------------------------------------------------------------------------
+    const sampleCanvas = document.createElement('canvas');
+    sampleCanvas.width = 64;
+    sampleCanvas.height = 36;
+    const sampleCtx = sampleCanvas.getContext('2d', { willReadFrequently: true });
+
+    let isTitleInverted = false;
+    let isBottomInverted = false;
+    let lumInterval = null;
+
+    // Thresholds: raw video luminance > ~71% turns dark, < ~58% restores white
+    const LUM_THRESHOLD_INVERT = 142;
+    const LUM_THRESHOLD_RESTORE = 118;
+
+    function getActiveVisibleVideo() {
+      const activePanel = panels[activeFilmIndex] || panels[0];
+      if (!activePanel) return null;
+      const fullVid = activePanel.querySelector('.full-video');
+      const proxyVid = activePanel.querySelector('.proxy-video');
+      if (fullVid && fullVid.readyState >= 2 && !fullVid.paused && (fullVid.style.opacity === '1' || fullVid.style.opacity === '')) {
+        return fullVid;
+      }
+      if (proxyVid && proxyVid.readyState >= 2 && !proxyVid.paused) {
+        return proxyVid;
+      }
+      if (fullVid && fullVid.readyState >= 2) return fullVid;
+      if (proxyVid && proxyVid.readyState >= 2) return proxyVid;
+      return null;
+    }
+
+    function checkFilmUiLuminance() {
+      const stageRect = stage.getBoundingClientRect();
+      const winH = window.innerHeight;
+      const winW = window.innerWidth;
+
+      // Skip when completely offscreen
+      if (stageRect.bottom < 0 || stageRect.top > winH) return;
+      if (isDrawerOpen) {
+        const bottomBar = stage.querySelector('.film-sticky-bottom');
+        if (bottomBar) bottomBar.classList.remove('is-inverted');
+        return;
+      }
+
+      const video = getActiveVisibleVideo();
+      if (!video || video.readyState < 2 || video.videoWidth === 0) return;
+
+      try {
+        // Draw current video frame onto 64x36 offscreen canvas
+        sampleCtx.drawImage(video, 0, 0, 64, 36);
+        const imgData = sampleCtx.getImageData(0, 0, 64, 36);
+        const data = imgData.data;
+
+        const centerStage = stage.querySelector('.film-center-stage');
+        const bottomBar = stage.querySelector('.film-sticky-bottom');
+
+        // 1. Title Region Sampling
+        let titleX0 = 2, titleX1 = 28, titleY0 = 18, titleY1 = 30;
+        if (centerStage) {
+          const cRect = centerStage.getBoundingClientRect();
+          if (cRect.width > 0 && cRect.height > 0) {
+            titleX0 = Math.max(0, Math.min(63, Math.floor((cRect.left / winW) * 63)));
+            titleX1 = Math.max(0, Math.min(63, Math.ceil((cRect.right / winW) * 63)));
+            titleY0 = Math.max(0, Math.min(35, Math.floor((cRect.top / winH) * 35)));
+            titleY1 = Math.max(0, Math.min(35, Math.ceil((cRect.bottom / winH) * 35)));
+          }
+        }
+
+        let titleLumSum = 0, titleCount = 0;
+        for (let y = titleY0; y <= titleY1; y++) {
+          for (let x = titleX0; x <= titleX1; x++) {
+            const idx = (y * 64 + x) * 4;
+            titleLumSum += 0.2126 * data[idx] + 0.7152 * data[idx + 1] + 0.0722 * data[idx + 2];
+            titleCount++;
+          }
+        }
+
+        // 2. Bottom Bar Region Sampling
+        let btmX0 = 2, btmX1 = 61, btmY0 = 31, btmY1 = 35;
+        if (bottomBar) {
+          const bRect = bottomBar.getBoundingClientRect();
+          if (bRect.width > 0 && bRect.height > 0) {
+            btmX0 = Math.max(0, Math.min(63, Math.floor((bRect.left / winW) * 63)));
+            btmX1 = Math.max(0, Math.min(63, Math.ceil((bRect.right / winW) * 63)));
+            btmY0 = Math.max(0, Math.min(35, Math.floor((bRect.top / winH) * 35)));
+            btmY1 = Math.max(0, Math.min(35, Math.ceil((bRect.bottom / winH) * 35)));
+          }
+        }
+
+        let btmLumSum = 0, btmCount = 0;
+        for (let y = btmY0; y <= btmY1; y++) {
+          for (let x = btmX0; x <= btmX1; x++) {
+            const idx = (y * 64 + x) * 4;
+            btmLumSum += 0.2126 * data[idx] + 0.7152 * data[idx + 1] + 0.0722 * data[idx + 2];
+            btmCount++;
+          }
+        }
+
+        // Compensate for stationary .film-vignette-overlay (transmission factor 0.78)
+        const avgTitleLum = (titleCount > 0 ? (titleLumSum / titleCount) : 0) * 0.78;
+        const avgBtmLum = (btmCount > 0 ? (btmLumSum / btmCount) : 0) * 0.78;
+
+        // Apply hysteresis to Title
+        if (!isTitleInverted && avgTitleLum >= LUM_THRESHOLD_INVERT) {
+          isTitleInverted = true;
+        } else if (isTitleInverted && avgTitleLum <= LUM_THRESHOLD_RESTORE) {
+          isTitleInverted = false;
+        }
+
+        // Apply hysteresis to Bottom bar
+        if (!isBottomInverted && avgBtmLum >= LUM_THRESHOLD_INVERT) {
+          isBottomInverted = true;
+        } else if (isBottomInverted && avgBtmLum <= LUM_THRESHOLD_RESTORE) {
+          isBottomInverted = false;
+        }
+
+        if (centerStage) {
+          centerStage.classList.toggle('is-inverted', isTitleInverted);
+        }
+        centerTitles.forEach((t) => {
+          t.classList.toggle('is-inverted', isTitleInverted);
+        });
+
+        if (bottomBar) {
+          bottomBar.classList.toggle('is-inverted', isBottomInverted);
+        }
+      } catch (err) {
+        // Fallback: stay clean white
+      }
+    }
+
+    // Run dynamic sampling on scroll & throttled timer when stage is visible
+    if ('IntersectionObserver' in window) {
+      const filmObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (!lumInterval) {
+              lumInterval = setInterval(checkFilmUiLuminance, 150);
+            }
+            checkFilmUiLuminance();
+          } else {
+            if (lumInterval) {
+              clearInterval(lumInterval);
+              lumInterval = null;
+            }
+          }
+        });
+      }, { threshold: 0.05 });
+      filmObserver.observe(stage);
+    } else {
+      setInterval(checkFilmUiLuminance, 250);
+    }
+
     // Initial setup
     syncActiveFilmUI(0);
     updateFilmParallax();
+    updateDynamicDividerWidth(0);
+
     let lastWinW = window.innerWidth;
     window.addEventListener('resize', () => {
       if (window.innerWidth <= 768 && window.innerWidth === lastWinW) return;
       lastWinW = window.innerWidth;
       updateFilmParallax();
+      updateDynamicDividerWidth(activeFilmIndex);
     }, { passive: true });
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        updateDynamicDividerWidth(activeFilmIndex);
+      });
+    }
 
     return updateFilmParallax;
   }
@@ -2711,8 +2958,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const scrolled = -rect.top;
 
       if (end > 50) {
+        // Reserve buffer distance at the end for the last PDF (MagicFlow) before white section enters
+        const exitBuffer = window.innerHeight * 1.0; // 100vh of resting space for MagicFlow
+        const activeSwitchDistance = Math.max(100, end - exitBuffer);
+
         if (scrolled >= 0 && scrolled <= end) {
-          let progress = scrolled / end;
+          const clampedScrolled = Math.min(scrolled, activeSwitchDistance);
+          let progress = clampedScrolled / activeSwitchDistance;
           let numItems = controlItems.length;
           let index = Math.floor(progress * numItems);
           if (index >= numItems) index = numItems - 1;
@@ -2770,7 +3022,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.stopPropagation(); // Avoid triggering lightbox modal
 
       // Find the associated video in this container
-      const parentContainer = btn.closest('.cinematic-hero-player, .film-preview-box, .cgi-card-half, .cgi-card-full, .cgi-card-wide, .cgi-main-media, .motion-video-frame');
+      const parentContainer = btn.closest('.cinematic-hero-player, .film-preview-box, .cgi-card-half, .cgi-card-full, .cgi-card-wide, .cgi-main-media, .motion-video-frame, .cgi-parallax-card');
       if (!parentContainer) return;
 
       const targetVideos = parentContainer.querySelectorAll('video');
@@ -3606,7 +3858,7 @@ document.addEventListener('DOMContentLoaded', () => {
           setAmbientTheme('hero');
         } else {
           const focalPoint = currentScroll + window.innerHeight * 0.38;
-          for (let i = 0; i < cachedSections.length; i++) {
+          for (let i = cachedSections.length - 1; i >= 0; i--) {
             const sec = cachedSections[i];
             if (focalPoint >= sec.top && focalPoint < sec.bottom) {
               setAmbientTheme(sec.id);
@@ -3823,6 +4075,241 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   initCompetenciesAccordion();
+
+  // --------------------------------------------------------------------------
+  // Scroll-Driven Text Highlight (Progressive Character Reveal on Scroll)
+  // Splits [data-highlight-text] elements into word/char spans and scrubs
+  // opacity from 0.22 → 1.0 based on scroll progress through the element.
+  // --------------------------------------------------------------------------
+  function initScrollTextHighlight() {
+    const containers = document.querySelectorAll('[data-highlight-text]');
+    if (!containers.length) return;
+
+    // Respect reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const instances = [];
+
+    containers.forEach((container) => {
+      // 1. Extract plain text for aria-label before mutating DOM
+      const fullText = container.textContent.replace(/\s+/g, ' ').trim();
+      container.setAttribute('role', 'group');
+      container.setAttribute('aria-label', fullText);
+
+      // 2. Parse scroll start/end from data attributes
+      const scrollStartAttr = container.getAttribute('data-highlight-scroll-start') || 'top 88%';
+      const scrollEndAttr = container.getAttribute('data-highlight-scroll-end') || 'bottom 60%';
+
+      // 3. Split child nodes preserving <em> and other inline tags
+      const charElements = [];
+
+      function processNode(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+          const text = node.textContent;
+          if (!text.length) return document.createDocumentFragment();
+
+          const frag = document.createDocumentFragment();
+          // Split by spaces to create word wraps
+          const parts = text.split(/(\s+)/);
+
+          parts.forEach((part) => {
+            if (/^\s+$/.test(part)) {
+              // Whitespace between words
+              const spaceSpan = document.createElement('span');
+              spaceSpan.className = 'highlight-space';
+              spaceSpan.textContent = ' ';
+              spaceSpan.setAttribute('aria-hidden', 'true');
+              frag.appendChild(spaceSpan);
+            } else if (part.length > 0) {
+              // Actual word
+              const wordSpan = document.createElement('span');
+              wordSpan.className = 'highlight-word';
+              wordSpan.setAttribute('aria-hidden', 'true');
+
+              for (let i = 0; i < part.length; i++) {
+                const charSpan = document.createElement('span');
+                charSpan.className = 'highlight-char';
+                charSpan.textContent = part[i];
+                charSpan.setAttribute('aria-hidden', 'true');
+                if (prefersReducedMotion) {
+                  charSpan.style.opacity = '1';
+                }
+                wordSpan.appendChild(charSpan);
+                charElements.push(charSpan);
+              }
+
+              frag.appendChild(wordSpan);
+            }
+          });
+
+          return frag;
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+          // Preserve inline elements like <em>, <strong>, <br>, etc.
+          if (node.tagName === 'BR') {
+            return node.cloneNode(false);
+          }
+
+          const cloned = document.createElement(node.tagName);
+          // Copy attributes
+          for (const attr of node.attributes) {
+            cloned.setAttribute(attr.name, attr.value);
+          }
+
+          // Process children recursively
+          node.childNodes.forEach((child) => {
+            const result = processNode(child);
+            if (result) cloned.appendChild(result);
+          });
+
+          return cloned;
+        }
+        return null;
+      }
+
+      // Build new content
+      const newContent = document.createDocumentFragment();
+      Array.from(container.childNodes).forEach((child) => {
+        const result = processNode(child);
+        if (result) newContent.appendChild(result);
+      });
+
+      // Replace container contents
+      container.innerHTML = '';
+      container.appendChild(newContent);
+
+      if (prefersReducedMotion) return;
+
+      // 4. Parse scroll trigger positions
+      // Format: "top 88%" means element's top edge at 88% of viewport
+      // Format: "bottom 60%" means element's bottom edge at 60% of viewport
+      function parseScrollPosition(attr) {
+        const parts = attr.trim().split(/\s+/);
+        return {
+          edge: parts[0] || 'top',         // 'top' or 'bottom' of element
+          viewport: parseFloat(parts[1]) / 100 || 0.5  // fraction of viewport height
+        };
+      }
+
+      const scrollStart = parseScrollPosition(scrollStartAttr);
+      const scrollEnd = parseScrollPosition(scrollEndAttr);
+
+      instances.push({
+        container,
+        chars: charElements,
+        scrollStart,
+        scrollEnd,
+        isInView: false
+      });
+    });
+
+    if (prefersReducedMotion || instances.length === 0) return;
+
+    // 5. Main update function – called on every scroll frame
+    let ticking = false;
+
+    function updateHighlights() {
+      const viewportH = window.innerHeight || document.documentElement.clientHeight || 800;
+
+      instances.forEach((inst) => {
+        if (!inst.isInView) return;
+
+        const rect = inst.container.getBoundingClientRect();
+        const totalChars = inst.chars.length;
+        if (totalChars === 0) return;
+
+        // Calculate scroll start/end positions in viewport pixels
+        const startEdgePx = inst.scrollStart.edge === 'bottom'
+          ? rect.bottom
+          : rect.top;
+        const startThresholdPx = viewportH * inst.scrollStart.viewport;
+
+        const endEdgePx = inst.scrollEnd.edge === 'bottom'
+          ? rect.bottom
+          : rect.top;
+        const endThresholdPx = viewportH * inst.scrollEnd.viewport;
+
+        // Total scroll range
+        const totalRange = startThresholdPx - endThresholdPx;
+        if (totalRange <= 0) return;
+
+        // Current progress from 0 (at startThresholdPx) to 1 (at endThresholdPx)
+        const currentPx = startEdgePx;
+        const rawProgress = (startThresholdPx - currentPx) / totalRange;
+        const progress = Math.max(0, Math.min(1, rawProgress));
+
+        // Current "cursor" position in character index space
+        const cursorPos = progress * totalChars;
+
+        // Soft gradient window width (chars that are in transition)
+        const windowWidth = Math.max(4, Math.min(8, totalChars * 0.06));
+
+        const baseOpacity = 0.12;
+        for (let i = 0; i < totalChars; i++) {
+          let opacity;
+          if (i < cursorPos - windowWidth) {
+            // Fully revealed
+            opacity = 1;
+          } else if (i > cursorPos) {
+            // Not yet reached (less visible unrevealed text)
+            opacity = baseOpacity;
+          } else {
+            // In the transition window – smooth gradient
+            const windowProgress = (cursorPos - i) / windowWidth;
+            opacity = baseOpacity + (1 - baseOpacity) * Math.max(0, Math.min(1, windowProgress));
+          }
+
+          // Only write to DOM if value changed meaningfully (avoid layout thrashing)
+          const rounded = Math.round(opacity * 50) / 50; // Snap to 0.02 increments
+          if (inst.chars[i]._lastOpacity !== rounded) {
+            inst.chars[i].style.opacity = rounded;
+            inst.chars[i]._lastOpacity = rounded;
+          }
+        }
+      });
+
+      ticking = false;
+    }
+
+    function requestHighlightUpdate() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateHighlights);
+      }
+    }
+
+    // 6. IntersectionObserver to process visible and near-visible containers
+    const highlightObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const inst = instances.find((i) => i.container === entry.target);
+        if (inst) {
+          inst.isInView = entry.isIntersecting;
+          if (entry.isIntersecting) {
+            requestHighlightUpdate();
+          }
+        }
+      });
+    }, {
+      root: null,
+      threshold: 0,
+      rootMargin: '250px 0px 250px 0px'
+    });
+
+    instances.forEach((inst) => highlightObserver.observe(inst.container));
+
+    // 7. Bind to scroll events (Lenis + native fallback)
+    window.addEventListener('scroll', requestHighlightUpdate, { passive: true });
+    if (typeof lenis !== 'undefined' && lenis) {
+      lenis.on('scroll', requestHighlightUpdate);
+    }
+
+    // 8. Handle resize (viewport height changes)
+    window.addEventListener('resize', requestHighlightUpdate, { passive: true });
+
+    // 9. Initial update
+    requestHighlightUpdate();
+  }
+
+  initScrollTextHighlight();
 });
 
 
