@@ -1193,6 +1193,9 @@ body[data-ambient-theme="kontakt"] {
   justify-content: center;
   align-items: center;
   text-align: center;
+  width: 100%;
+  max-width: 100%;
+  container-type: inline-size;
 }
 
 .hero-subtitle-top {
@@ -1214,26 +1217,17 @@ body[data-ambient-theme="kontakt"] {
 }
 
 .hero-title {
-  font-family: var(--font-sans);
-  font-size: clamp(1.75rem, 3.2vw, 3.1rem);
-  font-weight: 300;
-  line-height: 1.28;
-  letter-spacing: -0.015em;
-  color: rgba(255, 255, 255, 0.72);
-  margin-bottom: 0;
-  max-width: 950px;
-}
-
-.hero-title em {
-  font-family: var(--font-serif-editorial);
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.16em;
+  font-family: var(--font-heading);
+  font-size: clamp(2.4rem, 6.2vw, 5.8rem);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
   color: #ffffff;
+  margin: 0;
+  text-align: center;
   white-space: nowrap;
-  display: inline-block;
-  letter-spacing: 0.01em;
-  text-shadow: 0 0 35px rgba(255, 255, 255, 0.22);
+  width: 100%;
+  max-width: 100%;
 }
 
 .hero-desc {
@@ -2082,20 +2076,24 @@ body[data-ambient-theme="kontakt"] {
 /* --------------------------------------------------------------------------
    Historische Kaserne Header & Feature Grid
    -------------------------------------------------------------------------- */
-.kaserne-header-block {
+.kaserne-header-block,
+.kaserne-hero-header {
+  width: calc((100% - 4.5rem) * 0.6);
+  max-width: 100%;
   margin-bottom: clamp(1.8rem, 3vh, 2.8rem);
-  display: flex;
-  flex-direction: column;
+  container-type: inline-size;
 }
 
 .kaserne-hero-title {
   font-family: var(--font-heading);
-  font-size: clamp(2rem, 7.3vw, 5.4rem);
+  font-size: clamp(2rem, 9.6cqi, 5.6rem);
   font-weight: 500;
   line-height: 1.05;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   color: #ffffff;
   margin: 0 0 0.85rem 0;
+  white-space: nowrap;
+  width: 100%;
 }
 
 .kaserne-hero-lead {
@@ -2104,7 +2102,8 @@ body[data-ambient-theme="kontakt"] {
   font-weight: 300;
   line-height: 1.75;
   margin: 0;
-  max-width: min(75vw, 780px);
+  width: 100%;
+  max-width: 100%;
 }
 
 .kaserne-side-text-col {
@@ -2181,14 +2180,14 @@ body[data-ambient-theme="kontakt"] {
 .kaserne-compare-slider-wrap {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: stretch;
 }
 
 .kaserne-compare-slider {
   --pos: 50%;
   position: relative;
   width: 100%;
-  max-width: 680px;
+  max-width: 100%;
   aspect-ratio: 16 / 9;
   border-radius: 4px;
   overflow: hidden;
@@ -2321,11 +2320,18 @@ body[data-ambient-theme="kontakt"] {
 
 @media (max-width: 1024px) {
   .kaserne-compare-container {
-    grid-template-columns: 1fr;
-    gap: 2.2rem;
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+  .kaserne-compare-container > portfolio-text,
+  .kaserne-compare-container .kaserne-compare-info,
+  .kaserne-compare-container .uni-text-block,
+  .kaserne-compare-info,
+  portfolio-text.kaserne-compare-info {
+    display: none !important;
   }
   .kaserne-compare-slider {
-    max-width: 100%;
+    max-width: 100% !important;
   }
 }
 
@@ -6901,11 +6907,20 @@ body:has(#cinema-modal.open) .nav-header {
     display: none !important;
   }
 
+  .hero-text-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
   .hero-title {
-    font-size: clamp(1.4rem, 6.5vw, 2.2rem);
-    line-height: 1.25;
+    font-size: clamp(1.8rem, 11.4cqi, 4rem);
+    line-height: 1.05;
     margin-bottom: 0;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.025em;
+    white-space: nowrap;
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
   }
 
   .hero-desc {
@@ -7200,15 +7215,27 @@ body:has(#cinema-modal.open) .nav-header {
   }
 
   /* Kaserne: Mobile Typography & Centered Side Text */
+  .kaserne-header-block,
+  .kaserne-hero-header {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 1.2rem;
+  }
+
   .kaserne-hero-title {
-    font-size: clamp(1.8rem, 8.4vw, 2.8rem);
-    line-height: 1.1;
+    font-size: clamp(1.4rem, 9.6cqi, 3.2rem);
+    line-height: 1.05;
     margin-bottom: 0.6rem;
+    white-space: nowrap;
+    width: 100%;
+    max-width: 100%;
   }
 
   .kaserne-hero-lead {
     font-size: var(--text-size-body);
     line-height: var(--lh-body);
+    max-width: 100% !important;
+    width: 100%;
   }
 
   .kaserne-side-text-col {
@@ -7229,6 +7256,14 @@ body:has(#cinema-modal.open) .nav-header {
     text-align: center;
     font-size: var(--text-size-body);
     line-height: 1.65;
+  }
+
+  .kaserne-compare-container > portfolio-text,
+  .kaserne-compare-container .kaserne-compare-info,
+  .kaserne-compare-container .uni-text-block,
+  .kaserne-compare-info,
+  portfolio-text.kaserne-compare-info {
+    display: none !important;
   }
 
   .cgi-header-row {

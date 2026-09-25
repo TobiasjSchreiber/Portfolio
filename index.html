@@ -33,7 +33,7 @@
   </script>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css?v=213">
+  <link rel="stylesheet" href="css/style.css?v=220">
 </head>
 <body class="is-loading" data-ambient-theme="hero">
 
@@ -280,7 +280,7 @@
 
     <div class="hero-content">
       <div class="hero-text-wrapper">
-        <h1 class="hero-title">Visuelle Narrative von <em>Tobias&nbsp;Schreiber</em></h1>
+        <h1 class="hero-title">Tobias Schreiber</h1>
         <div class="hero-subtitle-top">Medientechnik &bull; CGI &bull; Film &bull; Fotografie</div>
       </div>
 
@@ -311,7 +311,7 @@
   <section id="cgi" class="project-section">
     <!-- 3D Showcase 03: 3D Render Gallery (Horizontal Parallax Swipe Showcase) -->
     <div class="cgi-header-row reveal-on-scroll">
-      <portfolio-text tag="01 / 3D-MODELING &amp; CGI" title="3D &amp; <em>CGI</em>" level="2" extra-classes="section-header">
+      <portfolio-text title="3D &amp; <em>CGI</em>" level="2" extra-classes="section-header">
   Was als autodidaktische Leidenschaft begann, ist heute mein stärkstes Werkzeug: In Blender Cycles erschaffe ich surreale, atmosphärische Environments mit starker emotionaler Wirkung und Naturverbundenheit.
       </portfolio-text>
 
@@ -681,8 +681,8 @@
 
     <!-- 3D Showcase 02: Historische Kaserne 3D-Rekonstruktion -->
     <div class="cgi-subproject" id="project-kaserne">
-      <div class="kaserne-header-block reveal-on-scroll">
-        <h3 class="kaserne-hero-title bmw-hero-title">Historische Kaserne</h3>
+      <div class="kaserne-header-block kaserne-hero-header reveal-on-scroll">
+        <h3 class="kaserne-hero-title">Historische Kaserne</h3>
         <p class="kaserne-hero-lead">Maßstabsgetreue 3D-Rekonstruktion und atmosphärische Lichtinstallation eines historischen Kasernenraums in Regensburg.</p>
       </div>
 
@@ -726,7 +726,7 @@
 
     <!-- Kaserne Interactive Real / 3D Comparison Slider -->
     <div class="kaserne-compare-container reveal-on-scroll">
-      <portfolio-text tag="Fotoreferenz vs. 3D-Rekonstruktion" title="Real / 3D" extra-classes="kaserne-compare-info cgi-content-col">
+      <portfolio-text class="kaserne-compare-info" title="Real / 3D" extra-classes="kaserne-compare-info cgi-content-col">
   Interaktiver Direktvergleich zwischen der originalen Archiv-Fotografie und der 3D-Rekonstruktion in Blender.
 </portfolio-text>
 
@@ -737,7 +737,7 @@
             <img decoding="async" class="compare-img" 
                  src="assets/images/lg/Kaserne_nacher.webp" 
                  srcset="assets/images/sm/Kaserne_nacher.webp 480w, assets/images/md/Kaserne_nacher.webp 960w, assets/images/lg/Kaserne_nacher.webp 1920w" 
-                 sizes="(max-width: 768px) 100vw, 680px" 
+                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 1000px" 
                  alt="Historische Kaserne 3D-Rekonstruktion in Blender Cycles (3D)" 
                  loading="lazy">
           </div>
@@ -747,7 +747,7 @@
             <img decoding="async" class="compare-img" 
                  src="assets/images/lg/Kaserne_vorher.webp" 
                  srcset="assets/images/sm/Kaserne_vorher.webp 480w, assets/images/md/Kaserne_vorher.webp 960w, assets/images/lg/Kaserne_vorher.webp 1920w" 
-                 sizes="(max-width: 768px) 100vw, 680px" 
+                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 1000px" 
                  alt="Historische Kaserne originale Fotoreferenz (Real)" 
                  loading="lazy">
           </div>
@@ -1281,7 +1281,6 @@
 
         <!-- 02: Section Text Card (2 Spalten × 2 Zeilen rechts neben Porträt I) -->
         <portfolio-text 
-          tag="03 / FOTOGRAFIE &amp; LICHTFÜHRUNG" 
           title="Licht &amp; <em>Fotografie</em>" 
           level="2" 
           class="photo-text-card"
@@ -1403,7 +1402,7 @@
 
     <!-- ==================== KERAMIKRING-SERIE ==================== -->
     <div id="photo-chapter-ceramic" class="photo-chapter ceramic-split-layout">
-      <portfolio-text tag="Portrait &bull; Handwerk" title="Keramikring — <em>Die Werkstatt</em>" extra-classes="photo-chapter-header ceramic-text-col">
+      <portfolio-text title="Keramikring — <em>Die Werkstatt</em>" extra-classes="photo-chapter-header ceramic-text-col">
   Eine Bilderserie aus dem Studium über eine Keramikerin bei der Arbeit. Die staubige Werkstatt erzählt durch viele Details eigene Geschichten des handwerklichen Schaffens.
 </portfolio-text>
 
@@ -1528,7 +1527,7 @@
   <section id="kunst" class="project-section art-section">
     <div class="kunst-feature-hero reveal-on-scroll">
       <!-- Editorial Text Column (Left) -->
-      <portfolio-text tag="04 / GESTALTUNG &amp; KUNST (FOS ABITUR)" title="Akademische <em>Kunst</em>" level="2" extra-classes="kunst-feature-content">
+      <portfolio-text title="Akademische <em>Kunst</em>" level="2" extra-classes="kunst-feature-content">
   Während meines Fachabiturs (11. und 12. Klasse) im Zweig Gestaltung legte ich das Fundament meiner kreativen Arbeit. 
           Hier erlernte ich intensiv das Zeichnen, Malen, Skizzieren sowie den Umgang mit plastischen Gestaltungsmitteln. 
           Diese Zeit an der FOS war nicht nur mein Einstieg in die handwerkliche Kunst, sondern prägte auch meine allerersten Berührungspunkte mit Fotografie, Film und digitalem Design.
@@ -2278,8 +2277,8 @@
 
   <!-- JavaScript Modules -->
   <script src="js/lenis.min.js" defer></script>
-  <script src="js/main.js?v=146" defer></script>
-  <script src="js/portfolio-text.js"></script>
+  <script src="js/main.js?v=149" defer></script>
+  <script src="js/portfolio-text.js?v=2"></script>
   <script src="js/cgi-card.js?v=2"></script>
   <script src="js/still-card.js"></script>
   <script src="js/media-cards.js?v=2"></script>

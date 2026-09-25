@@ -203,6 +203,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof initMediaLoadingShine === 'function') {
           initMediaLoadingShine();
         }
+        if (typeof initKaserneTitleFit === 'function') {
+          initKaserneTitleFit();
+        }
+        if (typeof initHeroTitleFit === 'function') {
+          initHeroTitleFit();
+        }
 
         // Eagerly preload ALL remaining media now that the site is open
         // (removes lazy loading so everything loads immediately in the background)
@@ -4115,6 +4121,126 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   initBeforeAfterSlider();
+
+  // --------------------------------------------------------------------------
+  // 4e. Kaserne Hero Title Auto-Fit (Exact Width: Video on PC, Screen on Mobile)
+  // --------------------------------------------------------------------------
+  function initKaserneTitleFit() {
+    const title = document.querySelector('.kaserne-hero-title');
+    const header = document.querySelector('.kaserne-hero-header, .kaserne-header-block');
+    const videoMedia = document.querySelector('#project-kaserne .cgi-main-media');
+    if (!title || !header) return;
+
+    function fit() {
+      const isDesktop = window.innerWidth > 1024;
+      let targetWidth = 0;
+
+      if (isDesktop && videoMedia) {
+        const mediaRect = videoMedia.getBoundingClientRect();
+        if (mediaRect.width > 0) {
+          header.style.width = `${mediaRect.width}px`;
+          targetWidth = mediaRect.width;
+        } else {
+          header.style.width = '';
+          targetWidth = header.getBoundingClientRect().width;
+        }
+      } else {
+        header.style.width = '100%';
+        targetWidth = header.getBoundingClientRect().width;
+      }
+
+      if (targetWidth <= 0) return;
+
+      const measureEl = document.createElement('span');
+      measureEl.textContent = title.textContent.trim();
+      measureEl.style.cssText = 'position:absolute;left:-9999px;top:-9999px;visibility:hidden;white-space:nowrap;font-family:' + 
+        getComputedStyle(title).fontFamily + ';font-weight:500;letter-spacing:-0.02em;font-size:100px;';
+      document.body.appendChild(measureEl);
+      
+      const naturalWidthAt100px = measureEl.getBoundingClientRect().width;
+      document.body.removeChild(measureEl);
+
+      if (naturalWidthAt100px > 0) {
+        const optimalSize = (targetWidth / naturalWidthAt100px) * 100;
+        title.style.fontSize = `${optimalSize}px`;
+        title.style.whiteSpace = 'nowrap';
+        title.style.display = 'block';
+        title.style.width = '100%';
+      }
+    }
+
+    const ro = new ResizeObserver(() => {
+      requestAnimationFrame(fit);
+    });
+    ro.observe(header);
+    if (videoMedia) ro.observe(videoMedia);
+    window.addEventListener('resize', fit, { passive: true });
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(fit);
+    }
+    fit();
+    setTimeout(fit, 80);
+    setTimeout(fit, 300);
+    setTimeout(fit, 800);
+  }
+
+  initKaserneTitleFit();
+
+  // --------------------------------------------------------------------------
+  // 4f. Hero Title Auto-Fit (Full Screen Width on Mobile, Fluid on Desktop)
+  // --------------------------------------------------------------------------
+  function initHeroTitleFit() {
+    const title = document.querySelector('.hero-title');
+    const wrapper = document.querySelector('.hero-text-wrapper');
+    if (!title || !wrapper) return;
+
+    function fit() {
+      const isMobile = window.innerWidth <= 768;
+      const targetWidth = wrapper.getBoundingClientRect().width;
+      if (targetWidth <= 0) return;
+
+      if (isMobile) {
+        const measureEl = document.createElement('span');
+        measureEl.textContent = title.textContent.trim();
+        measureEl.style.cssText = 'position:absolute;left:-9999px;top:-9999px;visibility:hidden;white-space:nowrap;font-family:' + 
+          getComputedStyle(title).fontFamily + ';font-weight:500;letter-spacing:-0.025em;font-size:100px;';
+        document.body.appendChild(measureEl);
+        
+        const naturalWidthAt100px = measureEl.getBoundingClientRect().width;
+        document.body.removeChild(measureEl);
+
+        if (naturalWidthAt100px > 0) {
+          const optimalSize = (targetWidth / naturalWidthAt100px) * 100;
+          title.style.fontSize = `${optimalSize}px`;
+          title.style.whiteSpace = 'nowrap';
+          title.style.display = 'block';
+          title.style.width = '100%';
+        }
+      } else {
+        title.style.fontSize = '';
+        title.style.whiteSpace = 'nowrap';
+        title.style.display = '';
+        title.style.width = '';
+      }
+    }
+
+    const ro = new ResizeObserver(() => {
+      requestAnimationFrame(fit);
+    });
+    ro.observe(wrapper);
+    window.addEventListener('resize', fit, { passive: true });
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(fit);
+    }
+    fit();
+    setTimeout(fit, 80);
+    setTimeout(fit, 300);
+    setTimeout(fit, 800);
+  }
+
+  initHeroTitleFit();
 
   // --------------------------------------------------------------------------
   // 5. Ambient Atmosphere Parallax Engine & Continuous Theme Resolver

@@ -22,6 +22,12 @@ class PortfolioText extends HTMLElement {
       </div>
     `;
 
+    if (extra) {
+      extra.split(/\s+/).forEach(cls => {
+        if (cls) this.classList.add(cls);
+      });
+    }
+
     // Das Host-Element selbst sollte reveal-on-scroll nicht mehr triggern
     this.classList.remove('reveal-on-scroll');
   }
