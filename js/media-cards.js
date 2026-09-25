@@ -90,16 +90,15 @@ class KunstCard extends HTMLElement {
     if (cardId) this.id = cardId;
 
     this.className = 'kunst-ticker-card';
+    this.setAttribute('data-cinema-trigger', '');
+    this.setAttribute('data-cinema-type', 'image');
+    this.setAttribute('data-cinema-src', `assets/images/full/${imageId}`);
+    this.setAttribute('data-cinema-title', title || alt);
+    this.setAttribute('data-cinema-meta', meta || 'Akademische Zeichnung • Figürliche Studie');
+    this.setAttribute('data-cinema-gallery', gallery);
     
     if (isClone) {
       this.setAttribute('data-clone-of', cloneRef);
-    } else {
-      this.setAttribute('data-cinema-trigger', '');
-      this.setAttribute('data-cinema-type', 'image');
-      this.setAttribute('data-cinema-src', `assets/images/full/${imageId}`);
-      this.setAttribute('data-cinema-title', title);
-      this.setAttribute('data-cinema-meta', meta);
-      this.setAttribute('data-cinema-gallery', gallery);
     }
 
     const mdSrc = `assets/images/md/${imageId}`;

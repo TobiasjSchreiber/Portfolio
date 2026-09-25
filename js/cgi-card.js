@@ -8,7 +8,6 @@ class CgiCard extends HTMLElement {
     const title = this.getAttribute('title') || '';
     const meta = this.getAttribute('meta') || '';
     const alt = this.getAttribute('alt') || '';
-    const num = this.getAttribute('num') || '';
     const name = this.getAttribute('name') || '';
     const sub = this.getAttribute('sub') || '';
 
@@ -25,7 +24,7 @@ class CgiCard extends HTMLElement {
     this.setAttribute('data-cinema-meta', meta);
     this.setAttribute('data-cinema-type', type);
 
-    let innerHTML = '';
+    let mediaHTML = '';
 
     if (type === 'image') {
       const basePath = 'assets/images';
@@ -36,13 +35,15 @@ class CgiCard extends HTMLElement {
       
       this.setAttribute('data-cinema-src', fullSrc);
 
-      innerHTML = `
-        <div class="cgi-parallax-img-wrap">
-          <img decoding="async" class="cgi-parallax-media" 
-               src="${lgSrc}" 
-               srcset="${smSrc} 600w, ${mdSrc} 1200w, ${lgSrc} 2400w" 
-               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
-               alt="${alt}" loading="lazy">
+      mediaHTML = `
+        <div class="cgi-parallax-img-box">
+          <div class="cgi-parallax-img-wrap">
+            <img decoding="async" class="cgi-parallax-media" 
+                 src="${lgSrc}" 
+                 srcset="${smSrc} 600w, ${mdSrc} 1200w, ${lgSrc} 2400w" 
+                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
+                 alt="${alt}" loading="lazy">
+          </div>
         </div>
       `;
     } else if (type === 'video') {
@@ -53,38 +54,37 @@ class CgiCard extends HTMLElement {
       
       this.setAttribute('data-cinema-src', videoSrc);
 
-      innerHTML = `
-        <div class="cgi-parallax-img-wrap seamless-video-wrap">
-          <video class="cgi-parallax-media proxy-video" preload="auto" muted loop playsinline${posterAttr}>
-            <source src="${teaserSrc}" type="video/mp4">
-          </video>
-          <video class="cgi-parallax-media full-video" preload="none" muted loop playsinline style="opacity: 0;">
-            <source src="${videoSrc}" type="video/mp4">
-          </video>
+      mediaHTML = `
+        <div class="cgi-parallax-img-box">
+          <div class="cgi-parallax-img-wrap seamless-video-wrap">
+            <video class="cgi-parallax-media proxy-video" preload="auto" muted loop playsinline${posterAttr}>
+              <source src="${teaserSrc}" type="video/mp4">
+            </video>
+            <video class="cgi-parallax-media full-video" preload="none" muted loop playsinline style="opacity: 0;">
+              <source src="${videoSrc}" type="video/mp4">
+            </video>
+          </div>
+          ${this.hasAttribute('audio') ? `
+            <button class="video-audio-toggle is-muted cgi-audio-toggle" type="button" aria-label="Ton einschalten" title="Ton einschalten">
+              <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                <line x1="23" y1="9" x2="17" y2="15"></line>
+                <line x1="17" y1="9" x2="23" y2="15"></line>
+              </svg>
+              <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+              </svg>
+            </button>
+          ` : ''}
         </div>
       `;
-
-      if (this.hasAttribute('audio')) {
-        innerHTML += `
-          <button class="video-audio-toggle is-muted cgi-audio-toggle" type="button" aria-label="Ton einschalten" title="Ton einschalten">
-            <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
-              <line x1="23" y1="9" x2="17" y2="15"></line>
-              <line x1="17" y1="9" x2="23" y2="15"></line>
-            </svg>
-            <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
-              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-            </svg>
-          </button>
-        `;
-      }
     }
 
-    innerHTML += `
+    const innerHTML = `
+      ${mediaHTML}
       <div class="cgi-parallax-card-info">
-        <span class="cgi-card-num">${num}</span>
         <h4 class="cgi-card-name">${name}</h4>
         <p class="cgi-card-sub">${sub}</p>
       </div>

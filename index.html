@@ -22,7 +22,7 @@
   <!-- Google Fonts (Moved from CSS for faster LCP) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <!-- Ensure page always starts at top on reload -->
   <script>
@@ -33,7 +33,7 @@
   </script>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css?v=145">
+  <link rel="stylesheet" href="css/style.css?v=178">
 </head>
 <body class="is-loading" data-ambient-theme="hero">
 
@@ -282,27 +282,27 @@
     </header>
 
     <div class="hero-content">
-      <div class="hero-subtitle-top reveal-on-scroll delay-1">Medientechnik &bull; Digital Arts &bull; Fotografie</div>
-      <h1 class="hero-title reveal-on-scroll delay-2">Tobias <em>Schreiber</em></h1>
-      <p class="hero-desc reveal-on-scroll delay-3">
-          Visuelle Narrative an der Schnittstelle von Medientechnik, CGI, Film, Fotografie und digitaler Kunst.
-        </p>
+      <div class="hero-text-wrapper">
+        <h1 class="hero-title reveal-on-scroll delay-1">Visuelle Narrative von <em>Tobias&nbsp;Schreiber</em></h1>
+        <div class="hero-subtitle-top reveal-on-scroll delay-2">Medientechnik &bull; CGI &bull; Film &bull; Fotografie</div>
+      </div>
 
       <div class="hero-bottom-bar reveal-on-scroll delay-4">
-        <div class="hero-meta-tags">
-          <span>CGI & 3D-Visualisierung</span>
-          <span>Film & Postproduktion</span>
-          <span>Fotografie & Lighting</span>
-          <span>Kunst & Medientechnik</span>
+        <div class="hero-bar-left">
+          <span>Portfolio</span>
         </div>
 
-        <div class="hero-controls">
-          <div class="scroll-indicator">
+        <div class="hero-bar-center">
+          <button type="button" class="scroll-indicator" aria-label="Nach unten scrollen">
             <span>Scroll</span>
-            <div class="scroll-line-container">
-              <div class="scroll-line-fill"></div>
-            </div>
-          </div>
+            <svg class="scroll-indicator-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 5v14M19 12l-7 7-7-7"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="hero-bar-right">
+          <span>Student</span>
         </div>
       </div>
     </div>
@@ -312,33 +312,32 @@
        SECTION 01: 3D & CGI (BMW 700, Historische Kaserne & Visualisierungen)
        ========================================================================= -->
   <section id="cgi" class="project-section">
-    <div id="work"></div>
-    <portfolio-text tag="01 / 3D-MODELING &amp; CGI" title="3D &amp; <em>CGI</em>" level="2" extra-classes="section-header reveal-on-scroll">
-  Was als autodidaktische Leidenschaft begann, ist heute mein stärkstes Werkzeug: In Blender Cycles erschaffe ich surreale, atmosphärische Environments mit starker emotionaler Wirkung und Naturverbundenheit.
-</portfolio-text>
-
     <!-- 3D Showcase 03: 3D Render Gallery (Horizontal Parallax Swipe Showcase) -->
-    <div class="cgi-parallax-container reveal-on-scroll">
-      <div class="cgi-parallax-header cgi-parallax-header--nav-only">
-        <div class="cgi-parallax-nav">
-          <button class="cgi-parallax-btn cgi-parallax-prev is-disabled" id="cgi-parallax-prev" type="button" aria-label="Vorheriges Kunstwerk" title="Zurück">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </button>
-          <div class="cgi-parallax-counter">
-            <span id="cgi-parallax-current">01</span>
-            <span class="cgi-counter-sep">/</span>
-            <span id="cgi-parallax-total">13</span>
-          </div>
-          <button class="cgi-parallax-btn cgi-parallax-next" id="cgi-parallax-next" type="button" aria-label="Nächstes Kunstwerk" title="Weiter">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-          </button>
-        </div>
-      </div>
+    <div class="cgi-header-row reveal-on-scroll">
+      <portfolio-text tag="01 / 3D-MODELING &amp; CGI" title="3D &amp; <em>CGI</em>" level="2" extra-classes="section-header">
+  Was als autodidaktische Leidenschaft begann, ist heute mein stärkstes Werkzeug: In Blender Cycles erschaffe ich surreale, atmosphärische Environments mit starker emotionaler Wirkung und Naturverbundenheit.
+      </portfolio-text>
 
+      <div class="cgi-parallax-nav">
+        <button class="cgi-parallax-btn cgi-parallax-prev is-disabled" id="cgi-parallax-prev" type="button" aria-label="Vorheriges Kunstwerk" title="Zurück">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <div class="cgi-parallax-counter">
+          <span id="cgi-parallax-current">01</span>
+          <span class="cgi-counter-sep">/</span>
+          <span id="cgi-parallax-total">13</span>
+        </div>
+        <button class="cgi-parallax-btn cgi-parallax-next" id="cgi-parallax-next" type="button" aria-label="Nächstes Kunstwerk" title="Weiter">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="cgi-parallax-container reveal-on-scroll">
       <!-- Horizontal Parallax Viewport & Track -->
       <div class="cgi-parallax-viewport" id="cgi-parallax-viewport">
         <div class="cgi-parallax-track" id="cgi-parallax-track">
@@ -513,11 +512,25 @@
 
     <!-- 3D Showcase 01: BMW 700 Coupé -->
     <div class="cgi-subproject" id="project-bmw">
-      <portfolio-text tag="Uni-Projekt (2026) &bull; 4. Semester &bull; 3ds Max &bull; Arnold Render" title="BMW 700 Coupé" extra-classes="cgi-subproject-header reveal-on-scroll">
-  
-          Für ein Uni-Projekt entstand diese Blueprint-Rekonstruktion eines BMW 700. Ziel war professionelles Modeling ohne externe 3D-Assets. Zudem war es mein erstes Projekt in 3ds Max mit Arnold Render.
-        
-</portfolio-text>
+      <div class="bmw-header-block reveal-on-scroll">
+        <h3 class="bmw-hero-title">BMW 700 Coupé</h3>
+
+        <!-- 3 Info-Blöcke mit großem Weißraum dazwischen -->
+        <div class="bmw-infoblocks-grid">
+          <div class="bmw-infoblock">
+            <span class="bmw-infoblock-tag">01 / BLUEPRINT</span>
+            <p class="bmw-infoblock-text">Maßstabsgetreue Rekonstruktion nach Original-Bauplänen von 1960 ohne externe 3D-Assets.</p>
+          </div>
+          <div class="bmw-infoblock">
+            <span class="bmw-infoblock-tag">02 / TOPOLOGIE</span>
+            <p class="bmw-infoblock-text">Reine Sub-D Polygon-Topologie für perfekte Spaltmaße und saubere Glanzlicht-Reflexionen.</p>
+          </div>
+          <div class="bmw-infoblock">
+            <span class="bmw-infoblock-tag">03 / PIPELINE</span>
+            <p class="bmw-infoblock-text">Erstes Projekt in 3ds Max &amp; Arnold Render mit Mehrschicht-Shading und Grading in DaVinci Resolve.</p>
+          </div>
+        </div>
+      </div>
 
       <div class="bmw-stage">
         <!-- Big Hero Video Player for BMW 700 -->
@@ -550,6 +563,20 @@
                 </svg>
               </button>
             </div>
+          </div>
+        </div>
+
+        <!-- Editorial Story Row under Video: Left Statement, Right Long Body Text -->
+        <div class="bmw-editorial-story reveal-on-scroll">
+          <div class="bmw-story-col-left">
+            <p class="bmw-story-lead" style="font-weight: 200 !important; font-variation-settings: 'wght' 200, 'opsz' 32;">
+              Vom zweidimensionalen Bauplan zum fotorealistischen Studio-Turnaround — ein puristisches Handwerk ohne vorgefertigte Assets.
+            </p>
+          </div>
+          <div class="bmw-story-col-right">
+            <p class="bmw-story-body">
+              Für dieses Semesterprojekt an der Hochschule stand die kompromisslose Beherrschung professioneller 3D-Pipelines im Mittelpunkt. Anhand historischer Blueprint-Zeichnungen des 1960er BMW 700 Coupé entstand eine vollständige Geometrie-Rekonstruktion von Grund auf in 3ds Max. Neben der exakten Topologie und Sub-D-Glättung lag der Schwerpunkt auf physikalisch akkuratem Mehrschicht-Shading, gezielter Ausleuchtung und dem anschließenden Color Grading im Mastercut.
+            </p>
           </div>
         </div>
 
@@ -953,8 +980,8 @@
               <video class="proxy-video" preload="auto" muted loop playsinline poster="assets/images/md/Offline_poster.webp">
                 <source src="assets/videos/Offline_teaser.mp4" type="video/mp4">
               </video>
-              <video class="full-video" preload="none" muted loop playsinline id="film-video-3" data-start-time="4" style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
-                <source src="assets/videos/Offline_Interview_web.mp4#t=4" type="video/mp4">
+              <video class="full-video" preload="none" muted loop playsinline id="film-video-3" data-start-time="12" style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+                <source src="assets/videos/Offline_Interview_web.mp4#t=12" type="video/mp4">
               </video>
             </div>
           </section>
@@ -984,28 +1011,37 @@
                        data-video-title="Schattenwolf — Stop-Motion Kurzfilm"
                        data-video-meta="Gruppenprojekt (4 Personen) &bull; Kamera &amp; Set: Tobias Schreiber"
                        data-label="Stop-Motion">
-                <span class="film-info-tag">Gruppenprojekt (4 Personen) &bull; Stop-Motion</span>
-                <h3 class="film-info-title">Schattenwolf</h3>
-                <div class="film-info-divider" aria-hidden="true"></div>
-                <p class="film-info-synopsis">
-                  Ein handwerklich animierter Stop-Motion-Kurzfilm, der in einer Vierergruppe entstand. 
-                  Als Verantwortlicher für Kamera und Set lag mein Fokus auf dem detailreichen Miniatur-Setbau 
-                  sowie der präzisen Low-Key-Ausleuchtung für eine dichte, düstere Atmosphäre.
-                </p>
-                <div class="film-info-credits">
-                  <div class="film-credit-item">
-                    <span class="film-credit-label">Produktion</span>
-                    <span class="film-credit-val">4-köpfiges Team</span>
+                <div class="film-info-header-group">
+                  <span class="film-info-tag">Gruppenprojekt (4 Personen) &bull; Stop-Motion</span>
+                  <h3 class="film-info-title">Schattenwolf</h3>
+                  <div class="film-info-divider" aria-hidden="true"></div>
+                </div>
+
+                <div class="film-info-main-grid">
+                  <div class="film-info-credits">
+                    <div class="film-credit-item">
+                      <span class="film-credit-label">Produktion</span>
+                      <span class="film-credit-val">4-köpfiges Team</span>
+                    </div>
+                    <div class="film-credit-item">
+                      <span class="film-credit-label">Meine Rolle</span>
+                      <span class="film-credit-val">Kamera &amp; Set</span>
+                    </div>
+                    <div class="film-credit-item">
+                      <span class="film-credit-label">Framerate</span>
+                      <span class="film-credit-val">12 fps</span>
+                    </div>
                   </div>
-                  <div class="film-credit-item">
-                    <span class="film-credit-label">Meine Rolle</span>
-                    <span class="film-credit-val">Kamera &amp; Set</span>
-                  </div>
-                  <div class="film-credit-item">
-                    <span class="film-credit-label">Framerate</span>
-                    <span class="film-credit-val">12 fps</span>
+
+                  <div class="film-info-synopsis-col">
+                    <p class="film-info-synopsis">
+                      Ein handwerklich animierter Stop-Motion-Kurzfilm, der in einer Vierergruppe entstand. 
+                      Als Verantwortlicher für Kamera und Set lag mein Fokus auf dem detailreichen Miniatur-Setbau 
+                      sowie der präzisen Low-Key-Ausleuchtung für eine dichte, düstere Atmosphäre.
+                    </p>
                   </div>
                 </div>
+
                 <div class="film-info-actions">
                   <button class="film-stills-trigger-btn" type="button" id="film-stills-toggle" aria-label="Produktions-Phasen & Stills anzeigen">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1030,26 +1066,35 @@
                        data-video-title="1 Tag als Bergmann — Reportage"
                        data-video-meta="Gruppenprojekt (4 Personen) &bull; Kamera (Schulterrig): Tobias Schreiber"
                        data-label="Reportage">
-                <span class="film-info-tag">Reportage &bull; Graphitmine Passau</span>
-                <h3 class="film-info-title">1 Tag als Bergmann</h3>
-                <div class="film-info-divider" aria-hidden="true"></div>
-                <p class="film-info-synopsis">
-                  Um den rauen Alltag und die Gefahren des Bergbaus hautnah zu dokumentieren, begleiteten wir als 4-köpfiges Team echte Arbeiter 200 Meter tief in die Graphitmine in Passau. Unter extremen Bedingungen – kalt, nass, matschig und staubig – fing ich die klaustrophobische Atmosphäre dynamisch mit der Kamera auf dem Schulterrig ein.
-                </p>
-                <div class="film-info-credits">
-                  <div class="film-credit-item">
-                    <span class="film-credit-label">Produktion</span>
-                    <span class="film-credit-val">4-köpfiges Team</span>
+                <div class="film-info-header-group">
+                  <span class="film-info-tag">Reportage &bull; Graphitmine Passau</span>
+                  <h3 class="film-info-title">1 Tag als Bergmann</h3>
+                  <div class="film-info-divider" aria-hidden="true"></div>
+                </div>
+
+                <div class="film-info-main-grid">
+                  <div class="film-info-credits">
+                    <div class="film-credit-item">
+                      <span class="film-credit-label">Produktion</span>
+                      <span class="film-credit-val">4-köpfiges Team</span>
+                    </div>
+                    <div class="film-credit-item">
+                      <span class="film-credit-label">Meine Rolle</span>
+                      <span class="film-credit-val">Kamera (Schulterrig)</span>
+                    </div>
+                    <div class="film-credit-item">
+                      <span class="film-credit-label">Drehort</span>
+                      <span class="film-credit-val">200m unter Tage</span>
+                    </div>
                   </div>
-                  <div class="film-credit-item">
-                    <span class="film-credit-label">Meine Rolle</span>
-                    <span class="film-credit-val">Kamera (Schulterrig)</span>
-                  </div>
-                  <div class="film-credit-item">
-                    <span class="film-credit-label">Drehort</span>
-                    <span class="film-credit-val">200m unter Tage</span>
+
+                  <div class="film-info-synopsis-col">
+                    <p class="film-info-synopsis">
+                      Um den rauen Alltag und die Gefahren des Bergbaus hautnah zu dokumentieren, begleiteten wir als 4-köpfiges Team echte Arbeiter 200 Meter tief in die Graphitmine in Passau. Unter extremen Bedingungen – kalt, nass, matschig und staubig – fing ich die klaustrophobische Atmosphäre dynamisch mit der Kamera auf dem Schulterrig ein.
+                    </p>
                   </div>
                 </div>
+
                 <div class="film-info-actions">
                   <button class="film-info-cinema-btn" type="button" data-cinema-film-index="1" aria-label="1 Tag als Bergmann im Vollbild abspielen">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1067,26 +1112,35 @@
                        data-video-title="Kurzfilm — Fiktionales Werk"
                        data-video-meta="Gruppenprojekt (4 Personen) &bull; Alle Positionen geteilt"
                        data-label="Fiktion">
-                <span class="film-info-tag">Psychologischer Kurzfilm &bull; Fiktion</span>
-                <h3 class="film-info-title">Inszenierter Kurzfilm</h3>
-                <div class="film-info-divider" aria-hidden="true"></div>
-                <p class="film-info-synopsis">
-                  Ein düsterer, depressiver Kurzfilm, der das moderne Thema &bdquo;Ghosting&ldquo; metaphorisch aufgreift: Eine junge Frau wird darin unaufhörlich von einem alten Telefon terrorisiert. In diesem 4-köpfigen Teamprojekt haben wir sämtliche Aufgaben vor und hinter der Kamera gemeinschaftlich übernommen und aufgeteilt.
-                </p>
-                <div class="film-info-credits">
-                  <div class="film-credit-item">
-                    <span class="film-credit-label">Produktion</span>
-                    <span class="film-credit-val">4-köpfiges Team</span>
+                <div class="film-info-header-group">
+                  <span class="film-info-tag">Psychologischer Kurzfilm &bull; Fiktion</span>
+                  <h3 class="film-info-title">Inszenierter Kurzfilm</h3>
+                  <div class="film-info-divider" aria-hidden="true"></div>
+                </div>
+
+                <div class="film-info-main-grid">
+                  <div class="film-info-credits">
+                    <div class="film-credit-item">
+                      <span class="film-credit-label">Produktion</span>
+                      <span class="film-credit-val">4-köpfiges Team</span>
+                    </div>
+                    <div class="film-credit-item">
+                      <span class="film-credit-label">Meine Rolle</span>
+                      <span class="film-credit-val">Geteilte Positionen (Allrounder)</span>
+                    </div>
+                    <div class="film-credit-item">
+                      <span class="film-credit-label">Thema</span>
+                      <span class="film-credit-val">Ghosting / Psychologie</span>
+                    </div>
                   </div>
-                  <div class="film-credit-item">
-                    <span class="film-credit-label">Meine Rolle</span>
-                    <span class="film-credit-val">Geteilte Positionen (Allrounder)</span>
-                  </div>
-                  <div class="film-credit-item">
-                    <span class="film-credit-label">Thema</span>
-                    <span class="film-credit-val">Ghosting / Psychologie</span>
+
+                  <div class="film-info-synopsis-col">
+                    <p class="film-info-synopsis">
+                      Ein düsterer, depressiver Kurzfilm, der das moderne Thema &bdquo;Ghosting&ldquo; metaphorisch aufgreift: Eine junge Frau wird darin unaufhörlich von einem alten Telefon terrorisiert. In diesem 4-köpfigen Teamprojekt haben wir sämtliche Aufgaben vor und hinter der Kamera gemeinschaftlich übernommen und aufgeteilt.
+                    </p>
                   </div>
                 </div>
+
                 <div class="film-info-actions">
                   <button class="film-info-cinema-btn" type="button" data-cinema-film-index="2" aria-label="Kurzfilm im Vollbild abspielen">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1100,30 +1154,39 @@
               <!-- Panel 3: Offline statt hochgeladen -->
               <article class="film-text-card film-info-content" data-film-index="3"
                        data-video-src="assets/videos/Offline_Interview_web.mp4"
-                       data-start-time="4"
+                       data-start-time="12"
                        data-video-title="Offline statt Hochgeladen — Interview &amp; Reportage"
                        data-video-meta="Gruppenprojekt (4 Personen) &bull; Licht &amp; 2. Kamera: Tobias Schreiber"
                        data-label="Reportage">
-                <span class="film-info-tag">Portrait &bull; Dokumentation</span>
-                <h3 class="film-info-title">Offline statt hochgeladen</h3>
-                <div class="film-info-divider" aria-hidden="true"></div>
-                <p class="film-info-synopsis">
-                  Ein filmisches Portrait über meinen Nachbarn Florian Ganselmeier – studierter Informatiker, der heute als Dudelsackbauer, Bienenhüter, Baumkletterer und Landhaus-Bewirtschafter lebt. In diesem 4er-Teamprojekt beleuchten wir seinen ungewöhnlichen Werdegang. Am Set war ich für die Lichtgestaltung und die 2. Kamera verantwortlich.
-                </p>
-                <div class="film-info-credits">
-                  <div class="film-credit-item">
-                    <span class="film-credit-label">Produktion</span>
-                    <span class="film-credit-val">4-köpfiges Team</span>
+                <div class="film-info-header-group">
+                  <span class="film-info-tag">Portrait &bull; Dokumentation</span>
+                  <h3 class="film-info-title">Offline statt hochgeladen</h3>
+                  <div class="film-info-divider" aria-hidden="true"></div>
+                </div>
+
+                <div class="film-info-main-grid">
+                  <div class="film-info-credits">
+                    <div class="film-credit-item">
+                      <span class="film-credit-label">Produktion</span>
+                      <span class="film-credit-val">4-köpfiges Team</span>
+                    </div>
+                    <div class="film-credit-item">
+                      <span class="film-credit-label">Meine Rolle</span>
+                      <span class="film-credit-val">Licht &amp; 2. Kamera</span>
+                    </div>
+                    <div class="film-credit-item">
+                      <span class="film-credit-label">Thematik</span>
+                      <span class="film-credit-val">Lebensentwurf / Portrait</span>
+                    </div>
                   </div>
-                  <div class="film-credit-item">
-                    <span class="film-credit-label">Meine Rolle</span>
-                    <span class="film-credit-val">Licht &amp; 2. Kamera</span>
-                  </div>
-                  <div class="film-credit-item">
-                    <span class="film-credit-label">Thematik</span>
-                    <span class="film-credit-val">Lebensentwurf / Portrait</span>
+
+                  <div class="film-info-synopsis-col">
+                    <p class="film-info-synopsis">
+                      Ein filmisches Portrait über meinen Nachbarn Florian Ganselmeier – studierter Informatiker, der heute als Dudelsackbauer, Bienenhüter, Baumkletterer und Landhaus-Bewirtschafter lebt. In diesem 4er-Teamprojekt beleuchten wir seinen ungewöhnlichen Werdegang. Am Set war ich für die Lichtgestaltung und die 2. Kamera verantwortlich.
+                    </p>
                   </div>
                 </div>
+
                 <div class="film-info-actions">
                   <button class="film-info-cinema-btn" type="button" data-cinema-film-index="3" aria-label="Offline statt hochgeladen im Vollbild abspielen">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2035,7 +2098,7 @@
           „Medientechnik bedeutet für mich, <em>technische Präzision</em> in poetische Bilder zu übersetzen.“
         </h2>
 
-        <p class="about-bio" data-highlight-text data-highlight-scroll-start="top 90%" data-highlight-scroll-end="top 64%">
+        <p class="about-bio">
           Ich bin Tobias Schreiber (*2005), Medientechnik-Student und 3D-Artist. Mich fasziniert das Zusammenspiel aus haptischem Handwerk und digitaler Raumgenerierung – sei es bei Lichtinstallationen, CGI-Welten oder als Kameramann.
         </p>
       </div>
@@ -2191,11 +2254,11 @@
 
   <!-- JavaScript Modules -->
   <script src="js/lenis.min.js" defer></script>
-  <script src="js/main.js?v=120" defer></script>
+  <script src="js/main.js?v=127" defer></script>
   <script src="js/portfolio-text.js"></script>
-  <script src="js/cgi-card.js"></script>
+  <script src="js/cgi-card.js?v=2"></script>
   <script src="js/still-card.js"></script>
-  <script src="js/media-cards.js"></script>
+  <script src="js/media-cards.js?v=2"></script>
 </body>
 </html>
 

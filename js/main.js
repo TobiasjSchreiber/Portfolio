@@ -1292,12 +1292,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (heroScrollIndicator) {
     heroScrollIndicator.style.cursor = 'pointer';
     heroScrollIndicator.addEventListener('click', () => {
-      const bmw = document.getElementById('bmw');
-      if (bmw) {
+      const target = document.getElementById('cgi') || document.getElementById('bmw');
+      if (target) {
         if (typeof lenis !== 'undefined' && lenis) {
-          lenis.scrollTo(bmw, { offset: -30, duration: 1.0 });
+          lenis.scrollTo(target, { offset: -30, duration: 1.0 });
         } else {
-          bmw.scrollIntoView({ behavior: 'smooth' });
+          target.scrollIntoView({ behavior: 'smooth' });
         }
       }
     });
@@ -1738,11 +1738,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeFilmIndex = -1;
     let filmOverlayVisible = false;
 
-    // Configure custom start times: Spielfilm (Kurzfilm) ab Sekunde 8, Interview ab Sekunde 4
+    // Configure custom start times: Spielfilm (Kurzfilm) ab Sekunde 8, Interview (Offline) ab Sekunde 12
     panels.forEach((p, idx) => {
       const v = p.querySelector('video');
       if (!v) return;
-      const startOffset = idx === 2 ? 8 : (idx === 3 ? 4 : 0);
+      const startOffset = idx === 2 ? 8 : (idx === 3 ? 12 : 0);
       if (startOffset > 0) {
         v.setAttribute('data-start-time', startOffset.toString());
 
@@ -2845,11 +2845,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const uniSection = document.getElementById('uni');
     if (uniSection) {
-      const totalScrollable = uniSection.offsetHeight - window.innerHeight;
-      if (totalScrollable > 50) {
-        const top = uniSection.getBoundingClientRect().top + window.scrollY;
-        // Position dead-center in the target document's slot
-        const targetScroll = top + ((index + 0.5) / controlItems.length) * totalScrollable;
+      const end = uniSection.offsetHeight - window.innerHeight;
+      if (end > 50) {
+        const exitBuffer = window.innerHeight * 1.0;
+        const activeSwitchDistance = Math.max(100, end - exitBuffer);
+        const currentScroll = window.scrollY || document.documentElement.scrollTop || (typeof lenis !== 'undefined' && lenis ? lenis.scroll : 0);
+        const top = uniSection.getBoundingClientRect().top + currentScroll;
+        const numItems = controlItems.length;
+        const progressRatio = numItems > 1 ? (index / (numItems - 1)) : 0;
+        const targetScroll = Math.round(top + progressRatio * activeSwitchDistance);
+
         if (typeof lenis !== 'undefined' && lenis) {
           lenis.scrollTo(targetScroll, {
             duration: 0.5,
@@ -3751,18 +3756,135 @@ document.addEventListener('DOMContentLoaded', () => {
     dotsId: 'cgi-parallax-dots'
   });
 
-  // Kunst Ticker: Seamless Click & Lightbox Integration (Supports cloned cards)
-  document.querySelectorAll('.kunst-ticker-card').forEach((card) => {
-    card.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const cloneTargetId = card.getAttribute('data-clone-of');
-      const target = cloneTargetId ? document.getElementById(cloneTargetId) : card;
-      if (typeof openCinemaModal === 'function') {
-        openCinemaModal(target || card);
+  // --------------------------------------------------------------------------
+  // Kunst Ticker: Smooth Continuous Auto-Scroll + Interactive Pointer Drag & Click
+  // --------------------------------------------------------------------------
+  function initKunstTicker() {
+    const viewport = document.querySelector('.kunst-ticker-viewport');
+    const track = document.querySelector('.kunst-ticker-track');
+    const group1 = document.querySelector('.kunst-ticker-group');
+    if (!viewport || !track || !group1) return;
+
+    let currentX = 0;
+    let isPointerDown = false;
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let dragStartX = 0;
+    let hasDragged = false;
+    let lastTime = performance.now();
+    const speed = 36; // pixels per second steady scroll
+
+    function getGroupWidth() {
+      return group1 ? group1.offsetWidth : 0;
+    }
+
+    function step(now) {
+      const dt = Math.min((now - lastTime) / 1000, 0.1);
+      lastTime = now;
+
+      const groupWidth = getGroupWidth();
+
+      if (!isDragging && !isPointerDown) {
+        // Continuous smooth auto-scroll (does not pause on hover)
+        currentX += speed * dt;
+        if (groupWidth > 0) {
+          while (currentX >= 0) currentX -= groupWidth;
+          while (currentX < -groupWidth) currentX += groupWidth;
+        }
+      }
+
+      track.style.transform = `translate3d(${currentX}px, 0, 0)`;
+      requestAnimationFrame(step);
+    }
+
+    requestAnimationFrame(step);
+
+    viewport.addEventListener('pointerdown', (e) => {
+      if (e.button !== 0 && e.pointerType === 'mouse') return;
+      isPointerDown = true;
+      isDragging = false;
+      hasDragged = false;
+      startX = e.clientX;
+      startY = e.clientY;
+      dragStartX = currentX;
+    });
+
+    viewport.addEventListener('pointermove', (e) => {
+      if (!isPointerDown) return;
+      const dist = Math.hypot(e.clientX - startX, e.clientY - startY);
+      if (!isDragging && dist > 6) {
+        isDragging = true;
+        hasDragged = true;
+        viewport.classList.add('is-dragging');
+        try {
+          viewport.setPointerCapture(e.pointerId);
+        } catch (err) {}
+      }
+
+      if (isDragging) {
+        currentX = dragStartX + (e.clientX - startX);
+        const groupWidth = getGroupWidth();
+        if (groupWidth > 0) {
+          while (currentX >= 0) currentX -= groupWidth;
+          while (currentX < -groupWidth) currentX += groupWidth;
+        }
+        track.style.transform = `translate3d(${currentX}px, 0, 0)`;
       }
     });
-  });
+
+    const stopDragging = (e) => {
+      if (!isPointerDown) return;
+      const wasDragging = isDragging;
+      isPointerDown = false;
+      isDragging = false;
+      viewport.classList.remove('is-dragging');
+      try {
+        if (e && e.pointerId && viewport.hasPointerCapture(e.pointerId)) {
+          viewport.releasePointerCapture(e.pointerId);
+        }
+      } catch (err) {}
+
+      if (wasDragging) {
+        setTimeout(() => { hasDragged = false; }, 120);
+      } else {
+        hasDragged = false;
+        // Direct click fallback if pointer capture suppressed native click
+        if (e) {
+          const card = (e.target && e.target.closest) ? e.target.closest('.kunst-ticker-card') : null;
+          const fallbackCard = card || document.elementFromPoint(e.clientX, e.clientY)?.closest('.kunst-ticker-card');
+          if (fallbackCard && typeof openCinemaModal === 'function') {
+            const cloneTargetId = fallbackCard.getAttribute('data-clone-of') || fallbackCard.getAttribute('clone-of');
+            const target = cloneTargetId ? (document.getElementById(cloneTargetId) || fallbackCard) : fallbackCard;
+            openCinemaModal(target);
+          }
+        }
+      }
+    };
+
+    viewport.addEventListener('pointerup', stopDragging);
+    viewport.addEventListener('pointercancel', stopDragging);
+
+    // Standard card click handler
+    document.querySelectorAll('.kunst-ticker-card').forEach((card) => {
+      card.addEventListener('click', (e) => {
+        if (hasDragged) {
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+        e.preventDefault();
+        e.stopPropagation();
+        const cloneTargetId = card.getAttribute('data-clone-of') || card.getAttribute('clone-of');
+        const target = cloneTargetId ? (document.getElementById(cloneTargetId) || card) : card;
+        if (typeof openCinemaModal === 'function') {
+          openCinemaModal(target || card);
+        }
+      });
+    });
+  }
+
+  initKunstTicker();
 
   // --------------------------------------------------------------------------
   // 4d. Kaserne Real / 3D Comparison Slider (Fotoreferenz vs. 3D-CGI)
