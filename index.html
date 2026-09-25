@@ -33,7 +33,7 @@
   </script>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css?v=178">
+  <link rel="stylesheet" href="css/style.css?v=213">
 </head>
 <body class="is-loading" data-ambient-theme="hero">
 
@@ -236,16 +236,13 @@
       <!-- Contact / Info Links from Framer footer -->
       <div class="framer-1eu6yc3 mobile-nav-footer" data-framer-name="Contact Links">
         <div class="framer-13xpv4i mobile-nav-copyright" data-framer-name="Copyright">
-          <div class="framer-yf5tft mobile-nav-footer-row" data-framer-name="Wrapper">
-            <div class="framer-i8ysx">
-              <p class="framer-text">®2026 All Rights Reserved</p>
-            </div>
-            <div class="framer-1jp6fu6"><p class="framer-text">|</p></div>
-            <div class="framer-p7wo9u"><p class="framer-text">Tobias Schreiber</p></div>
-          </div>
+          <p class="framer-text">&reg;2026 All Rights Reserved</p>
         </div>
         <div class="framer-1wzdrc9 mobile-nav-location" data-framer-name="Location">
           <p class="framer-text">Medientechnik &bull; Bayern, Deutschland</p>
+        </div>
+        <div class="mobile-nav-author">
+          <p class="framer-text">Tobias Schreiber</p>
         </div>
       </div>
     </div>
@@ -268,7 +265,7 @@
     </div>
 
     <!-- Intro Header: Clean, Right-Aligned Text Navigation (No tile / capsule) -->
-    <header class="intro-header reveal-on-scroll delay-1">
+    <header class="intro-header">
       <a href="#hero" class="intro-brand" aria-label="Startseite Tobias Schreiber">T. Schreiber</a>
       <nav class="intro-nav" aria-label="Sektionen">
         <a href="#cgi" class="intro-nav-link">3D &amp; CGI</a>
@@ -283,11 +280,11 @@
 
     <div class="hero-content">
       <div class="hero-text-wrapper">
-        <h1 class="hero-title reveal-on-scroll delay-1">Visuelle Narrative von <em>Tobias&nbsp;Schreiber</em></h1>
-        <div class="hero-subtitle-top reveal-on-scroll delay-2">Medientechnik &bull; CGI &bull; Film &bull; Fotografie</div>
+        <h1 class="hero-title">Visuelle Narrative von <em>Tobias&nbsp;Schreiber</em></h1>
+        <div class="hero-subtitle-top">Medientechnik &bull; CGI &bull; Film &bull; Fotografie</div>
       </div>
 
-      <div class="hero-bottom-bar reveal-on-scroll delay-4">
+      <div class="hero-bottom-bar">
         <div class="hero-bar-left">
           <span>Portfolio</span>
         </div>
@@ -517,17 +514,41 @@
 
         <!-- 3 Info-Blöcke mit großem Weißraum dazwischen -->
         <div class="bmw-infoblocks-grid">
-          <div class="bmw-infoblock">
-            <span class="bmw-infoblock-tag">01 / BLUEPRINT</span>
-            <p class="bmw-infoblock-text">Maßstabsgetreue Rekonstruktion nach Original-Bauplänen von 1960 ohne externe 3D-Assets.</p>
+          <div class="bmw-infoblock" data-collapsible="true">
+            <button class="bmw-infoblock-header" type="button" aria-expanded="false" aria-label="01 / BLUEPRINT Details anzeigen">
+              <span class="bmw-infoblock-tag">01 / BLUEPRINT</span>
+              <svg class="bmw-infoblock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <div class="bmw-infoblock-content">
+              <p class="bmw-infoblock-text">Maßstabsgetreue Rekonstruktion nach Original-Bauplänen von 1960 ohne externe 3D-Assets.</p>
+            </div>
           </div>
-          <div class="bmw-infoblock">
-            <span class="bmw-infoblock-tag">02 / TOPOLOGIE</span>
-            <p class="bmw-infoblock-text">Reine Sub-D Polygon-Topologie für perfekte Spaltmaße und saubere Glanzlicht-Reflexionen.</p>
+          <div class="bmw-infoblock" data-collapsible="true">
+            <button class="bmw-infoblock-header" type="button" aria-expanded="false" aria-label="02 / TOPOLOGIE Details anzeigen">
+              <span class="bmw-infoblock-tag">02 / TOPOLOGIE</span>
+              <svg class="bmw-infoblock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <div class="bmw-infoblock-content">
+              <p class="bmw-infoblock-text">Reine Sub-D Polygon-Topologie für perfekte Spaltmaße und saubere Glanzlicht-Reflexionen.</p>
+            </div>
           </div>
-          <div class="bmw-infoblock">
-            <span class="bmw-infoblock-tag">03 / PIPELINE</span>
-            <p class="bmw-infoblock-text">Erstes Projekt in 3ds Max &amp; Arnold Render mit Mehrschicht-Shading und Grading in DaVinci Resolve.</p>
+          <div class="bmw-infoblock" data-collapsible="true">
+            <button class="bmw-infoblock-header" type="button" aria-expanded="false" aria-label="03 / PIPELINE Details anzeigen">
+              <span class="bmw-infoblock-tag">03 / PIPELINE</span>
+              <svg class="bmw-infoblock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <div class="bmw-infoblock-content">
+              <p class="bmw-infoblock-text">Erstes Projekt in 3ds Max &amp; Arnold Render mit Mehrschicht-Shading und Grading in DaVinci Resolve.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -582,7 +603,7 @@
 
         <!-- Vorstudien & Skizzen Strip -->
         <div class="stills-strip-wrap">
-          <div class="stills-strip-label reveal-on-scroll delay-2">
+          <div class="stills-strip-label reveal-on-scroll">
             <span>Bauplan-Vorstudien &amp; 3D-Konstruktionsphasen</span>
             <span>Klick zum Vergrößern</span>
           </div>
@@ -660,45 +681,48 @@
 
     <!-- 3D Showcase 02: Historische Kaserne 3D-Rekonstruktion -->
     <div class="cgi-subproject" id="project-kaserne">
-      <portfolio-text tag="Rauminstallation mit Licht &bull; 12. Klasse (2024) &bull; Kaserne Regensburg" title="Historische Kaserne" extra-classes="cgi-subproject-header reveal-on-scroll">
-  
-          Um eine Rauminstallation mit Licht für ein Projekt in der 12. Klasse (Anfang 2024) präzise zu planen, habe ich diesen Raum der historischen Kaserne in Regensburg in mühevoller Handarbeit maßstabsgetreu nachgebaut. 
-          Das Konzept gipfelt in einem leuchtenden Baum, der das natürliche Spiel von Licht simuliert, welches im Wald durch das Blätterdach fällt.
-        
-</portfolio-text>
-
-    <!-- Showcase 1: Historische Kaserne 3D-Rekonstruktion -->
-    <div class="cgi-feature-grid reveal-on-scroll">
-      <div class="cgi-main-media seamless-video-wrap"
-           data-cinema-trigger 
-           data-cinema-type="video" 
-           data-cinema-src="assets/videos/Kaserne_web.mp4" 
-           data-cinema-title="Historische Kaserne - 3D Rekonstruktion & Kamerafahrt" 
-           data-cinema-meta="Architekturvisualisierung & Lichtstimmung &bull; Blender Cycles">
-        <video class="proxy-video" preload="auto" muted loop playsinline poster="assets/images/lg/3D_nachbau_Kaserne.webp">
-          <source src="assets/videos/Kaserne_teaser.mp4" type="video/mp4">
-        </video>
-        <video class="full-video" preload="none" muted loop playsinline style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
-          <source src="assets/videos/Kaserne_web.mp4" type="video/mp4">
-        </video>
-        <button class="video-audio-toggle is-muted cgi-audio-toggle" type="button" aria-label="Ton einschalten" title="Ton einschalten">
-          <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
-            <line x1="23" y1="9" x2="17" y2="15"></line>
-            <line x1="17" y1="9" x2="23" y2="15"></line>
-          </svg>
-          <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
-            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-          </svg>
-        </button>
+      <div class="kaserne-header-block reveal-on-scroll">
+        <h3 class="kaserne-hero-title bmw-hero-title">Historische Kaserne</h3>
+        <p class="kaserne-hero-lead">Maßstabsgetreue 3D-Rekonstruktion und atmosphärische Lichtinstallation eines historischen Kasernenraums in Regensburg.</p>
       </div>
 
-      <portfolio-text tag="Rauminstallation &bull; Konzeptkunst" title="Historische Kaserne" extra-classes="cgi-content-col hide-on-mobile">
-  Der Raum der historischen Kaserne Regensburg wurde für eine interaktive Lichtinstallation maßstabsgetreu rekonstruiert. Der leuchtende Baum erzeugt das Gefühl von Sonnenlicht im Wald.
-</portfolio-text>
-    </div>
+      <!-- Showcase 1: Historische Kaserne 3D-Rekonstruktion -->
+      <div class="cgi-feature-grid kaserne-feature-grid reveal-on-scroll">
+        <div class="cgi-main-media seamless-video-wrap"
+             data-cinema-trigger 
+             data-cinema-type="video" 
+             data-cinema-src="assets/videos/Kaserne_web.mp4" 
+             data-cinema-title="Historische Kaserne - 3D Rekonstruktion & Kamerafahrt" 
+             data-cinema-meta="Architekturvisualisierung & Lichtstimmung &bull; Blender Cycles">
+          <video class="proxy-video" preload="auto" muted loop playsinline poster="assets/images/lg/3D_nachbau_Kaserne.webp">
+            <source src="assets/videos/Kaserne_teaser.mp4" type="video/mp4">
+          </video>
+          <video class="full-video" preload="none" muted loop playsinline style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+            <source src="assets/videos/Kaserne_web.mp4" type="video/mp4">
+          </video>
+          <button class="video-audio-toggle is-muted cgi-audio-toggle" type="button" aria-label="Ton einschalten" title="Ton einschalten">
+            <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+              <line x1="23" y1="9" x2="17" y2="15"></line>
+              <line x1="17" y1="9" x2="23" y2="15"></line>
+            </svg>
+            <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="kaserne-side-text-col">
+          <h4 class="kaserne-side-statement" data-scroll-kinetic data-scroll-start="top 92%" data-scroll-end="top 60%">
+            Atmosphärische Rauminstallation &amp; virtueller Setbau
+          </h4>
+          <p class="kaserne-side-text">
+            Um eine Rauminstallation mit Licht für ein Projekt in der 12. Klasse (Anfang 2024) präzise zu planen, habe ich diesen Raum der historischen Kaserne in Regensburg in mühevoller Handarbeit maßstabsgetreu nachgebaut. Das Konzept gipfelt in einem leuchtenden Baum, der das natürliche Spiel von Licht simuliert, welches im Wald durch das Blätterdach fällt.
+          </p>
+        </div>
+      </div>
 
     <!-- Kaserne Interactive Real / 3D Comparison Slider -->
     <div class="kaserne-compare-container reveal-on-scroll">
@@ -745,7 +769,7 @@
 
     <!-- Kaserne Reconstruction Process Strip -->
     <div class="stills-strip-wrap">
-      <div class="stills-strip-label reveal-on-scroll delay-2">
+      <div class="stills-strip-label reveal-on-scroll">
         <span>Rekonstruktionsphasen &amp; Detailstudien (7 Phasen)</span>
         <span>Klick zum Vergrößern</span>
       </div>
@@ -1724,7 +1748,7 @@
           <div class="intro-element" style="display: none;"></div>
           <ul class="control-group" id="uni-control-group">
           <!-- Item 1: Selbst Layout -->
-          <li class="control-item control-item1 active reveal-on-scroll delay-1" data-index="0" data-pdf-key="layout">
+          <li class="control-item control-item1 active" data-index="0" data-pdf-key="layout">
             <div class="control-item-bg-container">
               <span class="control-item-bg"></span>
             </div>
@@ -1755,7 +1779,7 @@
           </li>
 
           <!-- Item 2: In Nomine Teufel -->
-          <li class="control-item control-item2 reveal-on-scroll delay-2" data-index="1" data-pdf-key="festival">
+          <li class="control-item control-item2" data-index="1" data-pdf-key="festival">
             <div class="control-item-bg-container">
               <span class="control-item-bg"></span>
             </div>
@@ -1786,7 +1810,7 @@
           </li>
 
           <!-- Item 3: Landschaftsstudie -->
-          <li class="control-item control-item3 reveal-on-scroll delay-3" data-index="2" data-pdf-key="landschaft">
+          <li class="control-item control-item3" data-index="2" data-pdf-key="landschaft">
             <div class="control-item-bg-container">
               <span class="control-item-bg"></span>
             </div>
@@ -1817,7 +1841,7 @@
           </li>
 
           <!-- Item 4: MagicFlow -->
-          <li class="control-item control-item4 reveal-on-scroll delay-4" data-index="3" data-pdf-key="magicflow">
+          <li class="control-item control-item4" data-index="3" data-pdf-key="magicflow">
             <div class="control-item-bg-container">
               <span class="control-item-bg"></span>
             </div>
@@ -1857,7 +1881,7 @@
       </div>
 
       <!-- RIGHT COLUMN: Document Canvas Viewport & In-Page Reader -->
-      <div class="doc-viewer-container uni-viewer-panel reveal-on-scroll delay-1" id="doc-viewer">
+      <div class="doc-viewer-container uni-viewer-panel" id="doc-viewer">
         <!-- Document Canvas Viewport -->
         <div class="doc-stage-viewport" id="doc-viewport">
           <!-- Floating Page Navigation Arrows directly over the page -->
@@ -2085,16 +2109,16 @@
              data-curtain-end="top 40%"
              data-cinema-trigger 
              data-cinema-type="image" 
-             data-cinema-src="assets/images/full/Ich.webp" 
+             data-cinema-src="assets/images/full/Ich.webp?v=2" 
              data-cinema-title="Tobias Schreiber — Portrait" 
              data-cinema-meta="Medientechnik Student &bull; Digital Creator">
-          <img decoding="async" src="assets/images/md/Ich.webp" alt="Tobias Schreiber Portrait" loading="lazy" srcset="assets/images/sm/Ich.webp 480w, assets/images/md/Ich.webp 960w, assets/images/lg/Ich.webp 1800w" sizes="(max-width: 768px) 100vw, 50vw">
+          <img decoding="async" src="assets/images/md/Ich.webp?v=2" alt="Tobias Schreiber Portrait" loading="lazy" srcset="assets/images/sm/Ich.webp?v=2 480w, assets/images/md/Ich.webp?v=2 960w, assets/images/lg/Ich.webp?v=2 1800w" sizes="(max-width: 768px) 100vw, 50vw">
         </div>
       </div>
 
-      <div class="about-text-col reveal-on-scroll delay-1">
-        <span class="section-num">06 / PROFIL &amp; PHILOSOPHIE</span>
-        <h2 class="about-statement" data-highlight-text data-highlight-scroll-start="top 95%" data-highlight-scroll-end="top 75%">
+      <div class="about-text-col">
+        <span class="section-num reveal-on-scroll">06 / PROFIL &amp; PHILOSOPHIE</span>
+        <h2 class="about-statement" data-highlight-text data-highlight-scroll-start="top 98%" data-highlight-scroll-end="top 48%">
           „Medientechnik bedeutet für mich, <em>technische Präzision</em> in poetische Bilder zu übersetzen.“
         </h2>
 
@@ -2254,7 +2278,7 @@
 
   <!-- JavaScript Modules -->
   <script src="js/lenis.min.js" defer></script>
-  <script src="js/main.js?v=127" defer></script>
+  <script src="js/main.js?v=146" defer></script>
   <script src="js/portfolio-text.js"></script>
   <script src="js/cgi-card.js?v=2"></script>
   <script src="js/still-card.js"></script>

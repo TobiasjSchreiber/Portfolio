@@ -430,40 +430,55 @@ document.addEventListener('DOMContentLoaded', () => {
   let isNavHeaderVisible = false;
 
   function updateNavTheme() {
-    const brandEl = document.querySelector('.nav-brand');
-    const brandRect = brandEl ? brandEl.getBoundingClientRect() : (navHeader ? navHeader.getBoundingClientRect() : { left: 40, top: 25 });
-    const checkX = Math.max(10, Math.min(window.innerWidth - 10, (brandRect.left || 40) + 25));
-    const checkY = Math.max(10, Math.min(window.innerHeight - 10, (brandRect.top || 25) + 10));
-
-    let elUnder = null;
-    if (brandEl) brandEl.style.pointerEvents = 'none';
-    try {
-      elUnder = document.elementFromPoint(checkX, checkY);
-    } catch (e) {}
-    if (brandEl) brandEl.style.pointerEvents = 'auto';
-
     let isOverLight = false;
-    if (elUnder) {
-      if (
-        elUnder.closest('#thd-app') ||
-        elUnder.closest('#about') ||
-        elUnder.closest('#kontakt') ||
-        elUnder.closest('.light-mode-section')
-      ) {
+    const headerCheckY = 45; // Height at which the fixed navbar sits
+
+    // 1. Direct bounding box check against all light mode sections (instantaneous & 100% reliable)
+    const lightSections = document.querySelectorAll('.light-mode-section, #thd-app, #about, #kontakt');
+    for (let i = 0; i < lightSections.length; i++) {
+      const rect = lightSections[i].getBoundingClientRect();
+      if (rect.top <= headerCheckY && rect.bottom >= headerCheckY) {
         isOverLight = true;
-      } else {
-        let cur = elUnder;
-        while (cur && cur !== document.body && cur !== document.documentElement) {
-          const bg = window.getComputedStyle(cur).backgroundColor;
-          if (bg && bg !== 'transparent' && !bg.startsWith('rgba(0, 0, 0, 0') && !bg.startsWith('rgba(0,0,0,0')) {
-            const m = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-            if (m) {
-              const lum = 0.299 * parseInt(m[1]) + 0.587 * parseInt(m[2]) + 0.114 * parseInt(m[3]);
-              if (lum > 140) isOverLight = true;
+        break;
+      }
+    }
+
+    // 2. Fallback: Check element directly under brand position
+    if (!isOverLight) {
+      const brandEl = document.querySelector('.nav-brand');
+      const brandRect = brandEl ? brandEl.getBoundingClientRect() : (navHeader ? navHeader.getBoundingClientRect() : { left: 40, top: 25 });
+      const checkX = Math.max(10, Math.min(window.innerWidth - 10, (brandRect.left || 40) + 25));
+      const checkY = Math.max(10, Math.min(window.innerHeight - 10, (brandRect.top || 25) + 10));
+
+      let elUnder = null;
+      if (brandEl) brandEl.style.pointerEvents = 'none';
+      try {
+        elUnder = document.elementFromPoint(checkX, checkY);
+      } catch (e) {}
+      if (brandEl) brandEl.style.pointerEvents = 'auto';
+
+      if (elUnder) {
+        if (
+          elUnder.closest('#thd-app') ||
+          elUnder.closest('#about') ||
+          elUnder.closest('#kontakt') ||
+          elUnder.closest('.light-mode-section')
+        ) {
+          isOverLight = true;
+        } else {
+          let cur = elUnder;
+          while (cur && cur !== document.body && cur !== document.documentElement) {
+            const bg = window.getComputedStyle(cur).backgroundColor;
+            if (bg && bg !== 'transparent' && !bg.startsWith('rgba(0, 0, 0, 0') && !bg.startsWith('rgba(0,0,0,0')) {
+              const m = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+              if (m) {
+                const lum = 0.299 * parseInt(m[1]) + 0.587 * parseInt(m[2]) + 0.114 * parseInt(m[3]);
+                if (lum > 140) isOverLight = true;
+              }
+              break;
             }
-            break;
+            cur = cur.parentElement;
           }
-          cur = cur.parentElement;
         }
       }
     }
@@ -506,17 +521,14 @@ document.addEventListener('DOMContentLoaded', () => {
       navBrand.style.pointerEvents = '';
     }
 
-    // Desktop logic: Only reveal when scrolled below the intro section (entering section 01 BMW)
+    // Desktop logic: Keep start screen (hero) clean with its intro-header, reveal FAB header on scroll
     const heroHeight = heroSection ? heroSection.offsetHeight : window.innerHeight;
-    const revealThreshold = heroHeight - 100;
-    const hideThreshold = heroHeight - 180;
+    const revealThreshold = heroHeight - 120;
+    const hideThreshold = heroHeight - 200;
 
     if (!isNavHeaderVisible && currentScroll >= revealThreshold) {
       isNavHeaderVisible = true;
       navHeader.classList.add('is-visible');
-      if (typeof updateBouncyTabsIndicator === 'function') {
-        requestAnimationFrame(() => updateBouncyTabsIndicator(false));
-      }
     } else if (isNavHeaderVisible && currentScroll < hideThreshold) {
       isNavHeaderVisible = false;
       navHeader.classList.remove('is-visible');
@@ -851,12 +863,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isMenuOpen) return;
       isMenuOpen = true;
       document.body.classList.add('mobile-nav-open');
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
       fabBtn.classList.add('is-open');
       fabBtn.setAttribute('aria-expanded', 'true');
       fabBtn.setAttribute('aria-label', 'Menü schließen');
       overlay.classList.add('is-open');
       overlay.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
       if (typeof updateNavHeaderVisibility === 'function') {
         updateNavHeaderVisibility();
       }
@@ -869,12 +882,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!isMenuOpen) return;
       isMenuOpen = false;
       document.body.classList.remove('mobile-nav-open');
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
       fabBtn.classList.remove('is-open');
       fabBtn.setAttribute('aria-expanded', 'false');
       fabBtn.setAttribute('aria-label', 'Menü öffnen');
       overlay.classList.remove('is-open');
       overlay.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
       if (typeof updateNavHeaderVisibility === 'function') {
         updateNavHeaderVisibility();
       }
@@ -1125,51 +1139,191 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Scroll Reveal Animations (Replays smoothly on scrolling up and down in both directions)
-    const initScrollRevealObserver = () => {
-      if (!('IntersectionObserver' in window)) {
-        document.querySelectorAll('.reveal-on-scroll').forEach(el => el.classList.add('is-visible'));
+    // Global Kinetic Scroll Reveals (Bidirectional Scrubbing)
+    const initKineticScrollReveals = () => {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) {
+        document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        });
         return;
       }
 
-      const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-          } else {
-            // Re-arm when element has scrolled fully outside viewport (above or below)
-            const vh = window.innerHeight || document.documentElement.clientHeight || 800;
-            const rect = entry.boundingClientRect;
-            if (rect.bottom < -40 || rect.top > vh + 40) {
-              entry.target.classList.remove('is-visible');
+      let revealInstances = [];
+      let ticking = false;
+
+      const updateReveals = () => {
+        const vh = window.innerHeight || document.documentElement.clientHeight || 800;
+        const startOffset = vh * 1.02; // Begins immediately as the element approaches the bottom of the viewport
+        const distance = vh * 0.42;    // Long, luxurious scroll-distance: plays across 42% of viewport travel
+
+        revealInstances.forEach(inst => {
+          const rect = inst.container.getBoundingClientRect();
+          
+          // Re-populate targets dynamically if container gained child elements (e.g. from <still-card>, <portfolio-text> upgrade)
+          if (inst.targets.length === 0 || (inst.targets.length === 1 && inst.targets[0].node === inst.container)) {
+            const masks = inst.container.querySelectorAll('.uni-text-mask > *');
+            if (masks.length > 0) {
+              inst.targets = [];
+              masks.forEach((child, i) => {
+                inst.targets.push({ node: child, delay: inst.baseDelay + i * 0.03, isMaskChild: true });
+              });
+            } else {
+              const cards = inst.container.querySelectorAll('still-card, .still-card, ceramic-frame, .ceramic-card, .photo-card, .photo-text-card, .cgi-feature-card, .motion-concept-card, sketch-card, .sketch-card');
+              if (cards.length > 0) {
+                inst.targets = [];
+                cards.forEach((card, i) => {
+                  inst.targets.push({ node: card, delay: inst.baseDelay + i * 0.025, isCard: true });
+                });
+              }
             }
           }
-        });
-      }, {
-        root: null,
-        threshold: 0.05,
-        rootMargin: '0px 0px -20px 0px'
-      });
 
-      document.querySelectorAll('.reveal-on-scroll').forEach((el) => revealObserver.observe(el));
-
-      // Observe dynamically added elements (e.g. from Web Components like <portfolio-text>)
-      const mo = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-          mutation.addedNodes.forEach((node) => {
-            if (node.nodeType === 1) {
-              if (node.classList && node.classList.contains('reveal-on-scroll')) {
-                revealObserver.observe(node);
-              }
-              node.querySelectorAll?.('.reveal-on-scroll')?.forEach((el) => revealObserver.observe(el));
+          const containerTop = rect.top;
+          let baseProgress = (startOffset - containerTop) / distance;
+          
+          inst.targets.forEach(t => {
+            let p = baseProgress - (t.delay || 0); 
+            p = Math.max(0, Math.min(1, p));
+            
+            if (t.isMaskChild) {
+              t.node.style.opacity = p.toFixed(3);
+              t.node.style.transform = `translate3d(0, ${(100 * (1 - p)).toFixed(1)}%, 0)`;
+            } else if (t.isCard) {
+              t.node.style.opacity = p.toFixed(3);
+              t.node.style.transform = `translate3d(0, ${(32 * (1 - p)).toFixed(1)}px, 0)`;
+            } else {
+              t.node.style.opacity = p.toFixed(3);
+              t.node.style.transform = `translate3d(0, ${(36 * (1 - p)).toFixed(2)}px, 0)`;
             }
           });
         });
+        ticking = false;
+      };
+
+      const requestRevealUpdate = () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(updateReveals);
+        }
+      };
+
+      const processContainer = (container) => {
+        if (container.dataset.kineticInitialized) return;
+        if (container.closest && container.closest('#hero')) return;
+        if (container.hasAttribute('data-highlight-text') || container.hasAttribute('data-scroll-kinetic')) return;
+        if (container.matches && container.matches('#doc-viewer, .doc-viewer-container, .uni-viewer-panel, .control-item, .uni-controls-panel, .doc-stage-viewport, #hero, #hero *')) return;
+        container.dataset.kineticInitialized = 'true';
+
+        let delay = 0;
+        if (container.classList.contains('delay-1')) delay = 0.03;
+        else if (container.classList.contains('delay-2')) delay = 0.05;
+        else if (container.classList.contains('delay-3')) delay = 0.08;
+        else if (container.classList.contains('delay-4')) delay = 0.11;
+        else if (container.classList.contains('delay-5')) delay = 0.14;
+
+        let targets = [];
+
+        // 1. Text masks generated by unified text components
+        const masks = container.querySelectorAll('.uni-text-mask > *');
+        if (masks.length > 0) {
+          masks.forEach((child, i) => {
+            targets.push({ node: child, delay: delay + i * 0.04, isMaskChild: true });
+          });
+        }
+
+        // 2. Image strips & cards (Rekonstruktionsphasen, BMW Stills, Fotografie, Keramik, etc.)
+        if (targets.length === 0) {
+          const cards = container.querySelectorAll('still-card, .still-card, ceramic-frame, .ceramic-card, .photo-card, .photo-text-card, .cgi-feature-card, .motion-concept-card, sketch-card, .sketch-card');
+          if (cards.length > 0) {
+            cards.forEach((card, i) => {
+              targets.push({ node: card, delay: delay + i * 0.03, isCard: true });
+            });
+          }
+        }
+
+        // 3. Section Header
+        if (container.classList.contains('section-header') && targets.length === 0) {
+          const num = container.querySelector('.section-num');
+          const title = container.querySelector('.section-title');
+          const cat = container.querySelector('.section-category');
+          const intro = container.querySelector('.section-intro-text:not([data-highlight-text])');
+          if (num) targets.push({ node: num, delay: delay });
+          if (title) targets.push({ node: title, delay: delay + 0.04 });
+          if (cat) targets.push({ node: cat, delay: delay + 0.08 });
+          if (intro) targets.push({ node: intro, delay: delay + 0.12 });
+        }
+
+        // 4. BMW Header Block
+        if (container.classList.contains('bmw-header-block') && targets.length === 0) {
+          const heroTitle = container.querySelector('.bmw-hero-title');
+          if (heroTitle) targets.push({ node: heroTitle, delay: delay });
+          const infoBlocks = container.querySelectorAll('.bmw-infoblock');
+          infoBlocks.forEach((block, i) => targets.push({ node: block, delay: delay + 0.04 + i * 0.04 }));
+        }
+
+        // 5. BMW Editorial Story
+        if (container.classList.contains('bmw-editorial-story') && targets.length === 0) {
+          const children = Array.from(container.children);
+          children.forEach((child, i) => targets.push({ node: child, delay: delay + i * 0.04 }));
+        }
+
+        // 6. Default fallback
+        if (targets.length === 0) {
+          if (!container.hasAttribute('data-highlight-text') && !container.hasAttribute('data-scroll-kinetic')) {
+            targets.push({ node: container, delay: delay });
+          }
+        }
+
+        // Set initial styles
+        targets.forEach(t => {
+          t.node.style.willChange = 'opacity, transform';
+        });
+
+        if (targets.length > 0) {
+          revealInstances.push({ container, targets, baseDelay: delay });
+        }
+      };
+
+      const scrollSelectors = '.reveal-on-scroll, .stills-strip, .ceramic-strip, .photo-compact-grid, .cgi-feature-grid, .motion-concept-grid, .film-item, .kaserne-compare-container';
+      document.querySelectorAll(scrollSelectors).forEach(processContainer);
+
+      // Observe dynamically added elements (e.g. web components)
+      const mo = new MutationObserver((mutations) => {
+        let hasNew = false;
+        mutations.forEach((mutation) => {
+          mutation.addedNodes.forEach((node) => {
+            if (node.nodeType === 1) {
+              if (node.matches && node.matches(scrollSelectors)) {
+                processContainer(node);
+                hasNew = true;
+              }
+              const nested = node.querySelectorAll?.(scrollSelectors);
+              if (nested && nested.length) {
+                nested.forEach(processContainer);
+                hasNew = true;
+              }
+            }
+          });
+        });
+        if (hasNew) requestRevealUpdate();
       });
       mo.observe(document.body, { childList: true, subtree: true });
+
+      window.addEventListener('scroll', requestRevealUpdate, { passive: true });
+      if (typeof lenis !== 'undefined' && lenis) {
+        lenis.on('scroll', requestRevealUpdate);
+      }
+      window.addEventListener('resize', requestRevealUpdate, { passive: true });
+      
+      // Immediate initial paint
+      updateReveals();
+      setTimeout(updateReveals, 50);
+      setTimeout(updateReveals, 200);
     };
 
-    initScrollRevealObserver();
+    initKineticScrollReveals();
 
     // --------------------------------------------------------------------------
     // Dynamic Scroll Depth & Multiplane Parallax Engine (Silky 60-120fps)
@@ -1287,21 +1441,34 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Hero Scroll Indicator Click
-  const heroScrollIndicator = document.querySelector('.scroll-indicator');
-  if (heroScrollIndicator) {
-    heroScrollIndicator.style.cursor = 'pointer';
-    heroScrollIndicator.addEventListener('click', () => {
-      const target = document.getElementById('cgi') || document.getElementById('bmw');
-      if (target) {
-        if (typeof lenis !== 'undefined' && lenis) {
-          lenis.scrollTo(target, { offset: -30, duration: 1.0 });
+  // --------------------------------------------------------------------------
+  // BMW 700 Infoblocks Mobile Accordion (Expand / Collapse on Mobile)
+  // --------------------------------------------------------------------------
+  function initBmwInfoblocksAccordion() {
+    const infoblocks = document.querySelectorAll('.bmw-infoblock[data-collapsible="true"]');
+    if (!infoblocks.length) return;
+
+    infoblocks.forEach((block) => {
+      const header = block.querySelector('.bmw-infoblock-header');
+      if (!header) return;
+
+      header.addEventListener('click', (e) => {
+        if (window.innerWidth > 768) return;
+        e.preventDefault();
+        const isExpanded = block.classList.contains('is-expanded');
+
+        if (isExpanded) {
+          block.classList.remove('is-expanded');
+          header.setAttribute('aria-expanded', 'false');
         } else {
-          target.scrollIntoView({ behavior: 'smooth' });
+          block.classList.add('is-expanded');
+          header.setAttribute('aria-expanded', 'true');
         }
-      }
+      });
     });
   }
+
+  initBmwInfoblocksAccordion();
 
   // --------------------------------------------------------------------------
   // --------------------------------------------------------------------------
@@ -2847,13 +3014,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (uniSection) {
       const end = uniSection.offsetHeight - window.innerHeight;
       if (end > 50) {
-        const exitBuffer = window.innerHeight * 1.0;
-        const activeSwitchDistance = Math.max(100, end - exitBuffer);
         const currentScroll = window.scrollY || document.documentElement.scrollTop || (typeof lenis !== 'undefined' && lenis ? lenis.scroll : 0);
         const top = uniSection.getBoundingClientRect().top + currentScroll;
         const numItems = controlItems.length;
         const progressRatio = numItems > 1 ? (index / (numItems - 1)) : 0;
-        const targetScroll = Math.round(top + progressRatio * activeSwitchDistance);
+        const targetScroll = Math.round(top + progressRatio * (end * 0.9));
 
         if (typeof lenis !== 'undefined' && lenis) {
           lenis.scrollTo(targetScroll, {
@@ -2994,13 +3159,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const scrolled = -rect.top;
 
       if (end > 50) {
-        // Reserve buffer distance at the end for the last PDF (MagicFlow) before white section enters
-        const exitBuffer = window.innerHeight * 1.0; // 100vh of resting space for MagicFlow
-        const activeSwitchDistance = Math.max(100, end - exitBuffer);
-
         if (scrolled >= 0 && scrolled <= end) {
-          const clampedScrolled = Math.min(scrolled, activeSwitchDistance);
-          let progress = clampedScrolled / activeSwitchDistance;
+          let progress = Math.min(0.999, Math.max(0, scrolled / end));
           let numItems = controlItems.length;
           let index = Math.floor(progress * numItems);
           if (index >= numItems) index = numItems - 1;
@@ -4230,30 +4390,26 @@ document.addEventListener('DOMContentLoaded', () => {
   initCompetenciesAccordion();
 
   // --------------------------------------------------------------------------
-  // Scroll-Driven Text Highlight (Progressive Character Reveal on Scroll)
-  // Splits [data-highlight-text] elements into word/char spans and scrubs
-  // opacity from 0.22 → 1.0 based on scroll progress through the element.
+  // Scroll-Driven Text Animations (Kinetic Split-Text & Highlight Scrub)
+  // Real-time bidirectional scroll animations (scrubs up & down seamlessly)
   // --------------------------------------------------------------------------
-  function initScrollTextHighlight() {
-    const containers = document.querySelectorAll('[data-highlight-text]');
+  function initScrollTextAnimations() {
+    const containers = document.querySelectorAll('[data-highlight-text], [data-scroll-kinetic]');
     if (!containers.length) return;
 
     // Respect reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
     const instances = [];
 
     containers.forEach((container) => {
-      // 1. Extract plain text for aria-label before mutating DOM
+      const isKinetic = container.hasAttribute('data-scroll-kinetic');
       const fullText = container.textContent.replace(/\s+/g, ' ').trim();
       container.setAttribute('role', 'group');
       container.setAttribute('aria-label', fullText);
 
-      // 2. Parse scroll start/end from data attributes
-      const scrollStartAttr = container.getAttribute('data-highlight-scroll-start') || 'top 88%';
-      const scrollEndAttr = container.getAttribute('data-highlight-scroll-end') || 'bottom 60%';
+      const scrollStartAttr = container.getAttribute('data-scroll-start') || container.getAttribute('data-highlight-scroll-start') || 'top 92%';
+      const scrollEndAttr = container.getAttribute('data-scroll-end') || container.getAttribute('data-highlight-scroll-end') || (isKinetic ? 'top 65%' : 'bottom 60%');
 
-      // 3. Split child nodes preserving <em> and other inline tags
       const charElements = [];
 
       function processNode(node) {
@@ -4262,30 +4418,28 @@ document.addEventListener('DOMContentLoaded', () => {
           if (!text.length) return document.createDocumentFragment();
 
           const frag = document.createDocumentFragment();
-          // Split by spaces to create word wraps
           const parts = text.split(/(\s+)/);
 
           parts.forEach((part) => {
             if (/^\s+$/.test(part)) {
-              // Whitespace between words
               const spaceSpan = document.createElement('span');
-              spaceSpan.className = 'highlight-space';
+              spaceSpan.className = isKinetic ? 'kinetic-space' : 'highlight-space';
               spaceSpan.textContent = ' ';
               spaceSpan.setAttribute('aria-hidden', 'true');
               frag.appendChild(spaceSpan);
             } else if (part.length > 0) {
-              // Actual word
               const wordSpan = document.createElement('span');
-              wordSpan.className = 'highlight-word';
+              wordSpan.className = isKinetic ? 'kinetic-word' : 'highlight-word';
               wordSpan.setAttribute('aria-hidden', 'true');
 
               for (let i = 0; i < part.length; i++) {
                 const charSpan = document.createElement('span');
-                charSpan.className = 'highlight-char';
+                charSpan.className = isKinetic ? 'kinetic-char' : 'highlight-char';
                 charSpan.textContent = part[i];
                 charSpan.setAttribute('aria-hidden', 'true');
                 if (prefersReducedMotion) {
                   charSpan.style.opacity = '1';
+                  charSpan.style.transform = 'none';
                 }
                 wordSpan.appendChild(charSpan);
                 charElements.push(charSpan);
@@ -4297,18 +4451,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
           return frag;
         } else if (node.nodeType === Node.ELEMENT_NODE) {
-          // Preserve inline elements like <em>, <strong>, <br>, etc.
           if (node.tagName === 'BR') {
             return node.cloneNode(false);
           }
 
           const cloned = document.createElement(node.tagName);
-          // Copy attributes
           for (const attr of node.attributes) {
             cloned.setAttribute(attr.name, attr.value);
           }
 
-          // Process children recursively
           node.childNodes.forEach((child) => {
             const result = processNode(child);
             if (result) cloned.appendChild(result);
@@ -4319,27 +4470,22 @@ document.addEventListener('DOMContentLoaded', () => {
         return null;
       }
 
-      // Build new content
       const newContent = document.createDocumentFragment();
       Array.from(container.childNodes).forEach((child) => {
         const result = processNode(child);
         if (result) newContent.appendChild(result);
       });
 
-      // Replace container contents
       container.innerHTML = '';
       container.appendChild(newContent);
 
       if (prefersReducedMotion) return;
 
-      // 4. Parse scroll trigger positions
-      // Format: "top 88%" means element's top edge at 88% of viewport
-      // Format: "bottom 60%" means element's bottom edge at 60% of viewport
       function parseScrollPosition(attr) {
         const parts = attr.trim().split(/\s+/);
         return {
-          edge: parts[0] || 'top',         // 'top' or 'bottom' of element
-          viewport: parseFloat(parts[1]) / 100 || 0.5  // fraction of viewport height
+          edge: parts[0] || 'top',
+          viewport: parseFloat(parts[1]) / 100 || 0.5
         };
       }
 
@@ -4348,6 +4494,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       instances.push({
         container,
+        isKinetic,
         chars: charElements,
         scrollStart,
         scrollEnd,
@@ -4357,10 +4504,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (prefersReducedMotion || instances.length === 0) return;
 
-    // 5. Main update function – called on every scroll frame
     let ticking = false;
 
-    function updateHighlights() {
+    function updateTextAnimations() {
       const viewportH = window.innerHeight || document.documentElement.clientHeight || 800;
 
       instances.forEach((inst) => {
@@ -4370,52 +4516,65 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalChars = inst.chars.length;
         if (totalChars === 0) return;
 
-        // Calculate scroll start/end positions in viewport pixels
-        const startEdgePx = inst.scrollStart.edge === 'bottom'
-          ? rect.bottom
-          : rect.top;
+        const startEdgePx = inst.scrollStart.edge === 'bottom' ? rect.bottom : rect.top;
         const startThresholdPx = viewportH * inst.scrollStart.viewport;
 
-        const endEdgePx = inst.scrollEnd.edge === 'bottom'
-          ? rect.bottom
-          : rect.top;
+        const endEdgePx = inst.scrollEnd.edge === 'bottom' ? rect.bottom : rect.top;
         const endThresholdPx = viewportH * inst.scrollEnd.viewport;
 
-        // Total scroll range
         const totalRange = startThresholdPx - endThresholdPx;
         if (totalRange <= 0) return;
 
-        // Current progress from 0 (at startThresholdPx) to 1 (at endThresholdPx)
         const currentPx = startEdgePx;
         const rawProgress = (startThresholdPx - currentPx) / totalRange;
         const progress = Math.max(0, Math.min(1, rawProgress));
 
-        // Soft gradient window width (chars that are in transition)
-        const windowWidth = Math.max(4, Math.min(8, totalChars * 0.06));
+        if (inst.isKinetic) {
+          // Kinetic character-by-character translateY + opacity scrub (Bidirectional)
+          const windowWidth = Math.max(5, Math.min(12, totalChars * 0.1));
+          const cursorPos = progress * (totalChars + windowWidth);
 
-        // Current "cursor" position scaled so all chars reach opacity 1.0 when progress reaches 1.0
-        const cursorPos = progress * (totalChars + windowWidth);
+          for (let i = 0; i < totalChars; i++) {
+            let charP;
+            if (progress >= 1 || i < cursorPos - windowWidth) {
+              charP = 1;
+            } else if (progress <= 0 || i > cursorPos) {
+              charP = 0;
+            } else {
+              charP = Math.max(0, Math.min(1, (cursorPos - i) / windowWidth));
+            }
 
-        const baseOpacity = 0.12;
-        for (let i = 0; i < totalChars; i++) {
-          let opacity;
-          if (progress >= 1 || i < cursorPos - windowWidth) {
-            // Fully revealed
-            opacity = 1;
-          } else if (progress <= 0 || i > cursorPos) {
-            // Not yet reached (less visible unrevealed text)
-            opacity = baseOpacity;
-          } else {
-            // In the transition window – smooth gradient
-            const windowProgress = (cursorPos - i) / windowWidth;
-            opacity = baseOpacity + (1 - baseOpacity) * Math.max(0, Math.min(1, windowProgress));
+            const roundedP = Math.round(charP * 100) / 100;
+            if (inst.chars[i]._lastP !== roundedP) {
+              inst.chars[i]._lastP = roundedP;
+              const translateY = (1 - roundedP) * 100;
+              const opacity = roundedP;
+              inst.chars[i].style.transform = `translate3d(0, ${translateY.toFixed(1)}%, 0)`;
+              inst.chars[i].style.opacity = opacity.toFixed(2);
+            }
           }
+        } else {
+          // Progressive reading highlight
+          const windowWidth = Math.max(4, Math.min(8, totalChars * 0.06));
+          const cursorPos = progress * (totalChars + windowWidth);
+          const baseOpacity = 0.12;
 
-          // Only write to DOM if value changed meaningfully (avoid layout thrashing)
-          const rounded = Math.round(opacity * 50) / 50; // Snap to 0.02 increments
-          if (inst.chars[i]._lastOpacity !== rounded) {
-            inst.chars[i].style.opacity = rounded;
-            inst.chars[i]._lastOpacity = rounded;
+          for (let i = 0; i < totalChars; i++) {
+            let opacity;
+            if (progress >= 1 || i < cursorPos - windowWidth) {
+              opacity = 1;
+            } else if (progress <= 0 || i > cursorPos) {
+              opacity = baseOpacity;
+            } else {
+              const windowProgress = (cursorPos - i) / windowWidth;
+              opacity = baseOpacity + (1 - baseOpacity) * Math.max(0, Math.min(1, windowProgress));
+            }
+
+            const rounded = Math.round(opacity * 50) / 50;
+            if (inst.chars[i]._lastOpacity !== rounded) {
+              inst.chars[i].style.opacity = rounded;
+              inst.chars[i]._lastOpacity = rounded;
+            }
           }
         }
       });
@@ -4423,21 +4582,20 @@ document.addEventListener('DOMContentLoaded', () => {
       ticking = false;
     }
 
-    function requestHighlightUpdate() {
+    function requestTextUpdate() {
       if (!ticking) {
         ticking = true;
-        requestAnimationFrame(updateHighlights);
+        requestAnimationFrame(updateTextAnimations);
       }
     }
 
-    // 6. IntersectionObserver to process visible and near-visible containers
-    const highlightObserver = new IntersectionObserver((entries) => {
+    const textObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         const inst = instances.find((i) => i.container === entry.target);
         if (inst) {
           inst.isInView = entry.isIntersecting;
           if (entry.isIntersecting) {
-            requestHighlightUpdate();
+            requestTextUpdate();
           }
         }
       });
@@ -4447,22 +4605,17 @@ document.addEventListener('DOMContentLoaded', () => {
       rootMargin: '250px 0px 250px 0px'
     });
 
-    instances.forEach((inst) => highlightObserver.observe(inst.container));
+    instances.forEach((inst) => textObserver.observe(inst.container));
 
-    // 7. Bind to scroll events (Lenis + native fallback)
-    window.addEventListener('scroll', requestHighlightUpdate, { passive: true });
+    window.addEventListener('scroll', requestTextUpdate, { passive: true });
     if (typeof lenis !== 'undefined' && lenis) {
-      lenis.on('scroll', requestHighlightUpdate);
+      lenis.on('scroll', requestTextUpdate);
     }
-
-    // 8. Handle resize (viewport height changes)
-    window.addEventListener('resize', requestHighlightUpdate, { passive: true });
-
-    // 9. Initial update
-    requestHighlightUpdate();
+    window.addEventListener('resize', requestTextUpdate, { passive: true });
+    requestTextUpdate();
   }
 
-  initScrollTextHighlight();
+  initScrollTextAnimations();
 
   // --------------------------------------------------------------------------
   // Scroll-Driven Image Curtain Reveal (Top-to-Bottom Unroll on Scroll)
