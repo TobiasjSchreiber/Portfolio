@@ -368,10 +368,11 @@ html {
 body {
   background-color: var(--bg-pure);
   color: var(--text-primary);
-  overflow-x: hidden;
+  overflow-x: clip;
   line-height: 1.6;
   position: relative;
-  
+  width: 100%;
+  max-width: 100%;
 }
 
 /* ==========================================================================
@@ -918,9 +919,9 @@ body[data-ambient-theme="kontakt"] {
   bottom: 0;
   width: 100vw;
   height: 100vh;
-  height: 100svh;
-  height: 100dvh;
-  max-height: 100dvh;
+
+
+
   z-index: 990;
   background-color: rgba(0, 0, 0, 0.15) !important;
   background: rgba(0, 0, 0, 0.15) !important;
@@ -1168,6 +1169,7 @@ body[data-ambient-theme="kontakt"] {
   width: 100%;
   height: 100vh;
   height: 100svh;
+
   min-height: 720px;
   overflow: hidden;
   display: flex;
@@ -2378,10 +2380,10 @@ body[data-ambient-theme="kontakt"] {
   outline: none !important;
   box-shadow: none;
   background: #060606;
-  cursor: ew-resize;
+  cursor: default;
   user-select: none;
   -webkit-user-select: none;
-  touch-action: none;
+  touch-action: pan-y pinch-zoom;
 }
 
 @media (min-width: 769px) {
@@ -2508,7 +2510,18 @@ body[data-ambient-theme="kontakt"] {
   color: #ffffff;
   cursor: grab;
   user-select: none;
+  pointer-events: auto;
+  touch-action: none;
   transition: background 0.25s ease, opacity 0.25s ease;
+}
+
+.compare-handle-btn::before {
+  content: '';
+  position: absolute;
+  top: -14px;
+  bottom: -14px;
+  left: -14px;
+  right: -14px;
 }
 
 .kaserne-compare-slider:hover .compare-handle-btn,
@@ -2732,7 +2745,7 @@ body[data-ambient-theme="kontakt"] {
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
-  cursor: grab;
+  cursor: default;
   user-select: none;
   -webkit-user-select: none;
   scrollbar-width: none;
@@ -2744,11 +2757,6 @@ body[data-ambient-theme="kontakt"] {
 
 .cgi-parallax-viewport::-webkit-scrollbar {
   display: none;
-}
-
-.cgi-parallax-viewport.is-dragging {
-  cursor: grabbing;
-  cursor: -webkit-grabbing;
 }
 
 .cgi-parallax-track {
@@ -2860,7 +2868,7 @@ body[data-ambient-theme="kontakt"] {
   line-height: 1.35;
 }
 
-/* Scrubber Bar (Interactive Progress & Click/Drag Seek) */
+/* Scrubber Bar (Interactive Progress & Drag Seek via white thumb only) */
 .cgi-parallax-scrubber {
   position: relative;
   width: 100%;
@@ -2868,20 +2876,9 @@ body[data-ambient-theme="kontakt"] {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 999px;
   margin-top: 1.8rem;
-  cursor: pointer;
-  touch-action: none;
+  cursor: default;
+  touch-action: pan-y pinch-zoom;
   user-select: none;
-}
-
-/* Generous click target area for seamless seeking */
-.cgi-parallax-scrubber::before {
-  content: '';
-  position: absolute;
-  top: -14px;
-  bottom: -14px;
-  left: 0;
-  right: 0;
-  cursor: pointer;
 }
 
 .cgi-scrubber-bar {
@@ -2893,16 +2890,29 @@ body[data-ambient-theme="kontakt"] {
   width: 8%;
   background: linear-gradient(90deg, var(--accent-warm), #ffffff);
   border-radius: 999px;
-  pointer-events: none;
+  pointer-events: auto !important;
+  cursor: grab;
+  touch-action: none;
   transition: height 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), margin-top 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.1s ease-out;
   will-change: transform, width, height;
 }
 
-.cgi-parallax-scrubber:hover .cgi-scrubber-bar,
-.cgi-parallax-scrubber:active .cgi-scrubber-bar,
+.cgi-scrubber-bar::before {
+  content: '';
+  position: absolute;
+  top: -14px;
+  bottom: -14px;
+  left: -10px;
+  right: -10px;
+  cursor: grab;
+}
+
+.cgi-scrubber-bar:hover,
+.cgi-scrubber-bar:active,
 .cgi-parallax-scrubber.is-scrubbing .cgi-scrubber-bar {
   height: 6px;
   margin-top: -3px;
+  cursor: grabbing;
 }
 
 .media-hover-overlay {
@@ -2970,7 +2980,6 @@ body.film-drawer-open .film-parallax-stage {
   width: 100vw;
   max-width: 100vw;
   height: 100vh;
-  height: 100dvh;
   overflow: visible;
   pointer-events: none;
   z-index: 1000 !important;
@@ -2993,7 +3002,6 @@ body.film-drawer-open .film-parallax-stage {
   width: 100%;
   width: 100vw;
   height: 100vh;
-  height: 100dvh;
   flex-shrink: 0;
   overflow: hidden;
   background: #020202;
@@ -3041,7 +3049,7 @@ body.film-drawer-open .film-parallax-stage {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: clamp(2.5rem, 5vh, 4rem) var(--section-space-x);
+  padding: 0;
   box-sizing: border-box;
   pointer-events: none;
 }
@@ -3149,29 +3157,60 @@ body.film-drawer-open .film-parallax-stage {
   display: block;
 }
 
-/* Pinned Stage: Left-Aligned Film Title, Dynamic Divider & Metadata (Zero Shadow) */
-.film-center-stage {
+/* Sticky Stages Container (Pins all 4 title cards in the center, clipped seamlessly to video seams) */
+.film-sticky-stages {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  width: 100vw;
+  height: 100%;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.film-stage-card {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  width: 100vw;
+  height: 100%;
+  height: 100vh;
+  pointer-events: none;
+  will-change: clip-path;
+}
+
+.film-stage-content {
   position: absolute;
   top: 50%;
   left: var(--section-space-x);
   transform: translateY(-50%);
   width: calc(100% - (2 * var(--section-space-x)));
-  max-width: min(850px, 90vw);
+  max-width: min(850px, calc(100% - 2rem));
+  box-sizing: border-box;
   text-align: left;
   pointer-events: none;
-  z-index: 15;
   user-select: none;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1.25rem;
 }
 
-/* Titles Stack */
-.film-titles-area {
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: flex-start;
+.film-title-divider-vert {
+  font-family: var(--font-heading);
+  font-size: clamp(1.85rem, 3.8vw, 2.9rem);
+  color: #ffffff;
+  opacity: 0.45;
+  font-weight: 300;
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+}
+
+.film-center-title--sub {
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .film-center-title {
@@ -3183,29 +3222,20 @@ body.film-drawer-open .film-parallax-stage {
   color: #ffffff;
   line-height: 1.15;
   text-shadow: none; /* User explicitly asked: ohne schatten */
-  opacity: 0;
-  visibility: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
+  opacity: 1;
+  visibility: visible;
+  position: relative;
+  top: auto;
+  left: auto;
   white-space: nowrap;
   display: inline-block;
   width: fit-content;
   max-width: 100%;
-  pointer-events: none;
-  transition: opacity 0.38s ease, visibility 0.38s ease, color 0.35s ease;
-}
-
-.film-center-title.is-active {
-  position: relative;
-  top: auto;
-  left: auto;
-  opacity: 1;
-  visibility: visible;
   pointer-events: auto;
+  transition: color 0.35s ease;
 }
 
-/* Dynamic Separator Line: Exact length of the active title, smoothly animates length on switch */
+/* Dynamic Separator Line */
 .film-title-divider {
   width: 56px;
   height: 1px;
@@ -3213,18 +3243,11 @@ body.film-drawer-open .film-parallax-stage {
   margin: 1.1rem 0 1rem 0;
   border: none;
   transform-origin: left center;
-  transition: width 0.48s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.35s ease;
+  transition: width 0.3s ease, background-color 0.35s ease;
   will-change: width;
 }
 
 /* Metadata Stack */
-.film-metas-area {
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: flex-start;
-}
-
 .film-title-meta {
   display: flex;
   align-items: center;
@@ -3235,23 +3258,14 @@ body.film-drawer-open .film-parallax-stage {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.7);
-  opacity: 0;
-  visibility: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  white-space: nowrap;
-  transition: opacity 0.38s ease, visibility 0.38s ease, color 0.35s ease;
-}
-
-.film-title-meta.is-active {
+  opacity: 1;
+  visibility: visible;
   position: relative;
   top: auto;
   left: auto;
-  opacity: 1;
-  visibility: visible;
   pointer-events: auto;
+  white-space: nowrap;
+  transition: color 0.35s ease;
 }
 
 .film-meta-sep {
@@ -3539,11 +3553,13 @@ body.film-drawer-open .film-parallax-stage {
 
 /* Bottom Bar: Dots, Center "MEHR ERFAHREN" Text & Controls on the exact same height */
 .film-sticky-bottom {
-  position: relative;
+  position: sticky;
+  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  padding: 0 var(--section-space-x) clamp(2.5rem, 5vh, 4rem);
   pointer-events: auto;
   box-sizing: border-box;
 }
@@ -3577,8 +3593,10 @@ body.film-drawer-open .film-parallax-stage {
 .film-more-text-btn {
   position: absolute;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  top: auto;
+  bottom: auto;
+  margin-top: 0;
+  transform: translateX(-50%);
   background: transparent !important;
   border: none !important;
   outline: none !important;
@@ -3661,9 +3679,10 @@ body.film-drawer-open .film-more-text-btn,
 .film-more-text-btn.is-active {
   position: absolute !important;
   left: 50% !important;
-  top: 50% !important;
+  top: auto !important;
   bottom: auto !important;
-  transform: translate(-50%, -50%) !important;
+  margin-top: 0 !important;
+  transform: translateX(-50%) !important;
   z-index: 99996 !important;
   opacity: 1 !important;
   visibility: visible !important;
@@ -3952,17 +3971,29 @@ body.film-drawer-open .film-more-text-btn {
 }
 
 @media (max-width: 768px) {
+  .photo-unified-gallery {
+    margin-left: calc(-1 * var(--section-space-x));
+    margin-right: calc(-1 * var(--section-space-x));
+    width: calc(100% + 2 * var(--section-space-x));
+    max-width: 100vw;
+  }
+
   .photo-compact-grid {
     grid-template-columns: repeat(2, 1fr) !important;
     grid-auto-rows: auto;
-    gap: 0.35rem;
+    gap: 0.25rem !important;
+    width: 100%;
+  }
+
+  .photo-compact-grid .photo-card {
+    border-radius: 0 !important;
   }
 
   .photo-compact-grid portfolio-text.photo-text-card,
   .photo-compact-grid .photo-text-card {
     grid-column: span 2 !important;
     grid-row: auto !important;
-    padding: 0.8rem 0 1.2rem 0;
+    padding: 0.8rem var(--section-space-x) 1.2rem var(--section-space-x) !important;
     order: -1;
   }
   
@@ -4187,17 +4218,13 @@ body.film-drawer-open .film-more-text-btn {
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
   padding: 0.5rem 0 1.2rem 0;
-  cursor: grab;
+  cursor: default;
   user-select: none;
+  touch-action: pan-y pinch-zoom;
 }
 
 .ceramic-strip::-webkit-scrollbar {
   display: none;
-}
-
-.ceramic-strip.is-dragging {
-  cursor: grabbing;
-  scroll-behavior: auto !important;
 }
 
 .ceramic-frame {
@@ -4283,19 +4310,9 @@ body.film-drawer-open .film-more-text-btn {
   background: rgba(255, 255, 255, 0.08);
   border-radius: 999px;
   margin-top: 1.5rem;
-  cursor: pointer;
-  touch-action: none;
+  cursor: default;
+  touch-action: pan-y pinch-zoom;
   user-select: none;
-}
-
-.ceramic-progress-track::before {
-  content: '';
-  position: absolute;
-  top: -14px;
-  bottom: -14px;
-  left: 0;
-  right: 0;
-  cursor: pointer;
 }
 
 .ceramic-progress-bar {
@@ -4308,16 +4325,29 @@ body.film-drawer-open .film-more-text-btn {
   background: #ffffff;
   border-radius: 999px;
   transform: translateX(0%);
-  pointer-events: none;
+  pointer-events: auto !important;
+  cursor: grab;
+  touch-action: none;
   transition: transform 0.1s ease-out, height 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), margin-top 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
   will-change: transform, height;
 }
 
-.ceramic-progress-track:hover .ceramic-progress-bar,
-.ceramic-progress-track:active .ceramic-progress-bar,
+.ceramic-progress-bar::before {
+  content: '';
+  position: absolute;
+  top: -14px;
+  bottom: -14px;
+  left: -10px;
+  right: -10px;
+  cursor: grab;
+}
+
+.ceramic-progress-bar:hover,
+.ceramic-progress-bar:active,
 .ceramic-progress-track.is-scrubbing .ceramic-progress-bar {
   height: 6px;
   margin-top: -3px;
+  cursor: grabbing;
 }
 
 @media (max-width: 1024px) {
@@ -4744,7 +4774,7 @@ body.film-drawer-open .film-more-text-btn {
   position: sticky;
   top: 0;
   height: 100vh;
-  height: 100dvh;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -5587,9 +5617,9 @@ body.film-drawer-open .film-more-text-btn {
   width: 100%;
   max-width: 100% !important;
   min-height: 100vh;
-  min-height: 100dvh;
+
   height: 100vh;
-  height: 100dvh;
+
   margin: 0 auto;
   padding: clamp(2.5rem, 5vh, 4.5rem) var(--section-space-x);
   display: flex;
@@ -5828,7 +5858,7 @@ body.film-drawer-open .film-more-text-btn {
   width: 100%;
   max-width: 100% !important;
   min-height: 100vh;
-  min-height: 100dvh;
+
   height: auto;
   display: flex;
   align-items: center;
@@ -6122,9 +6152,9 @@ body.film-drawer-open .film-more-text-btn {
   width: 100%;
   max-width: 100% !important;
   min-height: 100vh;
-  min-height: 100dvh;
+
   height: 100vh;
-  height: 100dvh;
+
   padding: clamp(3rem, 6vh, 5rem) var(--section-space-x) clamp(1rem, 2vh, 1.8rem) var(--section-space-x);
   margin: 0 auto;
   text-align: center;
@@ -6732,7 +6762,10 @@ body:has(#cinema-modal.open) .nav-header {
     top: calc(0.85rem + env(safe-area-inset-top, 0px)) !important;
     left: 0 !important;
     right: 0 !important;
-    padding: 0 1.25rem !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+    padding: 0 calc(1.25rem + env(safe-area-inset-right, 0px)) 0 calc(1.25rem + env(safe-area-inset-left, 0px)) !important;
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
@@ -6776,6 +6809,7 @@ body:has(#cinema-modal.open) .nav-header {
     justify-content: center;
     width: 44px;
     height: 44px;
+    flex-shrink: 0 !important;
     background: transparent !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
@@ -6858,9 +6892,9 @@ body:has(#cinema-modal.open) .nav-header {
     bottom: 0;
     width: 100vw;
     height: 100vh;
-    height: 100svh;
-    height: 100dvh;
-    max-height: 100dvh;
+
+
+
     
     z-index: 990;
     background-color: transparent !important;
@@ -7079,7 +7113,8 @@ body:has(#cinema-modal.open) .nav-header {
   .hero-section {
     min-height: 0 !important;
     height: 100vh;
-    height: 100svh;
+    height: 100svh; /* Fits exactly into the initial viewport with URL bar open */
+
     padding: calc(4rem + env(safe-area-inset-top, 0px)) 0 calc(2rem + env(safe-area-inset-bottom, 0px)) 0;
     justify-content: flex-end;
   }
@@ -7116,14 +7151,14 @@ body:has(#cinema-modal.open) .nav-header {
   }
 
   .hero-marquee-item {
-    font-size: clamp(4rem, 19vw, 8rem);
+    font-size: clamp(6.2rem, 28vw, 11.5rem);
     font-weight: 450;
     letter-spacing: -0.035em;
   }
 
   .hero-marquee-dash {
-    margin-left: 1.5rem;
-    margin-right: 0.9rem;
+    margin-left: clamp(1.6rem, 3.5vw, 2.5rem);
+    margin-right: clamp(1rem, 2.5vw, 1.8rem);
     font-weight: 350;
   }
 
@@ -7316,90 +7351,7 @@ body:has(#cinema-modal.open) .nav-header {
 }
 
   .bmw-infoblocks-grid {
-    grid-template-columns: 1fr;
-    gap: 0.85rem;
-    margin-top: 1.4rem;
-  }
-
-  .bmw-infoblock {
-    background: transparent !important;
-    border-radius: 0 !important;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    overflow: hidden;
-    width: 100%;
-  }
-
-  .bmw-infoblock:hover:not(.is-expanded) {
-    background: transparent !important;
-  }
-
-  .bmw-infoblock.is-expanded {
-    background: transparent !important;
-  }
-
-  .bmw-infoblock-header {
-    cursor: pointer;
-    padding: 0.45rem 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    -webkit-tap-highlight-color: transparent;
-    pointer-events: auto;
-    background: transparent !important;
-    border: none !important;
-  }
-
-  .bmw-infoblock-tag {
-    margin-bottom: 0;
-    font-size: 0.78rem;
-    letter-spacing: 0.18em;
-    color: var(--accent-warm);
-    transition: color 0.2s ease, opacity 0.2s ease;
-  }
-
-  .bmw-infoblock:hover .bmw-infoblock-tag,
-  .bmw-infoblock.is-expanded .bmw-infoblock-tag {
-    opacity: 1;
-  }
-
-  .bmw-infoblock-icon {
-    display: block;
-    width: 14px;
-    height: 14px;
-    color: rgba(255, 255, 255, 0.5);
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease;
-    transform-origin: center;
-    flex-shrink: 0;
-    margin-left: 0.75rem;
-  }
-
-  .bmw-infoblock.is-expanded .bmw-infoblock-icon {
-    transform: rotate(45deg);
-    color: #ffffff;
-  }
-
-  .bmw-infoblock-content {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    width: 100%;
-  }
-
-  .bmw-infoblock.is-expanded .bmw-infoblock-content {
-    grid-template-rows: 1fr;
-  }
-
-  .bmw-infoblock-text {
-    overflow: hidden;
-    padding: 0.35rem 0 0.4rem 0;
-    margin: 0;
-    font-size: var(--text-size-body);
-    line-height: 1.7;
-    color: var(--text-color-body);
-    font-weight: 300;
+    display: none !important;
   }
 
   .bmw-editorial-story {
@@ -7446,6 +7398,15 @@ body:has(#cinema-modal.open) .nav-header {
     max-width: 100%;
   }
 
+  /* BMW 700 Cinematic Video: Randlos bis zum Displayrand */
+  .cinematic-hero-player {
+    margin-left: calc(-1 * var(--section-space-x));
+    margin-right: calc(-1 * var(--section-space-x));
+    width: calc(100% + 2 * var(--section-space-x));
+    max-width: 100vw;
+    border-radius: 0 !important;
+  }
+
   .kaserne-hero-lead {
     font-size: var(--text-size-body);
     line-height: var(--lh-body);
@@ -7453,8 +7414,22 @@ body:has(#cinema-modal.open) .nav-header {
     width: 100%;
   }
 
+  /* Kaserne Video: Randlos bis zum Displayrand */
+  #project-kaserne .cgi-feature-grid {
+    margin-left: calc(-1 * var(--section-space-x));
+    margin-right: calc(-1 * var(--section-space-x));
+    width: calc(100% + 2 * var(--section-space-x));
+    max-width: 100vw;
+    margin-bottom: 2.2rem;
+  }
+
+  .kaserne-feature-grid .cgi-main-media {
+    border-radius: 0 !important;
+    width: 100%;
+  }
+
   .kaserne-side-text-col {
-    padding: 0;
+    padding: 0 var(--section-space-x);
     margin-top: 1.2rem;
     text-align: center;
     align-items: center;
@@ -7473,8 +7448,19 @@ body:has(#cinema-modal.open) .nav-header {
     line-height: 1.65;
   }
 
+  /* Kaserne Bildvergleich (Real / 3D Slider): Randlos bis zum Displayrand */
   .kaserne-compare-container {
+    margin-left: calc(-1 * var(--section-space-x));
+    margin-right: calc(-1 * var(--section-space-x));
+    width: calc(100% + 2 * var(--section-space-x));
+    max-width: 100vw;
     margin-bottom: clamp(3rem, 5vh, 4.5rem) !important;
+  }
+
+  .kaserne-compare-slider {
+    border-radius: 0 !important;
+    width: 100% !important;
+    max-width: 100vw !important;
   }
 
   .kaserne-compare-container > portfolio-text,
@@ -7495,44 +7481,55 @@ body:has(#cinema-modal.open) .nav-header {
   .cgi-header-row .cgi-parallax-nav {
     display: none !important;
   }
-
-  #project-kaserne .cgi-feature-grid {
-    margin-bottom: 2.2rem;
+  
+  .cgi-parallax-container {
+    margin-left: calc(-1 * var(--section-space-x));
+    margin-right: calc(-1 * var(--section-space-x));
+    width: calc(100% + 2 * var(--section-space-x));
+    max-width: 100vw;
   }
   
   .cgi-parallax-viewport {
     scroll-snap-type: none !important;
     -webkit-overflow-scrolling: touch;
     padding-bottom: 1.2rem;
+    width: 100%;
   }
 
   .cgi-parallax-track {
     gap: 0.35rem !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
-  /* CGI Parallax Cards: 1.25 bis 1.5 Karten sichtbar (Peek-Effekt zum Durchwischen) */
+  /* CGI Parallax Cards: Randlose Darstellung beim Durchwischen bis zum Displayrand */
   .cgi-parallax-card {
-    flex: 0 0 70vw !important;
-    width: 70vw !important;
-    max-width: 320px;
+    flex: 0 0 76vw !important;
+    width: 76vw !important;
+    max-width: none !important;
     height: auto !important;
     scroll-snap-align: none !important;
     border-radius: 0;
   }
   
   .cgi-parallax-card.cgi-parallax-card-wide {
-    flex: 0 0 76vw !important;
-    width: 76vw !important;
-    max-width: 350px;
+    flex: 0 0 84vw !important;
+    width: 84vw !important;
+    max-width: none !important;
   }
 
   .cgi-parallax-img-box {
     height: clamp(300px, 44vh, 380px);
-    border-radius: 4px;
+    border-radius: 0;
   }
   
   .cgi-parallax-card-info {
-    padding: 0.75rem 0.1rem 0;
+    padding: 0.75rem 0.6rem 0;
+  }
+
+  .cgi-parallax-scrubber {
+    margin: 0.6rem var(--section-space-x) 0;
+    width: calc(100% - (2 * var(--section-space-x)));
   }
 
   .cgi-card-name {
@@ -7543,43 +7540,69 @@ body:has(#cinema-modal.open) .nav-header {
     font-size: 0.76rem;
   }
 
-  /* Horizontal Stills Strips (BMW 700 Vorstudien & Kaserne Phasen): 1.25 bis 1.5 Karten nebeneinander */
+  /* Horizontal Stills Strips (BMW 700 Vorstudien & Kaserne Phasen): Randlos bis zum Displayrand */
+  .stills-strip-wrap {
+    margin-left: calc(-1 * var(--section-space-x));
+    margin-right: calc(-1 * var(--section-space-x));
+    width: calc(100% + 2 * var(--section-space-x));
+    max-width: 100vw;
+  }
+
+  .stills-strip-label {
+    padding: 0 var(--section-space-x);
+  }
+
   .stills-strip {
     gap: 0.35rem !important;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     padding-bottom: 0.8rem;
-    padding-right: 1.25rem;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   .still-card {
-    flex: 0 0 70vw !important;
-    width: 70vw !important;
-    max-width: 320px;
+    flex: 0 0 76vw !important;
+    width: 76vw !important;
+    max-width: none !important;
     aspect-ratio: 16 / 10;
     scroll-snap-align: start;
-    border-radius: 4px;
+    border-radius: 0 !important;
   }
 
   .still-caption {
     display: none !important;
   }
 
-  /* Ceramic 360 Strip: 1.25 bis 1.5 Karten sichtbar */
+  /* Ceramic 360 Strip: Randlos bis zum Displayrand */
+  .ceramic-strip-wrap {
+    margin-left: calc(-1 * var(--section-space-x));
+    margin-right: calc(-1 * var(--section-space-x));
+    width: calc(100% + 2 * var(--section-space-x));
+    max-width: 100vw;
+  }
+
   .ceramic-strip {
     gap: 0.35rem !important;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     padding-bottom: 1rem;
-    padding-right: 1.25rem;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   .ceramic-frame {
-    flex: 0 0 66vw !important;
-    width: 66vw !important;
-    max-width: 300px;
+    flex: 0 0 76vw !important;
+    width: 76vw !important;
+    max-width: none !important;
     scroll-snap-align: start;
+    border-radius: 0 !important;
+  }
+
+  .ceramic-progress-track {
+    margin: 0.6rem var(--section-space-x) 0;
+    width: calc(100% - (2 * var(--section-space-x)));
   }
 
   .cgi-card-num {
@@ -7639,24 +7662,37 @@ body:has(#cinema-modal.open) .nav-header {
     margin-top: 1.5rem;
   }
   
-  .film-sticky-overlay {
-  z-index: 60;
-    padding: calc(4.2rem + env(safe-area-inset-top, 0px)) 1rem calc(1.2rem + env(safe-area-inset-bottom, 0px));
+  
+
+    .film-sticky-overlay {
+    z-index: 60;
+    padding: calc(4.2rem + env(safe-area-inset-top, 0px)) 0 0;
   }
+  
+  
   
   .film-scroll-hint {
     display: none;
   }
 
+  .film-stage-content,
   .film-center-stage {
-    left: 1rem;
-    width: calc(100% - 2rem);
-    max-width: 90vw;
+    left: 1rem !important;
+    width: calc(100% - 2rem) !important;
+    max-width: calc(100vw - 2rem) !important;
+    box-sizing: border-box !important;
+    flex-wrap: wrap !important;
+    gap: 0.25rem 0.65rem !important;
   }
 
   .film-center-title {
-    font-size: clamp(1.5rem, 5.5vw, 2.1rem);
-    line-height: var(--lh-h1);
+    font-size: clamp(1.2rem, 4.8vw, 1.75rem) !important;
+    line-height: 1.15 !important;
+    white-space: normal !important;
+  }
+
+  .film-title-divider-vert {
+    font-size: clamp(1.2rem, 4.8vw, 1.75rem) !important;
   }
 
   .film-title-divider {
@@ -7846,7 +7882,7 @@ body:has(#cinema-modal.open) .nav-header {
     position: sticky !important;
     top: 0 !important;
     height: 100vh !important;
-    height: 100dvh !important;
+
     display: flex !important;
     flex-direction: column !important;
     justify-content: center !important;
@@ -8283,7 +8319,7 @@ body:has(#cinema-modal.open) .nav-header {
      -------------------------------------------------------------------------- */
   .contact-section {
     min-height: 100vh !important;
-    min-height: 100dvh !important;
+
     width: 100% !important;
     max-width: 100% !important;
     display: flex !important;
@@ -8460,7 +8496,7 @@ body:has(#cinema-modal.open) .nav-header {
   left: 0;
   width: 100vw;
   height: 100vh;
-  height: 100dvh;
+
   z-index: 10050;
   display: flex;
   align-items: center;
@@ -8819,7 +8855,7 @@ em { font-style: normal !important; }
 
 #thd-app.light-mode-section {
   margin-top: -100vh !important;
-  margin-top: -100dvh !important;
+
   position: relative !important;
   z-index: 20 !important;
   background-color: #f5f5f5 !important;
@@ -8916,3 +8952,18 @@ body.light-theme-active .mobile-nav-overlay {
 .light-mode-section .footer-bottom {
   color: rgba(2, 2, 2, 0.6) !important;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

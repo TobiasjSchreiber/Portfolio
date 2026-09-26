@@ -51,6 +51,10 @@ class CgiCard extends HTMLElement {
       const teaserSrc = this.getAttribute('teaser-src');
       const posterSrc = this.getAttribute('poster-src');
       const posterAttr = posterSrc ? ` poster="${posterSrc}"` : '';
+      const loopEnd = this.getAttribute('loop-end');
+      const loopStart = this.getAttribute('loop-start');
+      const loopEndAttr = loopEnd ? ` data-loop-end="${loopEnd}"` : '';
+      const loopStartAttr = loopStart ? ` data-loop-start="${loopStart}"` : '';
       
       this.setAttribute('data-cinema-src', videoSrc);
 
@@ -60,7 +64,7 @@ class CgiCard extends HTMLElement {
             <video class="cgi-parallax-media proxy-video" preload="auto" muted loop playsinline${posterAttr}>
               <source src="${teaserSrc}" type="video/mp4">
             </video>
-            <video class="cgi-parallax-media full-video" preload="none" muted loop playsinline style="opacity: 0;">
+            <video class="cgi-parallax-media full-video"${loopEndAttr}${loopStartAttr} preload="none" muted loop playsinline style="opacity: 0;">
               <source src="${videoSrc}" type="video/mp4">
             </video>
           </div>

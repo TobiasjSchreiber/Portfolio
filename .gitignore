@@ -13,3 +13,7 @@ desktop.ini
 
 # Video Archive (raw/large master files)
 assets/videos/archive/
+
+# Scratch & fix scripts
+fix*
+*.ps1

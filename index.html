@@ -33,7 +33,7 @@
   </script>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css?v=252">
+  <link rel="stylesheet" href="css/style.css?v=285">
 </head>
 <body class="is-loading" data-ambient-theme="hero">
 
@@ -716,7 +716,7 @@
           <video class="proxy-video" preload="auto" muted loop playsinline poster="assets/images/lg/3D_nachbau_Kaserne.webp">
             <source src="assets/videos/3d/Kaserne_teaser.mp4" type="video/mp4">
           </video>
-          <video class="full-video" preload="none" muted loop playsinline style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+          <video class="full-video" data-loop-end="33" preload="none" muted loop playsinline style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
             <source src="assets/videos/3d/Kaserne_web.mp4" type="video/mp4">
           </video>
           <button class="video-audio-toggle is-muted cgi-audio-toggle" type="button" aria-label="Ton einschalten" title="Ton einschalten">
@@ -881,47 +881,71 @@
     <div class="film-parallax-stage" id="film-parallax-stage">
       <div class="film-sticky-container">
         <div class="film-vignette-overlay" aria-hidden="true"></div>
-        <!-- Pinned UI / Text Overlay (stays fixed during scroll through the 4 films) -->
-        <div class="film-sticky-overlay" aria-live="polite">
-
-          <!-- Pinned Center Stage: ONLY the Film Title in the Center -->
-          <!-- Pinned Stage: Film Title on the Left, Dynamic Divider, Date and Duration -->
-          <div class="film-center-stage" aria-live="polite">
-            <!-- Pinned Titles Area -->
-            <div class="film-titles-area">
-              <h3 class="film-center-title is-active" data-film-index="0">Schattenwolf</h3>
-              <h3 class="film-center-title" data-film-index="1">1 Tag als Bergmann</h3>
-              <h3 class="film-center-title" data-film-index="2">Inszenierter Kurzfilm</h3>
-              <h3 class="film-center-title" data-film-index="3">Offline statt hochgeladen</h3>
-            </div>
-
-            <!-- Single Dynamic Divider Line: matches active title length and animates width on film switch -->
-            <div class="film-title-divider" id="film-dynamic-divider" aria-hidden="true"></div>
-
-            <!-- Pinned Metadata Area -->
-            <div class="film-metas-area">
-              <div class="film-title-meta is-active" data-film-index="0">
-                <span class="film-meta-date">2026</span>
-                <span class="film-meta-sep" aria-hidden="true">&bull;</span>
-                <span class="film-meta-duration">0:46 Min.</span>
+        <!-- Pinned Center Stage: 4 Sticky Title Cards in Middle of Screen, seamlessly masked to video cut seams -->
+        <div class="film-sticky-stages" id="film-sticky-stages" aria-live="polite">
+          <!-- Card 0: Schattenwolf -->
+          <div class="film-stage-card" data-stage-index="0">
+            <div class="film-stage-content framer-1qcv96o">
+              <div class="framer-1eeuzzz">
+                <h1 class="film-center-title">Schattenwolf</h1>
               </div>
-              <div class="film-title-meta" data-film-index="1">
-                <span class="film-meta-date">2026</span>
-                <span class="film-meta-sep" aria-hidden="true">&bull;</span>
-                <span class="film-meta-duration">5:48 Min.</span>
+              <div class="framer-1ku6rkr">
+                <span class="film-title-divider-vert" aria-hidden="true">❘</span>
               </div>
-              <div class="film-title-meta" data-film-index="2">
-                <span class="film-meta-date">2025</span>
-                <span class="film-meta-sep" aria-hidden="true">&bull;</span>
-                <span class="film-meta-duration">2:45 Min.</span>
-              </div>
-              <div class="film-title-meta" data-film-index="3">
-                <span class="film-meta-date">2025</span>
-                <span class="film-meta-sep" aria-hidden="true">&bull;</span>
-                <span class="film-meta-duration">4:36 Min.</span>
+              <div class="framer-t9r3hr">
+                <h1 class="film-center-title film-center-title--sub">Aurelia Studios</h1>
               </div>
             </div>
           </div>
+
+          <!-- Card 1: 1 Tag als Bergmann -->
+          <div class="film-stage-card" data-stage-index="1">
+            <div class="film-stage-content framer-1qcv96o">
+              <div class="framer-1eeuzzz">
+                <h1 class="film-center-title">1 Tag als Bergmann</h1>
+              </div>
+              <div class="framer-1ku6rkr">
+                <span class="film-title-divider-vert" aria-hidden="true">❘</span>
+              </div>
+              <div class="framer-t9r3hr">
+                <h1 class="film-center-title film-center-title--sub">Uni-Projekt</h1>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Inszenierter Kurzfilm -->
+          <div class="film-stage-card" data-stage-index="2">
+            <div class="film-stage-content framer-1qcv96o">
+              <div class="framer-1eeuzzz">
+                <h1 class="film-center-title">Inszenierter Kurzfilm</h1>
+              </div>
+              <div class="framer-1ku6rkr">
+                <span class="film-title-divider-vert" aria-hidden="true">❘</span>
+              </div>
+              <div class="framer-t9r3hr">
+                <h1 class="film-center-title film-center-title--sub">Uni-Projekt</h1>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Offline statt hochgeladen -->
+          <div class="film-stage-card" data-stage-index="3">
+            <div class="film-stage-content framer-1qcv96o">
+              <div class="framer-1eeuzzz">
+                <h1 class="film-center-title">Offline statt hochgeladen</h1>
+              </div>
+              <div class="framer-1ku6rkr">
+                <span class="film-title-divider-vert" aria-hidden="true">❘</span>
+              </div>
+              <div class="framer-t9r3hr">
+                <h1 class="film-center-title film-center-title--sub">Uni-Projekt</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pinned UI / Text Overlay (stays fixed during scroll through the 4 films) -->
+        <div class="film-sticky-overlay" aria-live="polite">
 
           <!-- Bottom Status Bar: Dot Indicators, Center "MEHR ERFAHREN" Text & Controls -->
           <div class="film-sticky-bottom">
@@ -1251,8 +1275,7 @@
           </div>
         </div>
 
-      <!-- Hidden Lightbox Trigger Registry for Schattenwolf & Offline Stills -->
-      <div class="film-stills-gallery-hidden" style="display: none;" aria-hidden="true">
+<div class="film-stills-gallery-hidden" style="display: none;" aria-hidden="true">
         <div data-cinema-trigger data-cinema-type="image" 
              data-cinema-src="assets/images/full/3D_Schattenwolf_Zimmer.webp" 
              data-cinema-title="Schattenwolf Zimmer — 3D Rekonstruktion" 
@@ -2318,13 +2341,20 @@
 
   <!-- JavaScript Modules -->
   <script src="js/lenis.min.js" defer></script>
-  <script src="js/main.js?v=163" defer></script>
+  <script src="js/main.js?v=188" defer></script>
   <script src="js/portfolio-text.js?v=6"></script>
-  <script src="js/cgi-card.js?v=2"></script>
+  <script src="js/cgi-card.js?v=4"></script>
   <script src="js/still-card.js"></script>
   <script src="js/media-cards.js?v=6"></script>
 </body>
 </html>
+
+
+
+
+
+
+
 
 
 
