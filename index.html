@@ -7,6 +7,25 @@
   <meta name="description" content="Portfolio von Tobias Schreiber — Student der Medientechnik. Schwerpunkte: 3D & CGI, Film, Fotografie, Kunst und Medientechnik.">
   <meta name="theme-color" content="#020202">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <!-- Progressive Web App (PWA) & iOS Standalone Support -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="TS Portfolio">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="TS Portfolio">
+
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+  </script>
 
   <!-- Open Graph / Social Media Preview -->
   <meta property="og:title" content="Tobias Schreiber — Portfolio | Medientechnik">
