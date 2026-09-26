@@ -2008,11 +2008,20 @@ body[data-ambient-theme="kontakt"] {
   display: flex;
   gap: 0.5rem;
   overflow-x: auto;
+  overflow-y: hidden;
   padding-bottom: 0.4rem;
   scrollbar-width: none;
   -ms-overflow-style: none;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
+  -webkit-user-drag: none;
+  user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .stills-strip::-webkit-scrollbar {
@@ -2102,6 +2111,12 @@ body[data-ambient-theme="kontakt"] {
   border-radius: 3px;
   background: #080808;
   cursor: pointer;
+  -webkit-user-drag: none;
+  user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: pan-x pan-y;
 }
 
 .still-img {
@@ -2110,6 +2125,12 @@ body[data-ambient-theme="kontakt"] {
   object-fit: cover;
   transition: transform 0.5s var(--ease-smooth);
   filter: none;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .still-card:hover .still-img {
@@ -3283,7 +3304,7 @@ body.film-drawer-open .film-parallax-stage {
   inset: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 900;
+  z-index: 99990 !important;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3702,6 +3723,9 @@ body.film-drawer-open .film-more-text-btn:hover,
 }
 
 /* When Film Info Drawer is open: Calm fade of stage text & peripheral buttons */
+body.film-drawer-open .film-sticky-stages,
+body.film-drawer-open .film-stage-card,
+body.film-drawer-open .film-stage-content,
 body.film-drawer-open .film-center-stage,
 body.film-drawer-open .film-dots,
 body.film-drawer-open .film-sticky-bottom-right,
@@ -4215,12 +4239,15 @@ body.film-drawer-open .film-more-text-btn {
   display: flex;
   gap: 0.5rem;
   overflow-x: auto;
+  overflow-y: hidden;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
   padding: 0.5rem 0 1.2rem 0;
   cursor: default;
   user-select: none;
-  touch-action: pan-y pinch-zoom;
+  touch-action: pan-x pan-y;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
 }
 
 .ceramic-strip::-webkit-scrollbar {
@@ -4765,7 +4792,7 @@ body.film-drawer-open .film-more-text-btn {
    -------------------------------------------------------------------------- */
 .project-section.uni-sticky-section {
   position: relative;
-  height: 280vh;
+  height: 360vh;
   padding-top: 0;
   padding-bottom: 0;
 }
@@ -5683,8 +5710,7 @@ body.film-drawer-open .film-more-text-btn {
 
 .mockup-frame {
   position: relative;
-  width: min(100%, 310px, calc((84vh - 4rem) * 1374 / 2863));
-  width: min(100%, 310px, calc((84dvh - 4rem) * 1374 / 2863));
+  width: min(100%, 310px);
   aspect-ratio: 1374 / 2863;
   height: auto;
   max-width: 310px;
@@ -5847,7 +5873,7 @@ body.film-drawer-open .film-more-text-btn {
   }
   .mockup-frame {
     max-width: 280px;
-    width: min(100%, 280px, calc((72dvh - 4rem) * 1374 / 2863));
+    width: min(78vw, 280px);
   }
 }
 
@@ -5890,8 +5916,7 @@ body.film-drawer-open .film-more-text-btn {
 .about-portrait-wrap {
   width: auto;
   max-width: min(44vw, 560px);
-  height: clamp(340px, 66vh, 740px);
-  height: clamp(340px, 66dvh, 740px);
+  height: clamp(340px, 62vh, 680px);
   aspect-ratio: 2 / 3;
   border-radius: 4px;
   overflow: hidden;
@@ -7555,11 +7580,16 @@ body:has(#cinema-modal.open) .nav-header {
   .stills-strip {
     gap: 0.35rem !important;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: auto !important;
     padding-bottom: 0.8rem;
     padding-left: 0 !important;
     padding-right: 0 !important;
+    -webkit-touch-callout: none;
   }
 
   .still-card {
@@ -7585,8 +7615,13 @@ body:has(#cinema-modal.open) .nav-header {
 
   .ceramic-strip {
     gap: 0.35rem !important;
-    scroll-snap-type: x mandatory;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: auto !important;
     padding-bottom: 1rem;
     padding-left: 0 !important;
     padding-right: 0 !important;
@@ -7872,7 +7907,7 @@ body:has(#cinema-modal.open) .nav-header {
   #uni.project-section {
     padding-left: 0 !important;
     padding-right: 0 !important;
-    height: 320vh !important; /* Scroll distance to switch through the 4 PDFs */
+    height: 340vh !important; /* Scroll distance to switch through the 4 PDFs */
     width: 100% !important;
     max-width: 100vw !important;
     box-sizing: border-box !important;
@@ -8240,10 +8275,9 @@ body:has(#cinema-modal.open) .nav-header {
   }
 
   .about-portrait-wrap {
-    width: auto !important;
+    width: min(76vw, 340px) !important;
     max-width: 100% !important;
-    height: clamp(280px, 50vh, 480px) !important;
-    height: clamp(280px, 50dvh, 480px) !important;
+    height: auto !important;
     min-height: 0 !important;
     aspect-ratio: 2 / 3 !important;
     margin: 0 auto !important;
@@ -8762,7 +8796,7 @@ portfolio-text { display: contents; }
 em { font-style: normal !important; }
 
 .film-info-drawer {
-  z-index: 900 !important;
+  z-index: 99990 !important;
 }
 
 /* ==========================================================================
@@ -8845,11 +8879,11 @@ em { font-style: normal !important; }
    THD APP OVERLAP & WHITE CURTAIN PARALLAX OVER PDFS
    ========================================================================== */
 #uni.project-section {
-  height: 600vh !important;
+  height: 360vh !important;
 }
 @media (max-width: 992px) {
   #uni.project-section {
-    height: 520vh !important;
+    height: 340vh !important;
   }
 }
 

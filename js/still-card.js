@@ -47,7 +47,8 @@ class StillCard extends HTMLElement {
            src="${defaultSrc}" 
            alt="${alt}" loading="lazy" 
            srcset="${srcset}" 
-           sizes="(max-width: 768px) 75vw, 340px">
+           sizes="(max-width: 768px) 75vw, 340px"
+           draggable="false">
       <div class="still-caption">${caption}</div>
     `;
   }
