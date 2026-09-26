@@ -587,6 +587,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let updateActiveSection = () => {};
   let currentActiveSectionId = null;
   let performSmoothNavigation = () => {};
+  let performFadeNavigation = () => {};
 
   function initBouncyTabsNav() {
     const nav = document.querySelector('[data-bouncy-tabs-nav]');
@@ -766,7 +767,48 @@ document.addEventListener('DOMContentLoaded', () => {
       executeScroll(targetScroll);
     };
 
-    // Click interactions
+    // Shared Cinematic Dark Blur Navigation Engine (Top Bar + FAB Menu)
+    performFadeNavigation = function(rawTargetId, callback) {
+      const targetId = rawTargetId ? rawTargetId.replace(/^#/, '') : '';
+      if (!targetId) return;
+
+      const curtain = document.getElementById('nav-fade-curtain');
+      if (!curtain) {
+        if (typeof callback === 'function') callback();
+        syncMobileNavToSection(targetId);
+        if (typeof syncBouncyTabsToSection === 'function') {
+          syncBouncyTabsToSection(targetId, true);
+        }
+        if (typeof performSmoothNavigation === 'function') {
+          performSmoothNavigation(targetId, { instant: true });
+        }
+        return;
+      }
+
+      // 1. Smoothly fade screen to frosted dark blur
+      curtain.classList.add('is-active');
+
+      // 2. While dark & blurred: execute scroll jump and UI sync
+      setTimeout(() => {
+        if (typeof callback === 'function') callback();
+        syncMobileNavToSection(targetId);
+        if (typeof syncBouncyTabsToSection === 'function') {
+          syncBouncyTabsToSection(targetId, true);
+        }
+        if (typeof performSmoothNavigation === 'function') {
+          performSmoothNavigation(targetId, { instant: true });
+        }
+
+        // 3. Calmly melt dark blur veil back to clear & bright
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            curtain.classList.remove('is-active');
+          }, 80);
+        });
+      }, 290);
+    };
+
+    // Click interactions on Top Header Tabs
     buttons.forEach((btn) => {
       btn.addEventListener('click', (e) => {
         const href = btn.getAttribute('href');
@@ -776,7 +818,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetId = href.substring(1);
         setActiveButton(btn, true);
         hideGhost();
-        performSmoothNavigation(targetId);
+        performFadeNavigation(targetId);
       });
     });
 
@@ -960,43 +1002,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    function performFadeNavigation(targetId) {
-      const curtain = document.getElementById('nav-fade-curtain');
-      if (!curtain) {
-        closeMobileMenu();
-        syncMobileNavToSection(targetId);
-        if (typeof syncBouncyTabsToSection === 'function') {
-          syncBouncyTabsToSection(targetId, true);
-        }
-        if (typeof performSmoothNavigation === 'function') {
-          performSmoothNavigation(targetId, { instant: true });
-        }
-        return;
-      }
-
-      // 1. Smoothly fade screen to frosted dark blur
-      curtain.classList.add('is-active');
-
-      // 2. While dark & blurred: close menu & instantly jump to target section
-      setTimeout(() => {
-        closeMobileMenu();
-        syncMobileNavToSection(targetId);
-        if (typeof syncBouncyTabsToSection === 'function') {
-          syncBouncyTabsToSection(targetId, true);
-        }
-        if (typeof performSmoothNavigation === 'function') {
-          performSmoothNavigation(targetId, { instant: true });
-        }
-
-        // 3. Calmly melt dark blur veil back to clear & bright
-        requestAnimationFrame(() => {
-          setTimeout(() => {
-            curtain.classList.remove('is-active');
-          }, 80);
-        });
-      }, 290);
-    }
-
     const navLinks = overlay.querySelectorAll('.mobile-nav-link');
     navLinks.forEach((link) => {
       link.addEventListener('click', (e) => {
@@ -1005,7 +1010,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!href || !href.startsWith('#')) return;
 
         const targetId = href.substring(1);
-        performFadeNavigation(targetId);
+        performFadeNavigation(targetId, () => closeMobileMenu());
       });
     });
 
@@ -1076,12 +1081,17 @@ document.addEventListener('DOMContentLoaded', () => {
         anchor.addEventListener('click', function (e) {
           const targetId = this.getAttribute('href');
           if (!targetId || targetId === '#') return;
+          if (this.classList.contains('mobile-nav-link') || this.hasAttribute('data-bouncy-tabs-button')) return;
           e.preventDefault();
           const cleanId = targetId.replace(/^#/, '');
           if (typeof syncBouncyTabsToSection === 'function') {
             syncBouncyTabsToSection(cleanId, true);
           }
-          performSmoothNavigation(cleanId);
+          if (typeof performFadeNavigation === 'function') {
+            performFadeNavigation(cleanId);
+          } else {
+            performSmoothNavigation(cleanId);
+          }
         });
       });
     } else {
