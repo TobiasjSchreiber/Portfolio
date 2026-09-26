@@ -83,6 +83,32 @@ body.is-loading {
   pointer-events: none;
 }
 
+/* ==========================================================================
+   Cinematic Dark Blur Navigation Transition Curtain (FAB Menu Navigation)
+   ========================================================================== */
+.nav-fade-curtain {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background-color: rgba(2, 2, 2, 0.95);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  z-index: 99998;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1), backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease, visibility 0.3s ease;
+  will-change: opacity, backdrop-filter;
+}
+
+.nav-fade-curtain.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
 /* While loading: hide other page elements until aperture expansion reveals the UI */
 body.is-loading .intro-header,
 body.is-loading .hero-content,

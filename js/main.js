@@ -690,9 +690,11 @@ document.addEventListener('DOMContentLoaded', () => {
     nav.addEventListener('mouseleave', () => hideGhost());
 
     // Precise Navigation Engine: Positions content cleanly ~18px below the fixed hero bar
-    performSmoothNavigation = function(rawTargetId) {
+    performSmoothNavigation = function(rawTargetId, options = {}) {
       const targetId = rawTargetId ? rawTargetId.replace(/^#/, '') : '';
       if (!targetId) return;
+
+      const isInstant = !!options.instant;
 
       let targetElement = document.getElementById(targetId);
       if (!targetElement && (targetId === 'intro' || targetId === 'hero')) targetElement = document.getElementById('hero');
@@ -705,17 +707,29 @@ document.addEventListener('DOMContentLoaded', () => {
       clearTimeout(manualClickTimer);
       manualClickTimer = setTimeout(() => {
         isManualClick = false;
-      }, 1400);
+      }, isInstant ? 400 : 1400);
 
       const sectionTheme = (targetId === 'intro' || targetId === 'hero') ? 'hero' : (targetId === 'work' || targetId === 'bmw' || targetId === 'cgi' ? 'cgi' : (targetId === 'approach' ? 'about' : targetId));
       setAmbientTheme(sectionTheme);
 
-      if (targetId === 'hero' || targetId === 'intro') {
-        if (typeof lenis !== 'undefined' && lenis) {
-          lenis.scrollTo(0, { duration: 1.0 });
+      const executeScroll = (targetScroll) => {
+        if (isInstant) {
+          if (typeof lenis !== 'undefined' && lenis) {
+            lenis.scrollTo(targetScroll, { immediate: true });
+          } else {
+            window.scrollTo({ top: targetScroll, behavior: 'instant' });
+          }
         } else {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          if (typeof lenis !== 'undefined' && lenis) {
+            lenis.scrollTo(targetScroll, { duration: 1.0 });
+          } else {
+            window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+          }
         }
+      };
+
+      if (targetId === 'hero' || targetId === 'intro') {
+        executeScroll(0);
         return;
       }
 
@@ -734,11 +748,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentScroll = window.scrollY || document.documentElement.scrollTop || (typeof lenis !== 'undefined' && lenis ? lenis.scroll : 0);
         const secRect = targetElement.getBoundingClientRect();
         const targetScroll = Math.max(0, Math.round(secRect.top + currentScroll));
-        if (typeof lenis !== 'undefined' && lenis) {
-          lenis.scrollTo(targetScroll, { duration: 1.0 });
-        } else {
-          window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-        }
+        executeScroll(targetScroll);
         return;
       }
 
@@ -753,12 +763,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const offsetBelowNav = (targetId === 'kunst') ? 46 : 18;
       const targetScroll = Math.max(0, Math.round(absoluteTop - (navBottom + offsetBelowNav)));
 
-      if (typeof lenis !== 'undefined' && lenis) {
-        lenis.scrollTo(targetScroll, { duration: 1.0 });
-      } else {
-        window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-      }
-    }
+      executeScroll(targetScroll);
+    };
 
     // Click interactions
     buttons.forEach((btn) => {
@@ -954,6 +960,43 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    function performFadeNavigation(targetId) {
+      const curtain = document.getElementById('nav-fade-curtain');
+      if (!curtain) {
+        closeMobileMenu();
+        syncMobileNavToSection(targetId);
+        if (typeof syncBouncyTabsToSection === 'function') {
+          syncBouncyTabsToSection(targetId, true);
+        }
+        if (typeof performSmoothNavigation === 'function') {
+          performSmoothNavigation(targetId, { instant: true });
+        }
+        return;
+      }
+
+      // 1. Smoothly fade screen to frosted dark blur
+      curtain.classList.add('is-active');
+
+      // 2. While dark & blurred: close menu & instantly jump to target section
+      setTimeout(() => {
+        closeMobileMenu();
+        syncMobileNavToSection(targetId);
+        if (typeof syncBouncyTabsToSection === 'function') {
+          syncBouncyTabsToSection(targetId, true);
+        }
+        if (typeof performSmoothNavigation === 'function') {
+          performSmoothNavigation(targetId, { instant: true });
+        }
+
+        // 3. Calmly melt dark blur veil back to clear & bright
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            curtain.classList.remove('is-active');
+          }, 80);
+        });
+      }, 290);
+    }
+
     const navLinks = overlay.querySelectorAll('.mobile-nav-link');
     navLinks.forEach((link) => {
       link.addEventListener('click', (e) => {
@@ -962,16 +1005,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!href || !href.startsWith('#')) return;
 
         const targetId = href.substring(1);
-        closeMobileMenu();
-        syncMobileNavToSection(targetId);
-        if (typeof syncBouncyTabsToSection === 'function') {
-          syncBouncyTabsToSection(targetId, true);
-        }
-        if (typeof performSmoothNavigation === 'function') {
-          setTimeout(() => {
-            performSmoothNavigation(targetId);
-          }, 60);
-        }
+        performFadeNavigation(targetId);
       });
     });
 
