@@ -2168,30 +2168,31 @@ document.addEventListener('DOMContentLoaded', () => {
         filmStickyBottom.style.pointerEvents = opacity > 0.5 ? 'auto' : 'none';
       }
 
-      // Progress across the 4 videos: 0.0 to 3.0
-      // 0.0 = Video 0
-      // 1.0 = Video 1
-      // 2.0 = Video 2
-      // 3.0 = Video 3
-      const rawProgress = (scrolledInto / totalScrollable) * 3;
-      const progress = Math.max(0, Math.min(3, rawProgress));
+      const stickyContainer = stage.querySelector('.film-sticky-container');
+      const stickyRect = stickyContainer ? stickyContainer.getBoundingClientRect() : { top: 0, height: windowH };
+      const stickyTop = stickyRect.top;
+      const stickyH = (stickyContainer && stickyContainer.clientHeight > 0) ? stickyContainer.clientHeight : windowH;
 
-      // Active film index based on which video is predominantly in view
+      // Track the video with the highest visible screen coverage
       let activeIdx = 0;
-      if (progress >= 2.5) {
-        activeIdx = 3;
-      } else if (progress >= 1.5) {
-        activeIdx = 2;
-      } else if (progress >= 0.5) {
-        activeIdx = 1;
-      } else {
-        activeIdx = 0;
-      }
+      let maxVisibleHeight = -1;
 
-      // Play visible videos, pause offscreen ones
+      // 1. Play/Pause videos based on actual screen visibility
       panels.forEach((p, idx) => {
+        const pRect = p.getBoundingClientRect();
+        const pTop = pRect.top - stickyTop;
+        const pBottom = pRect.bottom - stickyTop;
+        const visibleTop = Math.max(0, pTop);
+        const visibleBottom = Math.min(stickyH, pBottom);
+        const visibleH = Math.max(0, visibleBottom - visibleTop);
+        
+        if (visibleH > maxVisibleHeight) {
+          maxVisibleHeight = visibleH;
+          activeIdx = idx;
+        }
+
         const vids = p.querySelectorAll('video');
-        if (Math.abs(progress - idx) < 0.75) {
+        if (visibleH > 20) {
           vids.forEach(v => {
             v.style.transform = '';
             if (v.paused) v.play().catch(()=>{});
@@ -2204,15 +2205,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      // Dynamic Seamless Cut-Masking: Clip each sticky stage card to its video's exact visible screen range
+      // 2. Dynamic Seamless Cut-Masking: Clip each sticky stage card directly to its video panel's exact visible bounding rect
       stageCards.forEach((card, idx) => {
-        const panelScreenTop = (idx - progress) * windowH;
-        const panelScreenBottom = (idx + 1 - progress) * windowH;
+        const panel = panels[idx];
+        if (!panel) {
+          card.style.clipPath = 'inset(100% 0px 0px 0px)';
+          card.style.visibility = 'hidden';
+          return;
+        }
+
+        const panelRect = panel.getBoundingClientRect();
+        const panelScreenTop = panelRect.top - stickyTop;
+        const panelScreenBottom = panelRect.bottom - stickyTop;
 
         const clipTop = Math.max(0, panelScreenTop);
-        const clipBottom = Math.max(0, windowH - panelScreenBottom);
+        const clipBottom = Math.max(0, stickyH - panelScreenBottom);
 
-        if (clipTop >= windowH || clipBottom >= windowH || panelScreenBottom <= 0 || panelScreenTop >= windowH) {
+        if (clipTop >= stickyH || clipBottom >= stickyH || panelScreenBottom <= 0 || panelScreenTop >= stickyH) {
           card.style.clipPath = 'inset(100% 0px 0px 0px)';
           card.style.visibility = 'hidden';
         } else {
