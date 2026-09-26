@@ -151,11 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     document.body.classList.add('step-expand');
 
-    // Reveal UI softly at 380ms as the expanding video approaches fullscreen
-    setTimeout(() => {
-      document.body.classList.add('hero-ui-reveal');
-    }, 380);
-
     // Expansion finishes at ~850ms -> begin final fade of loader overlay
     setTimeout(() => {
       if (loader) {
@@ -163,15 +158,20 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       document.body.classList.add('loader-finished');
 
-      // 250ms later: cleanly remove loader, unlock scroll and activate site
+      // 150ms later (video is fully fullscreen): cleanly remove loader, activate site, and launch hero entrances!
       setTimeout(() => {
         if (loader) {
           loader.style.display = 'none';
         }
 
         document.documentElement.classList.remove('is-loading');
-        document.body.classList.remove('is-loading', 'step-push', 'step-expand', 'loader-finished', 'hero-ui-reveal');
-        document.body.classList.add('is-loaded');
+        document.body.classList.remove('is-loading', 'step-push', 'step-expand', 'loader-finished');
+        document.body.classList.add('is-loaded', 'hero-entrance');
+
+        // Trigger marquee entrance slide from right to left
+        if (typeof window.triggerHeroMarqueeEntrance === 'function') {
+          window.triggerHeroMarqueeEntrance();
+        }
 
         // Unbind scroll lock listeners
         window.removeEventListener('wheel', blockScrollEvent);
@@ -394,8 +394,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // Phase 1: Name Unfolds gently at ~28%
-      if (currentPercent >= 28 && !hasUnfolded) {
+      // Phase 1: Name de-blurs smoothly from start (~4%)
+      if (currentPercent >= 4 && !hasUnfolded) {
         hasUnfolded = true;
         if (loader) loader.classList.add('step-unfold');
       }
@@ -1003,8 +1003,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof updateFilmParallax === 'function') {
           updateFilmParallax();
         }
+        if (typeof updateLettersFadeIn === 'function') {
+          updateLettersFadeIn();
+        }
         if (progressBar) {
           progressBar.style.width = `${Math.min(100, Math.max(0, e.progress * 100))}%`;
+        }
+        if (typeof window.onHeroMarqueeLenisScroll === 'function') {
+          window.onHeroMarqueeLenisScroll(e);
         }
       });
 
@@ -1031,6 +1037,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (typeof updateFilmParallax === 'function') {
           updateFilmParallax();
+        }
+        if (typeof updateLettersFadeIn === 'function') {
+          updateLettersFadeIn();
         }
         if (progressBar) {
           const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -1340,16 +1349,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const parallaxMediaItems = Array.from(document.querySelectorAll(
       '.cinematic-hero-player .cinematic-video, .about-portrait-wrap img, .photo-card--hero .photo-card-img'
     ));
+    const kaserneGridEl = document.querySelector('.kaserne-feature-grid');
+    const kaserneVideoWrapEl = document.querySelector('.kaserne-feature-grid .cgi-main-media');
+    const kaserneCompareContainerEl = document.querySelector('.kaserne-compare-container');
+    const kaserneCompareWrapEl = document.querySelector('.kaserne-compare-slider-wrap');
+    const kaserneProcessWrapEl = document.querySelector('#project-kaserne .stills-strip-wrap');
+    const kaserneSideColEl = document.querySelector('.kaserne-side-text-col');
 
     let isParallaxTicking = false;
 
     function updateContinuousParallax() {
       const scrollY = window.scrollY || document.documentElement.scrollTop || (typeof lenis !== 'undefined' && lenis ? lenis.scroll : 0) || 0;
       const windowH = window.innerHeight;
+      const isMobile = window.innerWidth <= 768;
 
       // 1. Hero Dynamic Depth Shift (Desktop: Video moves down, Content moves up; Mobile: Calm fade without transform shifts)
       if (heroSection) {
-        const isMobile = window.innerWidth <= 768;
         const heroHeight = heroSection.offsetHeight || windowH;
         if (scrollY <= heroHeight * 1.15) {
           if (heroVideoEl) {
@@ -1371,10 +1386,49 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // 2. Section Numbers Floating Multiplane Parallax (Entfernt wegen Jitter-Effekt)
+      // 2. Kaserne Slower-Scrolling Depth Layer (Video, Comparison Slider & Reconstruction Phases move slower on scroll)
+      if (!isMobile) {
+        if (kaserneSideColEl && kaserneSideColEl.style.transform) {
+          kaserneSideColEl.style.transform = '';
+        }
+        if (kaserneGridEl && kaserneVideoWrapEl) {
+          const gridRect = kaserneGridEl.getBoundingClientRect();
+          if (gridRect.bottom > -100 && gridRect.top < windowH + 100) {
+            const gridCenter = gridRect.top + gridRect.height / 2;
+            const delta = (windowH / 2) - gridCenter;
+            const translateY = delta * 0.14;
+            kaserneVideoWrapEl.style.transform = `translate3d(0, ${translateY.toFixed(1)}px, 0)`;
+          }
+        }
+        if (kaserneCompareContainerEl && kaserneCompareWrapEl) {
+          const compRect = kaserneCompareContainerEl.getBoundingClientRect();
+          if (compRect.bottom > -100 && compRect.top < windowH + 100) {
+            const compCenter = compRect.top + compRect.height / 2;
+            const delta = (windowH / 2) - compCenter;
+            const translateY = delta * 0.14;
+            kaserneCompareWrapEl.style.transform = `translate3d(0, ${translateY.toFixed(1)}px, 0)`;
+          }
+        }
+        if (kaserneProcessWrapEl) {
+          const processRect = kaserneProcessWrapEl.getBoundingClientRect();
+          if (processRect.bottom > -100 && processRect.top < windowH + 100) {
+            const processCenter = processRect.top + processRect.height / 2;
+            const delta = (windowH / 2) - processCenter;
+            const translateY = delta * 0.14;
+            kaserneProcessWrapEl.style.transform = `translate3d(0, ${translateY.toFixed(1)}px, 0)`;
+          }
+        }
+      } else {
+        if (kaserneSideColEl && kaserneSideColEl.style.transform) kaserneSideColEl.style.transform = '';
+        if (kaserneVideoWrapEl && kaserneVideoWrapEl.style.transform) kaserneVideoWrapEl.style.transform = '';
+        if (kaserneCompareWrapEl && kaserneCompareWrapEl.style.transform) kaserneCompareWrapEl.style.transform = '';
+        if (kaserneProcessWrapEl && kaserneProcessWrapEl.style.transform) kaserneProcessWrapEl.style.transform = '';
+      }
+
+      // 3. Section Numbers Floating Multiplane Parallax (Entfernt wegen Jitter-Effekt)
       // sectionNums.forEach((num) => { ... });
 
-      // 3. Focal Media Window Parallax (Entfernt wegen Konflikten mit CSS Transitions)
+      // 4. Focal Media Window Parallax (Entfernt wegen Konflikten mit CSS Transitions)
       // parallaxMediaItems.forEach((media) => { ... });
 
       isParallaxTicking = false;
@@ -4188,59 +4242,121 @@ document.addEventListener('DOMContentLoaded', () => {
   initKaserneTitleFit();
 
   // --------------------------------------------------------------------------
-  // 4f. Hero Title Auto-Fit (Full Screen Width on Mobile, Fluid on Desktop)
+  // 4f. Interactive Kinetic Hero Marquee (Calm Base Drift + Scroll Acceleration & Direction Reversal)
   // --------------------------------------------------------------------------
-  function initHeroTitleFit() {
-    const title = document.querySelector('.hero-title');
-    const wrapper = document.querySelector('.hero-text-wrapper');
-    if (!title || !wrapper) return;
+  function initHeroMarquee() {
+    const track = document.querySelector('.hero-marquee-track');
+    if (!track) return;
 
-    function fit() {
-      const isMobile = window.innerWidth <= 768;
-      const targetWidth = wrapper.getBoundingClientRect().width;
-      if (targetWidth <= 0) return;
+    let xPos = 0;
+    // Base idle speed in % per second (calm, steady drift)
+    const baseSpeed = 0.38;
+    let scrollMomentum = 0;
+    let lastScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+    let lastTime = performance.now();
+    let isHeroVisible = true;
 
-      if (isMobile) {
-        const measureEl = document.createElement('span');
-        measureEl.textContent = title.textContent.trim();
-        measureEl.style.cssText = 'position:absolute;left:-9999px;top:-9999px;visibility:hidden;white-space:nowrap;font-family:' + 
-          getComputedStyle(title).fontFamily + ';font-weight:500;letter-spacing:-0.025em;font-size:100px;';
-        document.body.appendChild(measureEl);
-        
-        const naturalWidthAt100px = measureEl.getBoundingClientRect().width;
-        document.body.removeChild(measureEl);
+    function applyScrollImpulse(deltaY) {
+      if (typeof deltaY !== 'number' || isNaN(deltaY) || deltaY === 0) return;
+      // deltaY > 0: scrolling down -> positive impulse (moves faster left)
+      // deltaY < 0: scrolling up -> negative impulse (reverses right)
+      const impulse = (deltaY > 0 ? 1 : -1) * Math.min(Math.abs(deltaY) * 0.055, 14.0);
+      scrollMomentum += impulse;
+      // Clamp max scroll momentum
+      scrollMomentum = Math.max(-28.0, Math.min(28.0, scrollMomentum));
+    }
 
-        if (naturalWidthAt100px > 0) {
-          const optimalSize = (targetWidth / naturalWidthAt100px) * 100;
-          title.style.fontSize = `${optimalSize}px`;
-          title.style.whiteSpace = 'nowrap';
-          title.style.display = 'block';
-          title.style.width = '100%';
-        }
-      } else {
-        title.style.fontSize = '';
-        title.style.whiteSpace = 'nowrap';
-        title.style.display = '';
-        title.style.width = '';
+    // Trigger entrance glide from right to left with smooth deceleration
+    window.triggerHeroMarqueeEntrance = function() {
+      // Start shifted to the right so the track sweeps in visibly from the right edge!
+      xPos = 28.0;
+      scrollMomentum = 38.0;
+      track.style.transform = `translate3d(${xPos.toFixed(4)}%, 0, 0)`;
+    };
+
+    // If preloader is already finished or bypassed, trigger entrance
+    if (document.body.classList.contains('is-loaded') || !document.getElementById('cinematic-loader')) {
+      window.triggerHeroMarqueeEntrance();
+    }
+
+    // Lenis scroll listener
+    window.onHeroMarqueeLenisScroll = (e) => {
+      const currentY = e.scroll;
+      const vel = e.velocity || (currentY - lastScrollY);
+      applyScrollImpulse(vel * 1.8);
+      lastScrollY = currentY;
+      isHeroVisible = currentY <= window.innerHeight * 1.35;
+    };
+
+    // Native scroll listener
+    window.addEventListener('scroll', () => {
+      const currentY = window.scrollY || document.documentElement.scrollTop || 0;
+      const delta = currentY - lastScrollY;
+      if (Math.abs(delta) > 0.5) {
+        applyScrollImpulse(delta * 0.85);
       }
+      lastScrollY = currentY;
+      isHeroVisible = currentY <= window.innerHeight * 1.35;
+    }, { passive: true });
+
+    // Wheel event listener for instant trackpad / mousewheel reaction
+    window.addEventListener('wheel', (e) => {
+      const currentY = window.scrollY || document.documentElement.scrollTop || 0;
+      if (currentY <= window.innerHeight * 1.25) {
+        applyScrollImpulse((e.deltaY || 0) * 0.14);
+      }
+    }, { passive: true });
+
+    // Touch support for mobile swipe responsiveness
+    let touchStartY = 0;
+    window.addEventListener('touchstart', (e) => {
+      if (e.touches && e.touches[0]) {
+        touchStartY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches && e.touches[0]) {
+        const touchCurrentY = e.touches[0].clientY;
+        const deltaTouch = touchStartY - touchCurrentY; // positive when swiping up (scrolling down)
+        touchStartY = touchCurrentY;
+        applyScrollImpulse(deltaTouch * 0.28);
+      }
+    }, { passive: true });
+
+    // Kinetic Animation Loop with delta-time normalization
+    function step(now) {
+      const dt = Math.min(0.08, (now - lastTime) / 1000) || 0.016;
+      lastTime = now;
+
+      if (isHeroVisible) {
+        // Exponential decay of scroll momentum back to 0
+        scrollMomentum *= Math.pow(0.86, dt * 60);
+
+        // Effective speed:
+        // Idle: moves at +baseSpeed (leftward drift)
+        // Scroll DOWN: moveSpeed increases up to +30%/s (fast leftward glide)
+        // Scroll UP: moveSpeed becomes negative (e.g. 0.38 - 18.0 = -17.62%/s -> GLIDES RIGHTWARD IN REVERSE!)
+        const moveSpeed = baseSpeed + scrollMomentum;
+        xPos -= moveSpeed * dt;
+
+        // Seamless wrap around at 50%
+        while (xPos <= -50) xPos += 50;
+        while (xPos > 0) xPos -= 50;
+
+        track.style.transform = `translate3d(${xPos.toFixed(4)}%, 0, 0)`;
+      }
+
+      requestAnimationFrame(step);
     }
 
-    const ro = new ResizeObserver(() => {
-      requestAnimationFrame(fit);
+    requestAnimationFrame((time) => {
+      lastTime = time;
+      requestAnimationFrame(step);
     });
-    ro.observe(wrapper);
-    window.addEventListener('resize', fit, { passive: true });
-
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(fit);
-    }
-    fit();
-    setTimeout(fit, 80);
-    setTimeout(fit, 300);
-    setTimeout(fit, 800);
   }
 
-  initHeroTitleFit();
+  initHeroMarquee();
 
   // --------------------------------------------------------------------------
   // 5. Ambient Atmosphere Parallax Engine & Continuous Theme Resolver
@@ -4848,7 +4964,194 @@ document.addEventListener('DOMContentLoaded', () => {
     requestCurtainUpdate();
   }
 
+  // --------------------------------------------------------------------------
+  // Kinetic Editorial Letters Fade-In & De-Blur Scroll Engine (Reusable Template)
+  // Usage: Add `letters-fade-in` or `data-text-fade` or `class="letters-fade-in"`
+  // --------------------------------------------------------------------------
+  let updateLettersFadeIn = null;
+
+  function initLettersFadeIn() {
+    const selector = '[letters-fade-in], [text-split], [data-text-fade], .letters-fade-in, .text-fade-reveal';
+    const allCandidates = document.querySelectorAll(selector);
+    if (!allCandidates.length) return;
+
+    // Filter out custom elements or containers with nested targets
+    const targets = Array.from(allCandidates).filter((el) => {
+      if (el.tagName.includes('-')) return false;
+      if (el.querySelector(selector)) return false;
+      if (el.querySelector('div, p, h1, h2, h3, h4, h5, h6, ul, ol, section, article')) return false;
+      return true;
+    });
+
+    if (!targets.length) return;
+
+    const items = [];
+
+    targets.forEach((el) => {
+      if (el.dataset.lettersInitialized) return;
+      el.dataset.lettersInitialized = 'true';
+
+      const rawText = el.textContent.trim().replace(/\s+/g, ' ');
+      el.setAttribute('aria-label', rawText);
+
+      const childNodes = Array.from(el.childNodes);
+      el.innerHTML = '';
+      const charEls = [];
+
+      let currentWordSpan = null;
+
+      function ensureWordSpan() {
+        if (!currentWordSpan) {
+          currentWordSpan = document.createElement('span');
+          currentWordSpan.className = 'word';
+          currentWordSpan.style.display = 'inline-block';
+          currentWordSpan.style.whiteSpace = 'nowrap';
+          currentWordSpan.style.verticalAlign = 'baseline';
+          el.appendChild(currentWordSpan);
+        }
+        return currentWordSpan;
+      }
+
+      function closeWordSpan() {
+        currentWordSpan = null;
+      }
+
+      function processText(text, wrapperTag) {
+        for (let i = 0; i < text.length; i++) {
+          const ch = text[i];
+          if (/\s/.test(ch)) {
+            if (currentWordSpan) {
+              closeWordSpan();
+              const spaceSpan = document.createElement('span');
+              spaceSpan.className = 'space';
+              spaceSpan.innerHTML = '&nbsp;';
+              el.appendChild(spaceSpan);
+            }
+          } else {
+            const wSpan = ensureWordSpan();
+            const charSpan = document.createElement('span');
+            charSpan.className = 'char';
+            charSpan.textContent = ch;
+            charSpan.style.display = 'inline-block';
+            charSpan.style.verticalAlign = 'baseline';
+            charSpan.style.backfaceVisibility = 'hidden';
+            charSpan.style.webkitBackfaceVisibility = 'hidden';
+            charSpan.style.transform = 'translate3d(0, 0, 0)';
+            charSpan.style.willChange = 'opacity, filter';
+            charSpan.style.opacity = '0.12';
+            charSpan.style.filter = 'blur(12px)';
+
+            if (wrapperTag) {
+              const tagEl = document.createElement(wrapperTag);
+              tagEl.appendChild(charSpan);
+              wSpan.appendChild(tagEl);
+            } else {
+              wSpan.appendChild(charSpan);
+            }
+            charEls.push(charSpan);
+          }
+        }
+      }
+
+      childNodes.forEach((node) => {
+        if (node.nodeType === Node.TEXT_NODE) {
+          processText(node.textContent, null);
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+          processText(node.textContent, node.tagName.toLowerCase());
+        }
+      });
+
+      items.push({ el, charEls });
+    });
+
+    let ticking = false;
+
+    updateLettersFadeIn = function() {
+      const winH = window.innerHeight;
+
+      items.forEach((item) => {
+        const { el, charEls } = item;
+        const rect = el.getBoundingClientRect();
+
+        if (rect.bottom < -80 || rect.top > winH + 80) return;
+
+        // Reveal begins when element top enters at 92% of viewport, finishes focus at 46% of viewport
+        const startY = winH * 0.92;
+        const endY = winH * 0.46;
+
+        const rawProgress = (startY - rect.top) / (startY - endY);
+        const progress = Math.max(0, Math.min(1, rawProgress));
+
+        const totalChars = charEls.length;
+        if (totalChars === 0) return;
+
+        // Skip calculations if already in target steady state
+        if (progress >= 1) {
+          if (item.state !== 'done') {
+            item.state = 'done';
+            for (let i = 0; i < totalChars; i++) {
+              charEls[i].style.opacity = '1';
+              charEls[i].style.filter = 'none';
+            }
+          }
+          return;
+        } else if (progress <= 0) {
+          if (item.state !== 'idle') {
+            item.state = 'idle';
+            for (let i = 0; i < totalChars; i++) {
+              charEls[i].style.opacity = '0.12';
+              charEls[i].style.filter = 'blur(12px)';
+            }
+          }
+          return;
+        }
+
+        item.state = 'animating';
+        const windowSize = 0.24; // Progressive sweep window size
+
+        for (let idx = 0; idx < totalChars; idx++) {
+          const charStart = (idx / totalChars) * (1 - windowSize);
+          const charEnd = charStart + windowSize;
+
+          let charProg;
+          if (progress <= charStart) {
+            charProg = 0;
+          } else if (progress >= charEnd) {
+            charProg = 1;
+          } else {
+            charProg = (progress - charStart) / windowSize;
+          }
+
+          // Smoothstep ease
+          const smooth = charProg * charProg * (3 - 2 * charProg);
+          const opacity = 0.12 + (1 - 0.12) * smooth;
+          const blur = (1 - smooth) * 12;
+
+          const charEl = charEls[idx];
+          charEl.style.opacity = opacity.toFixed(4);
+          charEl.style.filter = `blur(${blur.toFixed(3)}px)`;
+        }
+      });
+
+      ticking = false;
+    };
+
+    function requestLettersUpdate() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateLettersFadeIn);
+      }
+    }
+
+    window.addEventListener('scroll', requestLettersUpdate, { passive: true });
+    window.addEventListener('resize', requestLettersUpdate, { passive: true });
+
+    requestLettersUpdate();
+  }
+
   initScrollImageCurtain();
+  initLettersFadeIn();
+  window.initLettersFadeIn = initLettersFadeIn;
 });
 
 

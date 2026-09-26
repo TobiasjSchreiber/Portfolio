@@ -33,7 +33,7 @@
   </script>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css?v=220">
+  <link rel="stylesheet" href="css/style.css?v=251">
 </head>
 <body class="is-loading" data-ambient-theme="hero">
 
@@ -67,7 +67,7 @@
 
   <!-- Floating Frosted Glass Navigation (Bouncy Tabs Bar) -->
   <header class="nav-header">
-    <a href="#hero" class="nav-brand" aria-label="Startseite Tobias Schreiber">T. Schreiber</a>
+    <a href="#hero" class="nav-brand" aria-label="Startseite Tobias Schreiber"><span class="brand-at">@</span>Tobias Schreiber</a>
     <nav class="hero__nav" data-bouncy-tabs-nav="" aria-label="Sections">
       <span class="hero__nav-ghost" data-bouncy-tabs-ghost="" aria-hidden="true"></span>
       <span class="hero__nav-pill" data-bouncy-tabs-indicator="" aria-hidden="true"></span>
@@ -94,7 +94,7 @@
     <div class="mobile-nav-backdrop"></div>
     <div class="mobile-nav-container framer-1dk0014" data-framer-name="Nav Menu">
       <div class="mobile-nav-top-row">
-        <span class="mobile-nav-brand-text">T. Schreiber</span>
+        <span class="mobile-nav-brand-text"><span class="brand-at">@</span>Tobias Schreiber</span>
         <button id="mobile-nav-close" class="mobile-nav-close-btn" aria-label="Menü schließen">
           <span class="mobile-nav-close__icon" aria-hidden="true">
             <span class="mobile-nav-close__line mobile-nav-close__line--1"></span>
@@ -260,13 +260,33 @@
         <source src="assets/videos/hintergrund_video.mp4" type="video/mp4">
         Dein Browser unterstützt das HTML5-Videoelement nicht.
       </video>
+      <div class="hero-marquee-wrap" aria-label="Tobias Schreiber">
+        <ul class="hero-marquee-track">
+          <li class="hero-marquee-group" aria-hidden="false">
+            <span class="hero-marquee-item">Tobias Schreiber <span class="hero-marquee-dash" aria-hidden="true">-</span></span>
+            <span class="hero-marquee-item">Tobias Schreiber <span class="hero-marquee-dash" aria-hidden="true">-</span></span>
+            <span class="hero-marquee-item">Tobias Schreiber <span class="hero-marquee-dash" aria-hidden="true">-</span></span>
+            <span class="hero-marquee-item">Tobias Schreiber <span class="hero-marquee-dash" aria-hidden="true">-</span></span>
+            <span class="hero-marquee-item">Tobias Schreiber <span class="hero-marquee-dash" aria-hidden="true">-</span></span>
+            <span class="hero-marquee-item">Tobias Schreiber <span class="hero-marquee-dash" aria-hidden="true">-</span></span>
+          </li>
+          <li class="hero-marquee-group" aria-hidden="true">
+            <span class="hero-marquee-item">Tobias Schreiber <span class="hero-marquee-dash" aria-hidden="true">-</span></span>
+            <span class="hero-marquee-item">Tobias Schreiber <span class="hero-marquee-dash" aria-hidden="true">-</span></span>
+            <span class="hero-marquee-item">Tobias Schreiber <span class="hero-marquee-dash" aria-hidden="true">-</span></span>
+            <span class="hero-marquee-item">Tobias Schreiber <span class="hero-marquee-dash" aria-hidden="true">-</span></span>
+            <span class="hero-marquee-item">Tobias Schreiber <span class="hero-marquee-dash" aria-hidden="true">-</span></span>
+            <span class="hero-marquee-item">Tobias Schreiber <span class="hero-marquee-dash" aria-hidden="true">-</span></span>
+          </li>
+        </ul>
+      </div>
       <div class="hero-overlay-vignette"></div>
       <div class="hero-overlay-fade-bottom"></div>
     </div>
 
     <!-- Intro Header: Clean, Right-Aligned Text Navigation (No tile / capsule) -->
     <header class="intro-header">
-      <a href="#hero" class="intro-brand" aria-label="Startseite Tobias Schreiber">T. Schreiber</a>
+      <a href="#hero" class="intro-brand" aria-label="Startseite Tobias Schreiber"><span class="brand-at">@</span>Tobias Schreiber</a>
       <nav class="intro-nav" aria-label="Sektionen">
         <a href="#cgi" class="intro-nav-link">3D &amp; CGI</a>
         <a href="#film" class="intro-nav-link">Film</a>
@@ -280,8 +300,7 @@
 
     <div class="hero-content">
       <div class="hero-text-wrapper">
-        <h1 class="hero-title">Tobias Schreiber</h1>
-        <div class="hero-subtitle-top">Medientechnik &bull; CGI &bull; Film &bull; Fotografie</div>
+        <h1 class="sr-only">Tobias Schreiber — Portfolio</h1>
       </div>
 
       <div class="hero-bottom-bar">
@@ -590,7 +609,7 @@
         <!-- Editorial Story Row under Video: Left Statement, Right Long Body Text -->
         <div class="bmw-editorial-story reveal-on-scroll">
           <div class="bmw-story-col-left">
-            <p class="bmw-story-lead" style="font-weight: 200 !important; font-variation-settings: 'wght' 200, 'opsz' 32;">
+            <p class="bmw-story-lead" letters-fade-in="" text-split="" style="font-weight: 200 !important; font-variation-settings: 'wght' 200, 'opsz' 32;">
               Vom zweidimensionalen Bauplan zum fotorealistischen Studio-Turnaround — ein puristisches Handwerk ohne vorgefertigte Assets.
             </p>
           </div>
@@ -1283,6 +1302,8 @@
         <portfolio-text 
           title="Licht &amp; <em>Fotografie</em>" 
           level="2" 
+          letters-fade-in=""
+          text-split=""
           class="photo-text-card"
           extra-classes="photo-grid-text-block">
           Präzise Lichtführung, haptische Texturen und analog inspirierte Bildkompositionen. Kombinierte Arbeiten aus Charakterporträts, organischen Makrostrukturen und filmischer Set-Fotografie.
@@ -2277,8 +2298,8 @@
 
   <!-- JavaScript Modules -->
   <script src="js/lenis.min.js" defer></script>
-  <script src="js/main.js?v=149" defer></script>
-  <script src="js/portfolio-text.js?v=2"></script>
+  <script src="js/main.js?v=162" defer></script>
+  <script src="js/portfolio-text.js?v=6"></script>
   <script src="js/cgi-card.js?v=2"></script>
   <script src="js/still-card.js"></script>
   <script src="js/media-cards.js?v=2"></script>
