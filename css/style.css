@@ -4189,8 +4189,6 @@ body.film-drawer-open .film-more-text-btn {
   padding: 0.5rem 0 1.2rem 0;
   cursor: grab;
   user-select: none;
-  -webkit-mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
-  mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
 }
 
 .ceramic-strip::-webkit-scrollbar {
@@ -4329,8 +4327,6 @@ body.film-drawer-open .film-more-text-btn {
   }
   .ceramic-strip {
     gap: 0.45rem;
-    -webkit-mask-image: none;
-    mask-image: none;
   }
   .ceramic-frame {
     flex: 0 0 240px;

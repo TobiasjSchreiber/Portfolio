@@ -214,5 +214,23 @@
     "md": "assets/images/md/Bild_Essen_3.webp",
     "lg": "assets/images/lg/Bild_Essen_3.webp",
     "full": "assets/images/full/Bild_Essen_3.webp"
+  },
+  "Ressourcen/btz-Dreh.jpg": {
+    "sm": "assets/images/sm/btz_Dreh.webp",
+    "md": "assets/images/md/btz_Dreh.webp",
+    "lg": "assets/images/lg/btz_Dreh.webp",
+    "full": "assets/images/full/btz_Dreh.webp"
+  },
+  "Ressourcen/btz-Dreh-2.jpg": {
+    "sm": "assets/images/sm/btz_Dreh_2.webp",
+    "md": "assets/images/md/btz_Dreh_2.webp",
+    "lg": "assets/images/lg/btz_Dreh_2.webp",
+    "full": "assets/images/full/btz_Dreh_2.webp"
+  },
+  "Ressourcen/Basti-portrai.jpg": {
+    "sm": "assets/images/sm/Basti_Portraet.webp",
+    "md": "assets/images/md/Basti_Portraet.webp",
+    "lg": "assets/images/lg/Basti_Portraet.webp",
+    "full": "assets/images/full/Basti_Portraet.webp"
   }
 }

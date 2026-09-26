@@ -2343,6 +2343,18 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+    // Stills Lightbox Trigger listener (Offline statt hochgeladen)
+    const offlineStill1 = document.getElementById('offline-still-1');
+    const drawerOfflineStillsToggle = document.getElementById('offline-stills-toggle');
+    if (drawerOfflineStillsToggle && offlineStill1) {
+      drawerOfflineStillsToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeFilmDrawer();
+        offlineStill1.click();
+      });
+    }
+
     // Cinema buttons inside drawer
     if (drawer) {
       const drawerCinemaBtns = drawer.querySelectorAll('.film-info-cinema-btn');

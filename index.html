@@ -33,7 +33,7 @@
   </script>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css?v=251">
+  <link rel="stylesheet" href="css/style.css?v=252">
 </head>
 <body class="is-loading" data-ambient-theme="hero">
 
@@ -1231,6 +1231,14 @@
                 </div>
 
                 <div class="film-info-actions">
+                  <button class="film-stills-trigger-btn" type="button" id="offline-stills-toggle" aria-label="Set- &amp; Dreh-Fotos anzeigen">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                      <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                      <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                    <span>2 Set- &amp; Dreh-Fotos ansehen</span>
+                  </button>
                   <button class="film-info-cinema-btn" type="button" data-cinema-film-index="3" aria-label="Offline statt hochgeladen im Vollbild abspielen">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <polygon points="5 3 19 12 5 21 5 3"></polygon>
@@ -1243,7 +1251,7 @@
           </div>
         </div>
 
-      <!-- Hidden Lightbox Trigger Registry for Schattenwolf Stills -->
+      <!-- Hidden Lightbox Trigger Registry for Schattenwolf & Offline Stills -->
       <div class="film-stills-gallery-hidden" style="display: none;" aria-hidden="true">
         <div data-cinema-trigger data-cinema-type="image" 
              data-cinema-src="assets/images/full/3D_Schattenwolf_Zimmer.webp" 
@@ -1275,6 +1283,18 @@
              data-cinema-title="Schattenwolf — Phase IV" 
              data-cinema-meta="Climax &amp; Dynamik"
              data-cinema-gallery="schattenwolf-stills"></div>
+
+        <!-- Offline statt hochgeladen Stills / Behind the Scenes -->
+        <div data-cinema-trigger data-cinema-type="image" 
+             data-cinema-src="assets/images/full/btz_Dreh.webp" 
+             data-cinema-title="Offline statt hochgeladen — Dreh &amp; Set-Impression I" 
+             data-cinema-meta="Interview-Setup &amp; Lichtgestaltung &bull; Tobias Schreiber" 
+             data-cinema-gallery="offline-stills" id="offline-still-1"></div>
+        <div data-cinema-trigger data-cinema-type="image" 
+             data-cinema-src="assets/images/full/btz_Dreh_2.webp" 
+             data-cinema-title="Offline statt hochgeladen — Dreh &amp; Set-Impression II" 
+             data-cinema-meta="Kamera- &amp; Ton-Setup vor Ort &bull; Tobias Schreiber" 
+             data-cinema-gallery="offline-stills"></div>
       </div>
     </div>
   </section>
@@ -1342,15 +1362,15 @@
              sub="Natürliche Lichtführung">
            </photo-card>
 
-        <!-- 05: Porträt IV (Querformat — Kompakt: 1 Spalte × 1 Zeile, 3:2 Querformat) -->
+        <!-- 05: Porträt IV (Schatten & Kontur) -->
         <photo-card 
              card-class="photo-card--landscape-sm" 
-             image-id="Portraet_4.webp" 
-             title="Porträt IV — Monochromie &amp; Tiefe" 
-             meta="Editorial Porträtfotografie" 
-             alt="Porträt 4" 
+             image-id="Portraet_5.webp" 
+             title="Porträt IV — Schatten &amp; Kontur" 
+             meta="Experimentelle Porträtbelichtung" 
+             alt="Porträt 5" 
              name="Porträt IV" 
-             sub="Monochromie &amp; Tiefe">
+             sub="Schatten &amp; Kontur">
            </photo-card>
 
         <!-- 06: Iris Makro (Querformat — Groß: 2 Spalten × 2 Zeilen) -->
@@ -1397,15 +1417,15 @@
              sub="Bildtiefe &amp; Farbharmonie">
            </photo-card>
 
-        <!-- 10: Porträt V (Querformat — Kompakt: 1 Spalte × 1 Zeile, 3:2 Querformat) -->
+        <!-- 10: Porträt V (Bastian — Charakterstudie) -->
         <photo-card 
              card-class="photo-card--landscape-sm" 
-             image-id="Portraet_5.webp" 
-             title="Porträt V — Schatten &amp; Kontur" 
-             meta="Experimentelle Porträtbelichtung" 
-             alt="Porträt 5" 
+             image-id="Basti_Portraet.webp" 
+             title="Porträt V — Charakterstudie Bastian" 
+             meta="Available Light &amp; Porträtfotografie • 85mm" 
+             alt="Porträt Bastian" 
              name="Porträt V" 
-             sub="Schatten &amp; Kontur">
+             sub="Charakterstudie Bastian">
            </photo-card>
 
         <!-- 11: Blumen Retro (Querformat — Kompakt: 1 Spalte × 1 Zeile, 3:2 Querformat) -->
@@ -2298,11 +2318,11 @@
 
   <!-- JavaScript Modules -->
   <script src="js/lenis.min.js" defer></script>
-  <script src="js/main.js?v=162" defer></script>
+  <script src="js/main.js?v=163" defer></script>
   <script src="js/portfolio-text.js?v=6"></script>
   <script src="js/cgi-card.js?v=2"></script>
   <script src="js/still-card.js"></script>
-  <script src="js/media-cards.js?v=2"></script>
+  <script src="js/media-cards.js?v=6"></script>
 </body>
 </html>
 
