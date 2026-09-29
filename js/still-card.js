@@ -43,9 +43,9 @@ class StillCard extends HTMLElement {
     }
 
     this.innerHTML = `
-      <img decoding="async" class="still-img" 
+      <img class="still-img" 
            src="${defaultSrc}" 
-           alt="${alt}" loading="lazy" 
+           alt="${alt}" 
            srcset="${srcset}" 
            sizes="(max-width: 768px) 75vw, 340px"
            draggable="false">

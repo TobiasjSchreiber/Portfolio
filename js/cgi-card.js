@@ -38,11 +38,11 @@ class CgiCard extends HTMLElement {
       mediaHTML = `
         <div class="cgi-parallax-img-box">
           <div class="cgi-parallax-img-wrap">
-            <img decoding="async" class="cgi-parallax-media" 
+            <img class="cgi-parallax-media" 
                  src="${lgSrc}" 
                  srcset="${smSrc} 600w, ${mdSrc} 1200w, ${lgSrc} 2400w" 
                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
-                 alt="${alt}" loading="lazy">
+                 alt="${alt}">
           </div>
         </div>
       `;

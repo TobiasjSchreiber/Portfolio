@@ -1506,7 +1506,7 @@ body[data-ambient-theme="kontakt"] {
 }
 
 #cgi.project-section {
-  padding-bottom: clamp(2rem, 4vh, 3rem);
+  padding-bottom: clamp(6rem, 10vh, 8.5rem);
 }
 
 .section-header { margin-bottom: var(--section-header-gap); display: flex; flex-direction: column; gap: 0;
@@ -2383,7 +2383,7 @@ body[data-ambient-theme="kontakt"] {
 }
 
 #project-kaserne .stills-strip-wrap {
-  margin-bottom: clamp(1rem, 2vh, 2rem);
+  margin-bottom: clamp(3rem, 5vh, 4.5rem);
 }
 
 .kaserne-compare-info {
@@ -5785,8 +5785,8 @@ body.film-drawer-open .film-more-text-btn {
 }
 
 .sb-icons svg {
-  width: 14px;
-  height: 14px;
+  height: 12px;
+  width: auto;
 }
 
 .mockup-iframe-scaler {
@@ -7176,7 +7176,7 @@ body:has(#cinema-modal.open) .nav-header {
   }
 
   #cgi.project-section {
-    padding-bottom: 2rem !important;
+    padding-bottom: clamp(4rem, 8vh, 6rem) !important;
   }
 
   .hero-content {

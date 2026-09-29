@@ -26,7 +26,7 @@ class PhotoCard extends HTMLElement {
     const lgSrc = `assets/images/lg/${imageId}`;
 
     this.innerHTML = `
-      <img decoding="async" class="photo-card-img" src="${mdSrc}" alt="${alt}" loading="lazy" 
+      <img class="photo-card-img" src="${mdSrc}" alt="${alt}" 
            srcset="${smSrc} 480w, ${mdSrc} 960w, ${lgSrc} 1800w" 
            sizes="(max-width: 600px) 100vw, (max-width: 1024px) 100vw, 50vw">
       <div class="photo-card-overlay">
@@ -64,7 +64,7 @@ class CeramicFrame extends HTMLElement {
     const mdSrc = `assets/images/md/${imageId}`;
 
     this.innerHTML = `
-      <img decoding="async" class="ceramic-img" src="${mdSrc}" alt="${alt}" loading="lazy" 
+      <img class="ceramic-img" src="${mdSrc}" alt="${alt}" 
            srcset="${smSrc} 480w, ${mdSrc} 960w" 
            sizes="(max-width: 600px) 75vw, 320px">
     `;
@@ -105,7 +105,7 @@ class KunstCard extends HTMLElement {
 
     this.innerHTML = `
       <div class="kunst-ticker-img-box">
-        <img decoding="async" class="kunst-ticker-img" src="${mdSrc}" alt="${alt}" loading="lazy">
+        <img class="kunst-ticker-img" src="${mdSrc}" alt="${alt}" loading="eager">
       </div>
     `;
   }
