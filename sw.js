@@ -1,5 +1,5 @@
 // Service Worker for Tobias Schreiber — Portfolio PWA
-const CACHE_NAME = 'ts-portfolio-v1';
+const CACHE_NAME = 'ts-portfolio-v5';
 const PRECACHE_ASSETS = [
   './',
   './index.html',

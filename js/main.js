@@ -2693,168 +2693,173 @@ document.addEventListener('DOMContentLoaded', () => {
   updateFilmParallax = initFilmVerticalParallax();
 
   // --------------------------------------------------------------------------
-  // 5. Photography Ceramic 360 Strip Engine
+  // 5. Photography Horizontal Strips Engine (Ceramic, Abwesenheit & Co.)
   // --------------------------------------------------------------------------
 
   function initCeramicShowcase() {
-    const strip = document.getElementById('ceramic-strip');
-    if (!strip) return;
+    const wraps = document.querySelectorAll('.ceramic-strip-wrap');
+    if (!wraps.length) return;
 
-    const prevBtn = document.getElementById('ceramic-btn-prev');
-    const nextBtn = document.getElementById('ceramic-btn-next');
-    const counterIdx = document.getElementById('ceramic-current-idx');
-    const progressBar = document.getElementById('ceramic-progress-bar');
-    const frames = Array.from(strip.querySelectorAll('.ceramic-frame'));
+    wraps.forEach((wrap) => {
+      const strip = wrap.querySelector('.ceramic-strip');
+      if (!strip) return;
 
-    let isDown = false;
-    let hasDragged = false;
-    let startX = 0;
-    let scrollLeftStart = 0;
-    let downPageX = 0;
-    let downPageY = 0;
+      const prevBtn = wrap.querySelector('.strip-arrow-prev');
+      const nextBtn = wrap.querySelector('.strip-arrow-next');
+      const counterIdx = wrap.querySelector('.strip-current-idx');
+      const progressBar = wrap.querySelector('.ceramic-progress-bar');
+      const frames = Array.from(strip.querySelectorAll('.ceramic-frame'));
 
-    function updateControls() {
-      const maxScroll = strip.scrollWidth - strip.clientWidth;
-      const currentScroll = strip.scrollLeft;
+      let isDown = false;
+      let hasDragged = false;
+      let startX = 0;
+      let scrollLeftStart = 0;
+      let downPageX = 0;
+      let downPageY = 0;
 
-      if (prevBtn) prevBtn.classList.toggle('is-disabled', currentScroll <= 4);
-      if (nextBtn) nextBtn.classList.toggle('is-disabled', currentScroll >= maxScroll - 4);
+      function updateControls() {
+        const maxScroll = strip.scrollWidth - strip.clientWidth;
+        const currentScroll = strip.scrollLeft;
 
-      if (progressBar && maxScroll > 0) {
-        const progress = Math.min(1, Math.max(0, currentScroll / maxScroll));
-        progressBar.style.transform = `translateX(${progress * 1200}%)`;
+        if (prevBtn) prevBtn.classList.toggle('is-disabled', currentScroll <= 4);
+        if (nextBtn) nextBtn.classList.toggle('is-disabled', currentScroll >= maxScroll - 4);
+
+        if (progressBar && maxScroll > 0) {
+          const progress = Math.min(1, Math.max(0, currentScroll / maxScroll));
+          progressBar.style.transform = `translateX(${progress * 1200}%)`;
+        }
+
+        if (counterIdx && frames.length > 0) {
+          const stripLeft = strip.getBoundingClientRect().left;
+          let activeIdx = 0;
+          let minDiff = Infinity;
+
+          frames.forEach((frame, idx) => {
+            const frameLeft = frame.getBoundingClientRect().left;
+            const diff = Math.abs(frameLeft - stripLeft);
+            if (diff < minDiff) {
+              minDiff = diff;
+              activeIdx = idx;
+            }
+          });
+
+          counterIdx.textContent = String(activeIdx + 1).padStart(2, '0');
+        }
       }
 
-      if (counterIdx && frames.length > 0) {
-        const stripLeft = strip.getBoundingClientRect().left;
-        let activeIdx = 0;
-        let minDiff = Infinity;
-
-        frames.forEach((frame, idx) => {
-          const frameLeft = frame.getBoundingClientRect().left;
-          const diff = Math.abs(frameLeft - stripLeft);
-          if (diff < minDiff) {
-            minDiff = diff;
-            activeIdx = idx;
-          }
+      if (prevBtn) {
+        prevBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const step = frames[0] ? (frames[0].offsetWidth + 19) * 2 : 560;
+          strip.scrollBy({ left: -step, behavior: 'smooth' });
         });
-
-        counterIdx.textContent = String(activeIdx + 1).padStart(2, '0');
       }
-    }
 
-    if (prevBtn) {
-      prevBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const step = frames[0] ? (frames[0].offsetWidth + 19) * 2 : 560;
-        strip.scrollBy({ left: -step, behavior: 'smooth' });
-      });
-    }
-
-    if (nextBtn) {
-      nextBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const step = frames[0] ? (frames[0].offsetWidth + 19) * 2 : 560;
-        strip.scrollBy({ left: step, behavior: 'smooth' });
-      });
-    }
-
-    strip.addEventListener('scroll', updateControls, { passive: true });
-    window.addEventListener('resize', updateControls, { passive: true });
-
-    // Interactive Scrubber Bar for Ceramic Strip (Exclusively draggable via the white progress bar)
-    const scrubberTrack = progressBar ? progressBar.parentElement : null;
-    if (progressBar && scrubberTrack) {
-      let isScrubbing = false;
-      let startClientX = 0;
-      let startScrollLeft = 0;
-
-      progressBar.addEventListener('pointerdown', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        isScrubbing = true;
-        startClientX = e.clientX;
-        startScrollLeft = strip.scrollLeft;
-        scrubberTrack.classList.add('is-scrubbing');
-        try { progressBar.setPointerCapture(e.pointerId); } catch (_) {}
-      });
-
-      progressBar.addEventListener('pointermove', (e) => {
-        if (!isScrubbing) return;
-        const rect = scrubberTrack.getBoundingClientRect();
-        if (rect.width <= 0) return;
-        const deltaX = e.clientX - startClientX;
-        const maxScroll = Math.max(1, strip.scrollWidth - strip.clientWidth);
-        const scrollDelta = (deltaX / rect.width) * maxScroll;
-        strip.scrollLeft = Math.max(0, Math.min(maxScroll, startScrollLeft + scrollDelta));
-      });
-
-      const stopScrub = (e) => {
-        if (!isScrubbing) return;
-        isScrubbing = false;
-        scrubberTrack.classList.remove('is-scrubbing');
-        try { if (e && e.pointerId && progressBar.hasPointerCapture(e.pointerId)) progressBar.releasePointerCapture(e.pointerId); } catch (_) {}
-      };
-
-      progressBar.addEventListener('pointerup', stopScrub);
-      progressBar.addEventListener('pointercancel', stopScrub);
-    }
-
-    // Drag-to-scroll on strip for desktop mouse
-    strip.addEventListener('mousedown', (e) => {
-      isDown = true;
-      hasDragged = false;
-      downPageX = e.pageX;
-      downPageY = e.pageY;
-      startX = e.pageX - strip.offsetLeft;
-      scrollLeftStart = strip.scrollLeft;
-    });
-
-    window.addEventListener('mousemove', (e) => {
-      if (!isDown) return;
-      const x = e.pageX - strip.offsetLeft;
-      const walk = x - startX;
-      const dist = Math.hypot(e.pageX - downPageX, e.pageY - downPageY);
-      if (dist > 14) {
-        hasDragged = true;
-        strip.classList.add('is-dragging');
+      if (nextBtn) {
+        nextBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const step = frames[0] ? (frames[0].offsetWidth + 19) * 2 : 560;
+          strip.scrollBy({ left: step, behavior: 'smooth' });
+        });
       }
-      if (hasDragged) {
-        strip.scrollLeft = scrollLeftStart - walk;
-      }
-    });
 
-    function endDrag(e) {
-      if (!isDown) return;
-      isDown = false;
-      strip.classList.remove('is-dragging');
-      const currentX = e ? e.pageX : downPageX;
-      const currentY = e ? e.pageY : downPageY;
-      const totalDist = Math.hypot(currentX - downPageX, currentY - downPageY);
-      if (totalDist <= 12) {
-        hasDragged = false;
-      } else {
-        setTimeout(() => { hasDragged = false; }, 80);
-      }
-    }
+      strip.addEventListener('scroll', updateControls, { passive: true });
+      window.addEventListener('resize', updateControls, { passive: true });
 
-    window.addEventListener('mouseup', endDrag);
+      // Interactive Scrubber Bar for Strip (Exclusively draggable via the white progress bar)
+      const scrubberTrack = progressBar ? progressBar.parentElement : null;
+      if (progressBar && scrubberTrack) {
+        let isScrubbing = false;
+        let startClientX = 0;
+        let startScrollLeft = 0;
 
-    // Dedicated click on ceramic-frame
-    frames.forEach((frame) => {
-      frame.addEventListener('click', (e) => {
-        if (hasDragged) {
+        progressBar.addEventListener('pointerdown', (e) => {
           e.preventDefault();
           e.stopPropagation();
-          return;
-        }
-        e.preventDefault();
-        openCinemaModal(frame);
-      });
-    });
+          isScrubbing = true;
+          startClientX = e.clientX;
+          startScrollLeft = strip.scrollLeft;
+          scrubberTrack.classList.add('is-scrubbing');
+          try { progressBar.setPointerCapture(e.pointerId); } catch (_) {}
+        });
 
-    updateControls();
-    setTimeout(updateControls, 300);
+        progressBar.addEventListener('pointermove', (e) => {
+          if (!isScrubbing) return;
+          const rect = scrubberTrack.getBoundingClientRect();
+          if (rect.width <= 0) return;
+          const deltaX = e.clientX - startClientX;
+          const maxScroll = Math.max(1, strip.scrollWidth - strip.clientWidth);
+          const scrollDelta = (deltaX / rect.width) * maxScroll;
+          strip.scrollLeft = Math.max(0, Math.min(maxScroll, startScrollLeft + scrollDelta));
+        });
+
+        const stopScrub = (e) => {
+          if (!isScrubbing) return;
+          isScrubbing = false;
+          scrubberTrack.classList.remove('is-scrubbing');
+          try { if (e && e.pointerId && progressBar.hasPointerCapture(e.pointerId)) progressBar.releasePointerCapture(e.pointerId); } catch (_) {}
+        };
+
+        progressBar.addEventListener('pointerup', stopScrub);
+        progressBar.addEventListener('pointercancel', stopScrub);
+      }
+
+      // Drag-to-scroll on strip for desktop mouse
+      strip.addEventListener('mousedown', (e) => {
+        isDown = true;
+        hasDragged = false;
+        downPageX = e.pageX;
+        downPageY = e.pageY;
+        startX = e.pageX - strip.offsetLeft;
+        scrollLeftStart = strip.scrollLeft;
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        const x = e.pageX - strip.offsetLeft;
+        const walk = x - startX;
+        const dist = Math.hypot(e.pageX - downPageX, e.pageY - downPageY);
+        if (dist > 14) {
+          hasDragged = true;
+          strip.classList.add('is-dragging');
+        }
+        if (hasDragged) {
+          strip.scrollLeft = scrollLeftStart - walk;
+        }
+      });
+
+      function endDrag(e) {
+        if (!isDown) return;
+        isDown = false;
+        strip.classList.remove('is-dragging');
+        const currentX = e ? e.pageX : downPageX;
+        const currentY = e ? e.pageY : downPageY;
+        const totalDist = Math.hypot(currentX - downPageX, currentY - downPageY);
+        if (totalDist <= 12) {
+          hasDragged = false;
+        } else {
+          setTimeout(() => { hasDragged = false; }, 80);
+        }
+      }
+
+      window.addEventListener('mouseup', endDrag);
+
+      // Dedicated click on ceramic-frame
+      frames.forEach((frame) => {
+        frame.addEventListener('click', (e) => {
+          if (hasDragged) {
+            e.preventDefault();
+            e.stopPropagation();
+            return;
+          }
+          e.preventDefault();
+          openCinemaModal(frame);
+        });
+      });
+
+      updateControls();
+      setTimeout(updateControls, 300);
+    });
   }
 
   initCeramicShowcase();
@@ -5170,9 +5175,10 @@ document.addEventListener('DOMContentLoaded', () => {
             charSpan.style.backfaceVisibility = 'hidden';
             charSpan.style.webkitBackfaceVisibility = 'hidden';
             charSpan.style.transform = 'translate3d(0, 0, 0)';
-            charSpan.style.willChange = 'opacity, filter';
+            const isMobile = window.innerWidth <= 1024 || (window.matchMedia && window.matchMedia('(max-width: 1024px)').matches);
+            charSpan.style.willChange = isMobile ? 'opacity' : 'opacity, filter';
             charSpan.style.opacity = '0.12';
-            charSpan.style.filter = 'blur(12px)';
+            charSpan.style.filter = isMobile ? 'none' : 'blur(12px)';
 
             if (wrapperTag) {
               const tagEl = document.createElement(wrapperTag);
@@ -5201,6 +5207,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateLettersFadeIn = function() {
       const winH = window.getStableHeight();
+      const isMobile = window.innerWidth <= 1024 || (window.matchMedia && window.matchMedia('(max-width: 1024px)').matches);
 
       items.forEach((item) => {
         const { el, charEls } = item;
@@ -5233,7 +5240,7 @@ document.addEventListener('DOMContentLoaded', () => {
             item.state = 'idle';
             for (let i = 0; i < totalChars; i++) {
               charEls[i].style.opacity = '0.12';
-              charEls[i].style.filter = 'blur(12px)';
+              charEls[i].style.filter = isMobile ? 'none' : 'blur(12px)';
             }
           }
           return;
@@ -5262,7 +5269,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
           const charEl = charEls[idx];
           charEl.style.opacity = opacity.toFixed(4);
-          charEl.style.filter = `blur(${blur.toFixed(3)}px)`;
+          if (isMobile) {
+            if (charEl.style.filter !== 'none') charEl.style.filter = 'none';
+          } else {
+            charEl.style.filter = `blur(${blur.toFixed(3)}px)`;
+          }
         }
       });
 

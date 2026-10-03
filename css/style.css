@@ -1797,6 +1797,27 @@ body[data-ambient-theme="kontakt"] {
   width: 0.28em;
 }
 
+@media (max-width: 1024px) {
+  [letters-fade-in] .char,
+  [text-split] .char,
+  [data-text-fade] .char,
+  .letters-fade-in .char,
+  .text-fade-reveal .char {
+    filter: none !important;
+    -webkit-filter: none !important;
+    will-change: opacity !important;
+  }
+
+  .cinematic-loader.step-unfold .loader-word-top,
+  .cinematic-loader.step-unfold .loader-word-bottom,
+  .cinematic-loader.step-expand .loader-word-top,
+  .cinematic-loader.step-expand .loader-word-bottom,
+  .loader-word {
+    filter: none !important;
+    -webkit-filter: none !important;
+  }
+}
+
 .bmw-story-body {
   font-size: var(--text-size-body);
   color: var(--text-color-body);
@@ -4198,7 +4219,8 @@ body.film-drawer-open .film-more-text-btn {
   color: rgba(255, 255, 255, 0.65);
 }
 
-/* Chapter 02: Ceramic 360 Strip — Split Layout: Text Links, Fotos Rechts */
+/* Chapter 02 & 03: Split Horizontal Strips — Split Layout: Text Links, Fotos Rechts */
+.ceramic-split-layout,
 #photo-chapter-ceramic.ceramic-split-layout {
   display: grid;
   grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
@@ -4206,6 +4228,21 @@ body.film-drawer-open .film-more-text-btn {
   align-items: center;
   margin-top: clamp(5.5rem, 9.5vh, 8.5rem);
   margin-bottom: clamp(3rem, 5vh, 4.5rem);
+}
+
+.ceramic-split-layout--reverse,
+.ceramic-split-layout.is-reversed {
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+}
+
+.ceramic-split-layout--reverse .ceramic-text-col,
+.ceramic-split-layout.is-reversed .ceramic-text-col {
+  order: 2;
+}
+
+.ceramic-split-layout--reverse .ceramic-strip-wrap,
+.ceramic-split-layout.is-reversed .ceramic-strip-wrap {
+  order: 1;
 }
 
 .ceramic-text-col {
@@ -4404,9 +4441,20 @@ body.film-drawer-open .film-more-text-btn {
 }
 
 @media (max-width: 1024px) {
-  #photo-chapter-ceramic.ceramic-split-layout {
+  .ceramic-split-layout,
+  #photo-chapter-ceramic.ceramic-split-layout,
+  .ceramic-split-layout--reverse,
+  .ceramic-split-layout.is-reversed {
     grid-template-columns: 1fr;
     gap: 2.2rem;
+  }
+  .ceramic-split-layout--reverse .ceramic-text-col,
+  .ceramic-split-layout.is-reversed .ceramic-text-col {
+    order: 0;
+  }
+  .ceramic-split-layout--reverse .ceramic-strip-wrap,
+  .ceramic-split-layout.is-reversed .ceramic-strip-wrap {
+    order: 1;
   }
   .ceramic-strip {
     gap: 0.45rem;
